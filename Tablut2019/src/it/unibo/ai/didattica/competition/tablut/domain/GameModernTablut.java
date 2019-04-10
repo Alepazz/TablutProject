@@ -23,7 +23,6 @@ public class GameModernTablut implements Game {
 	public GameModernTablut() {
 		this(0);
 	}
-	//modifica
 
 	public GameModernTablut(int moves) {
 		super();
