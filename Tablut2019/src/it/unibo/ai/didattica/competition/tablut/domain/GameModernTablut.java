@@ -69,6 +69,7 @@ public class GameModernTablut implements Game {
 		if (rowFrom == rowTo && columnFrom == columnTo) {
 			// this.loggGame.warning("Nessuna mossa");
 			throw new StopException(a);
+			//aaaa
 		}
 
 		// controllo se sto muovendo una pedina giusta
