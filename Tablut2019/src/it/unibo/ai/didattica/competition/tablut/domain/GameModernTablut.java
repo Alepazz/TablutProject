@@ -22,6 +22,7 @@ public class GameModernTablut implements Game {
 
 	public GameModernTablut() {
 		this(0);
+		//prova per vedere se ale legge queto messaggio
 	}
 
 	public GameModernTablut(int moves) {
