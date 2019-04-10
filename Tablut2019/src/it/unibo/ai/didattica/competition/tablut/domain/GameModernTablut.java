@@ -22,6 +22,7 @@ public class GameModernTablut implements Game {
 
 	public GameModernTablut() {
 		this(0);
+		//prova per vedere se ale legge queto messaggio
 	}
 
 	public GameModernTablut(int moves) {
@@ -68,6 +69,7 @@ public class GameModernTablut implements Game {
 		if (rowFrom == rowTo && columnFrom == columnTo) {
 			// this.loggGame.warning("Nessuna mossa");
 			throw new StopException(a);
+			//aaaa
 		}
 
 		// controllo se sto muovendo una pedina giusta
