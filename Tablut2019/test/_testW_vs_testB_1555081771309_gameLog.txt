@@ -1,0 +1,42 @@
+apr 12, 2019 5:09:31 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+BUONO: Players:	White:	testW	vs	testB
+apr 12, 2019 5:09:31 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+BUONO: Repeated moves allowed:	0	Cache:	-1
+apr 12, 2019 5:09:31 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+BUONO: Inizio partita
+apr 12, 2019 5:09:31 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+BUONO: Stato:
+OOOBBBOOO
+OOOOBOOOO
+OOOOWOOOO
+BOOOWOOOB
+BBWWKWWBB
+BOOOWOOOB
+OOOOWOOOO
+OOOOBOOOO
+OOOBBBOOO
+-
+B
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+BUONO: Turn: W Pawn from e4 to c4
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut movePawn
+BUONO: Movimento pedina
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkCaptureWhite
+BUONO: Pedina nera rimossa in: b4
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+BUONO: Capture! Draw cache cleared!
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+BUONO: Current draw cache size: 1
+apr 12, 2019 5:09:50 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+BUONO: Stato:
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+BOWOOOOOO
+OOOOTOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+-
+B
