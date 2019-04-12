@@ -20,9 +20,11 @@ public class GameModernTablut implements Game {
 	private int movesDraw;
 	private int movesWithutCapturing;
 
+	//ooooooohhh
 	public GameModernTablut() {
 		this(0);
 		//prova per vedere se ale legge queto messaggio
+		//ciao aleeeee
 	}
 	//aggiunta
 
