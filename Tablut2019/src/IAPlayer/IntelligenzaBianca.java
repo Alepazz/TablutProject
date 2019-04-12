@@ -1,8 +1,10 @@
 package IAPlayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
+import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
+import java.io.IOException;
 import java.util.List;
 
 public class IntelligenzaBianca implements IA {
@@ -24,8 +26,17 @@ public class IntelligenzaBianca implements IA {
 
 	@Override
 	public Action getBetterMove(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//QUESTA è SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
+		//RISULTATO POSITIVO
+		Action a = null;
+		try {
+			a = new Action("e4", "f4", State.Turn.WHITE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return a;
 	}
 
 }

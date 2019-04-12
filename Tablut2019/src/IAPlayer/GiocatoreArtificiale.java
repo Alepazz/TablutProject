@@ -28,7 +28,7 @@ public class GiocatoreArtificiale extends TablutClient {
 	public GiocatoreArtificiale(String player, String name)
 			throws UnknownHostException, IOException {
 		super(player, name);
-		if(this.getPlayer().equalsTurn("B"))
+		if(this.getPlayer().equalsTurn("W"))
 		{
 			this.intelligenza = new IntelligenzaBianca();
 		}
@@ -44,6 +44,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
@@ -61,17 +62,19 @@ public class GiocatoreArtificiale extends TablutClient {
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+			System.exit(1);
 		}
 		
 		//LOOP FINO A FINE PARTITA
-		while(!this.getCurrentState().getTurn().equalsTurn("D") || !this.getCurrentState().getTurn().equalsTurn("BW") || !this.getCurrentState().getTurn().equalsTurn("WW"))
+		while(!this.getCurrentState().getTurn().equalsTurn("D") && !this.getCurrentState().getTurn().equalsTurn("BW") && !this.getCurrentState().getTurn().equalsTurn("WW"))
 		{
 			//SE è IL MIO TURNO CALCOLO
-			if(this.getCurrentState().getTurn().equals(this.getPlayer()))
+			if(this.getCurrentState().getTurn().equalsTurn(this.getPlayer().toString()))
 			{
 				//CALCOLO LA MOSSA MIGLIORE
 				betterAction = this.intelligenza.getBetterMove((StateTablut) this.getCurrentState());
-				
+
+
 				//SCRIVO AL SERVER LA MOSSA
 				try 
 				{
@@ -80,6 +83,7 @@ public class GiocatoreArtificiale extends TablutClient {
 				catch (Exception e1) 
 				{
 					e1.printStackTrace();
+					System.exit(1);
 				} 
 				
 				//LEGGO IL RISULTATO DEL MIO STATO
@@ -90,6 +94,7 @@ public class GiocatoreArtificiale extends TablutClient {
 				catch (Exception e) 
 				{
 					e.printStackTrace();
+					System.exit(1);
 				}
 			}
 			
@@ -101,6 +106,7 @@ public class GiocatoreArtificiale extends TablutClient {
 			catch (Exception e) 
 			{
 				e.printStackTrace();
+				System.exit(1);
 			}
 		}
 		
