@@ -19,7 +19,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
  * @author Andrea Piretti
  *
  */
-//da estendereeeeeeeee
+//modifica di Ale
 public abstract class TablutClient implements Runnable {
 
 	private State.Turn player;
