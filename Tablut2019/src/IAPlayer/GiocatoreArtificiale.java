@@ -11,20 +11,15 @@ public class GiocatoreArtificiale extends TablutClient {
 
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 
-		if (args.length == 0) {
-			System.out.println("You must specify which player you are (WHITE or BLACK)!");
-			System.exit(-1);
-		}
-		System.out.println("Selected this: " + args[0]);
-
 		//NOME DA CAMBIARE
-		TablutClient client = new GiocatoreArtificiale(args[0], "JUVEMERDA");
+		//TablutClient client = new GiocatoreArtificiale(args[0], "DamaPerNordinici");
+		TablutClient client = new GiocatoreArtificiale("WHITE", "DamaPerNordinici");
 		client.run();
 	}
 	
 	private IA intelligenza;
 	
-	//INIZIALIZZO IL GIOCATORE (BIANCO O NERO) GIà NEL COSTRUTTORE, DICHIARO ANCHE IL NOME AL SERVER QUI
+	//INIZIALIZZO IL GIOCATORE (BIANCO O NERO) GIï¿½ NEL COSTRUTTORE, DICHIARO ANCHE IL NOME AL SERVER QUI
 	public GiocatoreArtificiale(String player, String name)
 			throws UnknownHostException, IOException {
 		super(player, name);
@@ -48,7 +43,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		}
 	}
 	
-	//METODO CHE INIZIA A GIOCARE, CONNESSIONE GIà EFFETTUATA E NOME GIà DATO
+	//METODO CHE INIZIA A GIOCARE, CONNESSIONE GIï¿½ EFFETTUATA E NOME GIï¿½ DATO
 	@Override
 	public void run() {
 		
@@ -68,7 +63,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		//LOOP FINO A FINE PARTITA
 		while(!this.getCurrentState().getTurn().equalsTurn("D") && !this.getCurrentState().getTurn().equalsTurn("BW") && !this.getCurrentState().getTurn().equalsTurn("WW"))
 		{
-			//SE è IL MIO TURNO CALCOLO
+			//SE ï¿½ IL MIO TURNO CALCOLO
 			if(this.getCurrentState().getTurn().equalsTurn(this.getPlayer().toString()))
 			{
 				//CALCOLO LA MOSSA MIGLIORE

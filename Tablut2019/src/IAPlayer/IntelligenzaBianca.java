@@ -27,10 +27,16 @@ public class IntelligenzaBianca implements IA {
 	@Override
 	public Action getBetterMove(StateTablut s) {
 		
-		//QUESTA � SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
+		//QUESTA � SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
 		//RISULTATO POSITIVO
 		Action a = null;
 		try {
+			if(s.isStart()) {
+				System.out.println("FATTOOOOOOOOOOO");
+			} else {
+				System.out.println("La scacchiera non è riempita");
+			}
+			
 			a = new Action("e4", "f4", State.Turn.WHITE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -40,3 +46,10 @@ public class IntelligenzaBianca implements IA {
 	}
 
 }
+
+/*
+ * ALLEGO DOMANDE
+ * 
+ * Che metodo va chiamato per sapere quando siamo nello stato iniziale (nessuna mossa ancora effettuata)?
+ * Come ottengo qual'è l'ultima mossa effettuata dal giocatore avversario?
+ */
