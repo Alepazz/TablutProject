@@ -1,0 +1,36 @@
+apr 12, 2019 6:17:05 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+apr 12, 2019 6:17:05 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+apr 12, 2019 6:17:07 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Bianco
+apr 12, 2019 6:17:07 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player bianco in corso..
+apr 12, 2019 6:17:08 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: White player name:	JUVEMERDA
+apr 12, 2019 6:17:09 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Nero
+apr 12, 2019 6:17:09 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player nero in corso..
+apr 12, 2019 6:17:10 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Black player name:	random
+apr 12, 2019 6:17:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai giocatori
+apr 12, 2019 6:17:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+apr 12, 2019 6:17:12 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from e4 to f4
+apr 12, 2019 6:17:12 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+apr 12, 2019 6:17:12 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+apr 12, 2019 6:17:14 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from i4 to h4
+apr 12, 2019 6:17:14 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+apr 12, 2019 6:17:14 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+apr 12, 2019 6:17:15 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from e4 to f4
+apr 12, 2019 6:17:15 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Chiusura sistema per troppi errori giocatore bianco

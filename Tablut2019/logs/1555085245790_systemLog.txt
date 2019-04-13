@@ -1,0 +1,20 @@
+apr 12, 2019 6:07:25 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+apr 12, 2019 6:07:25 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+apr 12, 2019 6:07:30 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Bianco
+apr 12, 2019 6:07:30 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player bianco in corso..
+apr 12, 2019 6:07:31 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: White player name:	JUVEMERDA
+apr 12, 2019 6:07:36 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Nero
+apr 12, 2019 6:07:36 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player nero in corso..
+apr 12, 2019 6:07:37 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Black player name:	random
+apr 12, 2019 6:07:37 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai giocatori
+apr 12, 2019 6:07:37 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..

@@ -9,7 +9,6 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
 public class GiocatoreArtificiale extends TablutClient {
 	
-
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 
 		if (args.length == 0) {
