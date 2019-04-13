@@ -13,6 +13,7 @@ import java.util.logging.*;
 
 import it.unibo.ai.didattica.competition.tablut.domain.*;
 import it.unibo.ai.didattica.competition.tablut.gui.Gui;
+import it.unibo.ai.didattica.competition.tablut.util.StreamUtils;
 
 import com.google.gson.Gson;
 
@@ -244,7 +245,7 @@ public class Server implements Runnable {
 
 		public void run() {
 			try {
-				theGson = this.theStream.readUTF();
+				theGson = StreamUtils.readString(this.theStream);
 
 			} catch (Exception e) {
 			}
@@ -462,8 +463,8 @@ public class Server implements Runnable {
 
 		try {
 			theGson = gson.toJson(state);
-			whiteState.writeUTF(theGson);
-			blackState.writeUTF(theGson);
+			StreamUtils.writeString(whiteState, theGson);
+			StreamUtils.writeString(blackState, theGson);
 			loggSys.fine("Invio messaggio ai giocatori");
 			if (enableGui) {
 				theGui.update(state);
@@ -544,7 +545,7 @@ public class Server implements Runnable {
 
 					if (this.blackErrors > errors) {
 						System.out.println("TOO MANY ERRORS FOR BLACK PLAYER; PLAYER WHITE WIN!");
-						//e.printStackTrace();
+						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore nero");
 						System.exit(1);
 					} else {
@@ -555,7 +556,7 @@ public class Server implements Runnable {
 					this.whiteErrors++;
 					if (this.whiteErrors > errors) {
 						System.out.println("TOO MANY ERRORS FOR WHITE PLAYER; PLAYER BLACK WIN!");
-						//e.printStackTrace();
+						e.printStackTrace();
 						loggSys.warning("Chiusura sistema per troppi errori giocatore bianco");
 						System.exit(1);
 					} else {
@@ -567,8 +568,8 @@ public class Server implements Runnable {
 			// SEND STATE TO PLAYERS
 			try {
 				theGson = gson.toJson(state);
-				whiteState.writeUTF(theGson);
-				blackState.writeUTF(theGson);
+				StreamUtils.writeString(whiteState, theGson);
+				StreamUtils.writeString(blackState, theGson);
 				loggSys.fine("Invio messaggio ai client");
 				if (enableGui) {
 					theGui.update(state);

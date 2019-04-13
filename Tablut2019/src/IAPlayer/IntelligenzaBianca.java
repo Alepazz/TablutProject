@@ -31,12 +31,14 @@ public class IntelligenzaBianca implements IA {
 		//RISULTATO POSITIVO
 		Action a = null;
 		try {
-			if(s.isStart()) {
+		/*	if(this.isStart(s)) {
 				System.out.println("FATTOOOOOOOOOOO");
 			} else {
 				System.out.println("La scacchiera non è riempita");
+
 			}
 			
+			*/
 			a = new Action("e4", "f4", State.Turn.WHITE);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

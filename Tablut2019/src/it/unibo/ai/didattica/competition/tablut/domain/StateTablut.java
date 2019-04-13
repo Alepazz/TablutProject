@@ -105,65 +105,7 @@ public class StateTablut extends State implements Serializable {
 		return true;
 	}
 	
-	/*
-	 * Metodo che dice se ci troviamo all'inizio della partita: mosse effettuate = 0
-	 */
-	public boolean isStart() {
-		boolean result = false;
-		
-		result = checkBlack() && checkWhite();
-		
-		return result;
-	}
-	
-	/*
-	 * Metodo che controlla se tutte le caselle destinate ai neri sono occupate
-	 */
-	private boolean checkBlack() {
-		
-		boolean result = true;
-		
-		for(int i=3; i<6; i++) {
-			if(checkBox(this.getBoard(), 0, i) && checkBox(this.getBoard(), 8, i)) {
-				result = result && true;
-			} else {
-				System.out.println("Valore di i al primo giro: " + i);
-				return false;
-			}
-		}
-		
-		for(int i=3; i<6; i++) {
-			if(checkBox(this.getBoard(), i, 0) && checkBox(this.getBoard(), i, 8)) {
-				result = result && true;
-			} else {
-				System.out.println("Valore di i al secondo giro: " + i);
-				return false;
-			}
-		}
-		
-		if(checkBox(this.getBoard(), 4, 1) && checkBox(this.getBoard(), 1, 4) && checkBox(this.getBoard(), 4, 7) && checkBox(this.getBoard(), 7, 4)) {
-			result = result && true;
-		} else {
-			return false;
-		}
-		
-		return result;
-	}
-	
-	/*
-	 * Metodo che controlla se tutte le caselle destinate ai bianchi sono occupate
-	 */
-	private boolean checkWhite() {
-		//TODO: implemento
-		return true;
-	}
-	
-	
-	private boolean checkBox(Pawn board[][], int row, int column) {
-		
-		if(!board[row][column].equals(Pawn.EMPTY)) {
-			return true;
-		}
-		return false;
-	}
 }
+
+	
+	
