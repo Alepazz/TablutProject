@@ -12,6 +12,8 @@ public class IntelligenzaBianca implements IA {
 
 	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
+	private final static int MAX_VALUE = 10000;
+	private final static int MIN_VALUE = - MAX_VALUE;
 	
 	public IntelligenzaBianca() {
 		this.nodiEsistenti = new ArrayList<Nodo>();
@@ -41,11 +43,11 @@ public class IntelligenzaBianca implements IA {
 		
 		if(s.getTurn().equalsTurn("WW"))
 		{
-			return 10000;
+			return this.MAX_VALUE;
 		}
 		if(s.getTurn().equalsTurn("BW"))
 		{
-			return -10000;
+			return this.MIN_VALUE;
 		}
 		if(s.getTurn().equalsTurn("D"))
 		{
@@ -80,11 +82,164 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		//controllo se re viene mangiato
+		if(this.kingCanBeCaptured(s, rigaRe, colonnaRe))
+		{
+			return this.MIN_VALUE;
+		}
 		
+		//controllo vie di fuga re
+		int viedifuga=this.checkVieDiFugaRe(s, rigaRe, colonnaRe);
+				
+		//controllo se nella mossa del nero mi mangia il re
+		if(viedifuga>1)
+		{
+			return this.MAX_VALUE;			
+		}
+		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
+		{
+			return this.MAX_VALUE;
+		}
+		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
+		{
+			if(balckCannotBlockEscape(s, rigaRe, colonnaRe))
+			{
+				return this.MAX_VALUE;
+			}
+		}
+		
+		
+		
+		return value;
+		
+	}
+	
+	private boolean balckCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
+		
+		int i;
+		
+		//via di fuga sotto
+		for(i=rigaRe+1; i<9; i++)
+		{
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
+			{
+				i=20;
+			}
+		}
+		if(i!=20)
+		{
+			for(i=rigaRe+1; i<9; i++)
+			{
+				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				{
+					return false;
+				}
+			}
+		}
+		
+		//via di fuga sopra
+		for(i=rigaRe-1; i>=0; i--)
+		{
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
+			{
+				i=20;
+			}
+		}
+		if(i!=20)
+		{
+			for(i=rigaRe-1; i>=0; i--)
+			{
+				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				{
+					return false;
+				}
+			}
+		}
+		
+		//via di fuga a destra
+		for(i=colonnaRe+1; i<9; i++)
+		{
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
+			{
+				i=-1;
+			}
+		}
+		if(i!=20)
+		{
+			for(i=colonnaRe+1; i<9; i++)
+			{
+				if(this.checkBlackCanArrive(rigaRe, i, s))
+				{
+					return false;
+				}
+			}
+		}
+		
+		//via di fuga a sinistra
+		for(i=colonnaRe-1; i>=0; i--)
+		{
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
+			{
+				i=-1;
+			}
+		}
+		if(i!=20)
+		{
+			for(i=colonnaRe-1; i>=0; i--)
+			{
+				if(this.checkBlackCanArrive(rigaRe, i, s))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	private boolean kingCanBeCaptured(StateTablut s, int rigaRe, int colonnaRe)
+	{
+		if(s.getTurn().equalsTurn("B"))
+		{
+			if(getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
+				{
+					return true;
+				}
+			}
+			if(getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
+				{
+					return true;
+				}
+			}
+			if(getKingNearBlackUp(rigaRe, colonnaRe, s))
+			{
+				if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
+				{
+					return true;
+				}
+			}
+			if(getKingNearBlackDown(rigaRe, colonnaRe, s))
+			{
+				if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	private int checkVieDiFugaRe(StateTablut s, int rigaRe, int colonnaRe)
+	{
 		int viedifuga=4;
 		for(int i=rigaRe+1; i<9; i++)
 		{
-			if(!s.getPawn(rigaRe+i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe+i, colonnaRe)))
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
 				viedifuga--;
 				i=20;
@@ -92,7 +247,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		for(int i=rigaRe-1; i>=0; i--)
 		{
-			if(!s.getPawn(rigaRe-i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe-i, colonnaRe)))
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
 				viedifuga--;
 				i=20;
@@ -100,7 +255,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		for(int i=colonnaRe+1; i<9; i++)
 		{
-			if(!s.getPawn(rigaRe, colonnaRe+i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, colonnaRe+i)))
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
 			{
 				viedifuga--;
 				i=-1;
@@ -108,79 +263,13 @@ public class IntelligenzaBianca implements IA {
 		}
 		for(int i=colonnaRe-1; i>=0; i--)
 		{
-			if(!s.getPawn(rigaRe, colonnaRe-i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, colonnaRe-i)))
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
 			{
 				viedifuga--;
 				i=-1;
 			}
 		}
-		
-		
-		
-		
-		
-		if(viedifuga>=1 && s.getTurn().equalsTurn("W"))
-		{
-			return 10000;
-		}
-		if(viedifuga>1 && s.getTurn().equalsTurn("B"))
-		{
-			//controllo se nella mossa del nero mi mangia il re
-			if(getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
-				{
-					return -10000;
-				}
-				else
-				{
-					return 10000;
-				}
-			}
-			if(getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
-				{
-					return -10000;
-				}
-				else
-				{
-					return 10000;
-				}
-			}
-			if(getKingNearBlackUp(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
-				{
-					return -10000;
-				}
-				else
-				{
-					return 10000;
-				}
-			}
-			if(getKingNearBlackDown(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
-				{
-					return -10000;
-				}
-				else
-				{
-					return 10000;
-				}
-			}
-			
-			
-			
-		}
-		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
-		{
-			
-		}
-		
-		return value;
-		
+		return viedifuga;
 	}
 	
 	private boolean checkBlackCanArrive(int riga, int colonna, StateTablut s)
@@ -189,7 +278,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(s.getPawn(riga+i, colonna).equalsPawn("B"))
 			{
-				return false;
+				return true;
 			}
 			if(s.getPawn(riga+i, colonna).equalsPawn("W") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
 			{
@@ -200,7 +289,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(s.getPawn(riga-i, colonna).equalsPawn("B"))
 			{
-				return false;
+				return true;
 			}
 			if(s.getPawn(riga-i, colonna).equalsPawn("W") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
 			{
@@ -211,7 +300,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(s.getPawn(riga, colonna+i).equalsPawn("B"))
 			{
-				return false;
+				return true;
 			}
 			if(s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
 			{
@@ -222,7 +311,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(s.getPawn(riga, colonna-i).equalsPawn("B"))
 			{
-				return false;
+				return true;
 			}
 			if(s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
 			{
@@ -230,9 +319,7 @@ public class IntelligenzaBianca implements IA {
 			}			
 		}
 		
-		
-		
-		return true;
+		return false;
 	}
 
 	private boolean getKingNearBlackRight(int rigaRe, int colonnaRe, StateTablut s)
@@ -243,6 +330,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		return false;
 	}
+	
 	
 	private boolean getKingNearBlackLeft(int rigaRe, int colonnaRe, StateTablut s)
 	{
