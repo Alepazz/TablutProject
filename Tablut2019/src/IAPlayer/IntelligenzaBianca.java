@@ -12,8 +12,8 @@ public class IntelligenzaBianca implements IA {
 
 	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
-	private final static int MAX_VALUE = 10000;
-	private final static int MIN_VALUE = - MAX_VALUE;
+	private final int MAX_VALUE = 10000;
+	private final int MIN_VALUE = - MAX_VALUE;
 	
 	public IntelligenzaBianca() {
 		this.nodiEsistenti = new ArrayList<Nodo>();
@@ -85,7 +85,7 @@ public class IntelligenzaBianca implements IA {
 		//controllo se re viene mangiato
 		if(this.kingCanBeCaptured(s, rigaRe, colonnaRe))
 		{
-			return this.MIN_VALUE;
+			return this.MIN_VALUE+1;
 		}
 		
 		//controllo vie di fuga re
@@ -94,22 +94,171 @@ public class IntelligenzaBianca implements IA {
 		//controllo se nella mossa del nero mi mangia il re
 		if(viedifuga>1)
 		{
-			return this.MAX_VALUE;			
+			return this.MAX_VALUE-1;			
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
-			return this.MAX_VALUE;
+			return this.MAX_VALUE-1;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
 			if(balckCannotBlockEscape(s, rigaRe, colonnaRe))
 			{
-				return this.MAX_VALUE;
+				return this.MAX_VALUE-1;
 			}
 		}
 		
-		
-		
+		//controllo re sul trono
+		if(rigaRe==4 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
+		{
+			//bloccato sopra, destra e sinistra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(5, 4, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			
+			//bloccato sotto, destra, sinistra
+			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(3, 4, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			
+			//bloccato sopra, sotto, destra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(4, 3, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			
+			//bloccato sopra, sotto, sinistra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(4, 5, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+		}
+		//controllo casella adiacente sopra
+		if(rigaRe==3 && colonnaRe==4 && s.getTurn().equals("B"))
+		{
+			//bloccato sopra e a destra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(3, 3, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sinistra e destra
+			if(this.getKingNearBlackLeft(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(2, 4, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sopra e a sinistra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(3, 5, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+		}
+		//controllo casella adiacente sotto
+		if(rigaRe==5 && colonnaRe==4 && s.getTurn().equals("B"))
+		{
+			//bloccato destra e sinistra
+			if(this.getKingNearBlackLeft(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(6, 4, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sotto e a destra
+			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(5, 3, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sotto e a sinistra
+			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(5, 5, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+		}
+		//controllo casella adiacente destra
+		if(rigaRe==4 && colonnaRe==5 && s.getTurn().equals("B"))
+		{
+			//bloccato sotto e a destra
+			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(3, 5, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sopra e a destra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(5, 5, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}
+			//bloccato sopra e sotto
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(4, 6, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}			
+		}
+		//controllo casella adiacente sinistra
+		if(rigaRe==4 && colonnaRe==3 && s.getTurn().equals("B"))
+		{
+			//bloccato sopra e sotto
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(4, 2, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}	
+			//bloccato sotto e a sinistra
+			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(3, 3, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}//bloccato sopra e a sinistra
+			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
+			{
+				if(this.checkBlackCanArrive(5, 3, s))
+				{
+					return this.MIN_VALUE+1;
+				}
+			}			
+		}
+			
 		return value;
 		
 	}
