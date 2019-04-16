@@ -119,7 +119,6 @@ public class IntelligenzaBianca implements IA {
 					return this.MIN_VALUE+1;
 				}
 			}
-			
 			//bloccato sotto, destra, sinistra
 			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
 			{
@@ -128,7 +127,6 @@ public class IntelligenzaBianca implements IA {
 					return this.MIN_VALUE+1;
 				}
 			}
-			
 			//bloccato sopra, sotto, destra
 			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
 			{
@@ -137,7 +135,6 @@ public class IntelligenzaBianca implements IA {
 					return this.MIN_VALUE+1;
 				}
 			}
-			
 			//bloccato sopra, sotto, sinistra
 			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
 			{
@@ -259,6 +256,19 @@ public class IntelligenzaBianca implements IA {
 			}			
 		}
 			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		return value;
 		
 	}
