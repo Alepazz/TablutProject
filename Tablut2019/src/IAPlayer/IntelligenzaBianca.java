@@ -36,9 +36,6 @@ public class IntelligenzaBianca implements IA {
 		this.citadels.add("e8");
 	}
 	
-	
-	
-	
 	private float getHeuristicValue(StateTablut s) {
 		
 		if(s.getTurn().equalsTurn("WW"))
