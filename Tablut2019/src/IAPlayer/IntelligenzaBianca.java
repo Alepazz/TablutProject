@@ -102,7 +102,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
-			if(balckCannotBlockEscape(s, rigaRe, colonnaRe))
+			if(blackCannotBlockEscape(s, rigaRe, colonnaRe))
 			{
 				return this.MAX_VALUE-1;
 			}
@@ -145,7 +145,7 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		//controllo casella adiacente sopra
-		if(rigaRe==3 && colonnaRe==4 && s.getTurn().equals("B"))
+		if(rigaRe==3 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
 		{
 			//bloccato sopra e a destra
 			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
@@ -173,7 +173,7 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		//controllo casella adiacente sotto
-		if(rigaRe==5 && colonnaRe==4 && s.getTurn().equals("B"))
+		if(rigaRe==5 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
 		{
 			//bloccato destra e sinistra
 			if(this.getKingNearBlackLeft(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
@@ -201,7 +201,7 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		//controllo casella adiacente destra
-		if(rigaRe==4 && colonnaRe==5 && s.getTurn().equals("B"))
+		if(rigaRe==4 && colonnaRe==5 && s.getTurn().equalsTurn("B"))
 		{
 			//bloccato sotto e a destra
 			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
@@ -229,7 +229,7 @@ public class IntelligenzaBianca implements IA {
 			}			
 		}
 		//controllo casella adiacente sinistra
-		if(rigaRe==4 && colonnaRe==3 && s.getTurn().equals("B"))
+		if(rigaRe==4 && colonnaRe==3 && s.getTurn().equalsTurn("B"))
 		{
 			//bloccato sopra e sotto
 			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s))
@@ -255,25 +255,20 @@ public class IntelligenzaBianca implements IA {
 				}
 			}			
 		}
+		
+		/*
+		 * Funzione che controlla se, eseguita una mossa del re, esso ha liberato un'intera colonna, in cui vincere (al 100%) il turno successivo
+		 */
+		if (this.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
+			return this.MAX_VALUE;
+		}
 			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+				
 		return value;
 		
 	}
 	
-	private boolean balckCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
+	private boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 		
 		int i;
 		
@@ -392,47 +387,101 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	
+	/*
+	 * Controlla se il re ha vie di fuga. Inizialmente le vie sono 4, e per ogni pedina nera su una delle possibili vie di fuga,
+	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione get in questione
+	 * ritorna 0, non andando a modificare il numero di vie di fuga disponibili
+	 */
 	private int checkVieDiFugaRe(StateTablut s, int rigaRe, int colonnaRe)
 	{
-		int viedifuga=4;
-		for(int i=rigaRe+1; i<9; i++)
-		{
+		int vieDiFuga=4;
+		
+		vieDiFuga += getViaDiFugaFromBottom(rigaRe, colonnaRe, s);
+		vieDiFuga += getViaDiFugaFromTop(rigaRe, colonnaRe, s);
+		vieDiFuga += getViaDiFugaFromRight(rigaRe, colonnaRe, s);
+		vieDiFuga += getViaDiFugaFromLeft(rigaRe, colonnaRe, s);
+		
+		return vieDiFuga;
+	}
+	
+	/*
+	 * Controlla se esiste almeno una pedina nera nella riga sotto la riga in cui si trova il re
+	 * 
+	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 */
+	private int getViaDiFugaFromBottom(int rigaRe, int colonnaRe, StateTablut s) {
+		for (int i=rigaRe+1; i<9; i++) {
 			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
-				viedifuga--;
-				i=20;
+				return -1;
 			}
 		}
+		
+		return 0;
+	}
+	
+	/*
+	 * Controlla se esiste almeno una pedina nera nella riga sopra la riga in cui si trova il re
+	 * 
+	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 */
+	private int getViaDiFugaFromTop(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=rigaRe-1; i>=0; i--)
 		{
 			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
-				viedifuga--;
-				i=20;
+				return -1;
 			}
 		}
+		return 0;
+	}
+	
+	/*
+	 * Controlla se esiste almeno una pedina nera nella colonna a destra della colonna in cui si trova il re
+	 * 
+	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 */
+	private int getViaDiFugaFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i<9; i++)
 		{
 			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
 			{
-				viedifuga--;
-				i=-1;
+				return -1;
 			}
 		}
+		
+		return 0;
+	}
+	
+	/*
+	 * Controlla se esiste almeno una pedina nera nella colonna a sinistra della colonna in cui si trova il re
+	 * 
+	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 */
+	private int getViaDiFugaFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i>=0; i--)
 		{
 			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
 			{
-				viedifuga--;
-				i=-1;
+				return -1;
 			}
 		}
-		return viedifuga;
+		return 0;
 	}
 	
 	private boolean checkBlackCanArrive(int riga, int colonna, StateTablut s)
 	{
+		return checkBlackCanArriveFromBottom(riga, colonna, s) && 
+				checkBlackCanArriveFromTop(riga, colonna, s) && 
+				checkBlackCanArriveFromRight(riga, colonna, s) && 
+				checkBlackCanArriveFromLeft(riga, colonna, s);
+	}
+	
+	/*
+	 * Controlla se esiste un nero che possa arrivare, dal basso, adiacente alla pedina passata come parametro
+	 */
+	//TODO:verificare se il secondo if e' utile oppure no
+	private boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
 		for(int i=riga+1; i<9;i++)
 		{
 			if(s.getPawn(riga+i, colonna).equalsPawn("B"))
@@ -441,9 +490,17 @@ public class IntelligenzaBianca implements IA {
 			}
 			if(s.getPawn(riga+i, colonna).equalsPawn("W") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
 			{
-				i=20;
+				return false;
 			}			
 		}
+		
+		return false;
+	}
+	
+	/*
+	 * Controlla se esiste un nero che possa arrivare, dall'alto, adiacente alla pedina passata come parametro
+	 */
+	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
 		for(int i=riga-1; i>=0;i--)
 		{
 			if(s.getPawn(riga-i, colonna).equalsPawn("B"))
@@ -452,9 +509,18 @@ public class IntelligenzaBianca implements IA {
 			}
 			if(s.getPawn(riga-i, colonna).equalsPawn("W") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
 			{
-				i=-1;
+				return false;
 			}			
 		}
+		
+		return false;
+	}
+	
+	/*
+	 * Controlla se esiste un nero che possa arrivare, da destra, adiacente alla pedina passata come parametro
+	 */
+	//TODO:verificare se il secondo if e' utile oppure no
+	private boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
 		for(int i=colonna+1; i<9;i++)
 		{
 			if(s.getPawn(riga, colonna+i).equalsPawn("B"))
@@ -463,9 +529,18 @@ public class IntelligenzaBianca implements IA {
 			}
 			if(s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
 			{
-				i=20;
+				return false;
 			}			
 		}
+		
+		return false;
+	}
+	
+	/*
+	 * Controlla se esiste un nero che possa arrivare, da sinistra, adiacente alla pedina passata come parametro
+	 */
+	//TODO:verificare se il secondo if e' utile oppure no
+	private boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
 		for(int i=colonna-1; i>=0;i--)
 		{
 			if(s.getPawn(riga, colonna-i).equalsPawn("B"))
@@ -474,7 +549,7 @@ public class IntelligenzaBianca implements IA {
 			}
 			if(s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
 			{
-				i=-1;
+				return false;
 			}			
 		}
 		
@@ -517,7 +592,75 @@ public class IntelligenzaBianca implements IA {
 		}
 		return false;
 	}
-
+	
+	/*
+	 * Funzione che controlla se il re, muovendosi di una o più mosse da destra a sinistra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 */
+	private boolean checkFreeColComingFromRight(int rigaRe, int colonnaRe, StateTablut s) {
+		for(int i=colonnaRe+1; i==6;i++)
+		{
+			if(s.getPawn(rigaRe, colonnaRe+i).equalsPawn("B") || s.getPawn(rigaRe, colonnaRe+i).equalsPawn("W") || s.getPawn(rigaRe, colonnaRe+i).equalsPawn("T")){
+				return false; //c'e' una pedina nera/bianca che intralcia la mossa o c'e' il trono
+			}		
+		}
+		
+		colonnaRe = 2; //colonna libera con possibilita' di vittoria
+		
+		if(!s.getPawn(rigaRe, 0).equalsPawn("B") && 
+				!this.citadels.contains(s.getBox(rigaRe, 0)) && 
+				checkFreeColTop(rigaRe, colonnaRe, s) && 
+				checkFreeColBottom(rigaRe, colonnaRe, s)){
+			return true;
+		}
+		
+		return checkFreeColTop(rigaRe, colonnaRe, s) && checkFreeColBottom(rigaRe, colonnaRe, s) && !checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, s); //checkBlack deve essere falso per far ritornare true il return
+	}
+	
+	/*
+	 * Funzione che controlla se il re, muovendosi di una o più mosse da sinistra a destra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 */
+	private boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
+		for(int i=colonnaRe-1; i==2;i--)
+		{
+			if(s.getPawn(rigaRe, colonnaRe-i).equalsPawn("B") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("W") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("T")){
+				return false; //c'e' una pedina nera/bianca che intralcia la mossa o c'e' il trono
+			}		
+		}
+		
+		colonnaRe = 6; //colonna libera con possibilita' di vittoria
+		
+		if(!s.getPawn(rigaRe, 8).equalsPawn("B") && 
+				!this.citadels.contains(s.getBox(rigaRe, 8)) && 
+				checkFreeColTop(rigaRe, colonnaRe, s) && 
+				checkFreeColBottom(rigaRe, colonnaRe, s)){
+			return true;
+		}
+		
+		return checkFreeColTop(rigaRe, colonnaRe, s) && checkFreeColBottom(rigaRe, colonnaRe, s) && !checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, s); //checkBlack deve essere falso per far ritornare true il return;
+	}
+	
+	private boolean checkFreeColTop(int rigaRe, int colonnaRe, StateTablut s) {
+		
+		for(int i=rigaRe-1; i>=0; i--) {
+			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W")) {
+				return false;
+			}
+		}
+		
+		return true;
+		
+	}
+	
+	private boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
+		for(int i=rigaRe+1; i<=9; i++) {
+			if(s.getPawn(rigaRe+i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe+i, colonnaRe).equalsPawn("W")) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	private List<Action> getMossePossibili(StateTablut s) {
 		// TODO Auto-generated method stub
 		return null;
@@ -531,14 +674,14 @@ public class IntelligenzaBianca implements IA {
 	@Override
 	public Action getBetterMove(StateTablut s) {
 		
-		//QUESTA � SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
+		//QUESTA e' SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
 		//RISULTATO POSITIVO
 		Action a = null;
 		try {
 		/*	if(this.isStart(s)) {
 				System.out.println("FATTOOOOOOOOOOO");
 			} else {
-				System.out.println("La scacchiera non è riempita");
+				System.out.println("La scacchiera non e' riempita");
 
 			}
 			
@@ -553,9 +696,3 @@ public class IntelligenzaBianca implements IA {
 
 }
 
-/*
- * ALLEGO DOMANDE
- * 
- * Che metodo va chiamato per sapere quando siamo nello stato iniziale (nessuna mossa ancora effettuata)?
- * Come ottengo qual'è l'ultima mossa effettuata dal giocatore avversario?
- */
