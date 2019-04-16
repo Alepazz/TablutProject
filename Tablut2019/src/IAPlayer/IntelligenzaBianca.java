@@ -79,14 +79,14 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
-		//controllo se re viene mangiato
-		if(this.kingCanBeCaptured(s, rigaRe, colonnaRe))
+		//Controllo se il re viene mangiato in qualsiasi posizione sia
+		if(this.kingCanBeCaptured(rigaRe, colonnaRe, s))
 		{
 			return this.MIN_VALUE+1;
 		}
 		
 		//controllo vie di fuga re
-		int viedifuga=this.checkVieDiFugaRe(s, rigaRe, colonnaRe);
+		int viedifuga=this.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 				
 		//controllo se nella mossa del nero mi mangia il re
 		if(viedifuga>1)
@@ -103,155 +103,7 @@ public class IntelligenzaBianca implements IA {
 			{
 				return this.MAX_VALUE-1;
 			}
-		}
-		
-		//controllo re sul trono
-		if(rigaRe==4 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
-		{
-			//bloccato sopra, destra e sinistra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(5, 4, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sotto, destra, sinistra
-			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(3, 4, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sopra, sotto, destra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(4, 3, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sopra, sotto, sinistra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(4, 5, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-		}
-		//controllo casella adiacente sopra
-		if(rigaRe==3 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
-		{
-			//bloccato sopra e a destra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(3, 3, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sinistra e destra
-			if(this.getKingNearBlackLeft(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(2, 4, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sopra e a sinistra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(3, 5, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-		}
-		//controllo casella adiacente sotto
-		if(rigaRe==5 && colonnaRe==4 && s.getTurn().equalsTurn("B"))
-		{
-			//bloccato destra e sinistra
-			if(this.getKingNearBlackLeft(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(6, 4, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sotto e a destra
-			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(5, 3, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sotto e a sinistra
-			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(5, 5, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-		}
-		//controllo casella adiacente destra
-		if(rigaRe==4 && colonnaRe==5 && s.getTurn().equalsTurn("B"))
-		{
-			//bloccato sotto e a destra
-			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(3, 5, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sopra e a destra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackRight(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(5, 5, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}
-			//bloccato sopra e sotto
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(4, 6, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}			
-		}
-		//controllo casella adiacente sinistra
-		if(rigaRe==4 && colonnaRe==3 && s.getTurn().equalsTurn("B"))
-		{
-			//bloccato sopra e sotto
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackDown(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(4, 2, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}	
-			//bloccato sotto e a sinistra
-			if(this.getKingNearBlackDown(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(3, 3, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}//bloccato sopra e a sinistra
-			if(this.getKingNearBlackUp(rigaRe, colonnaRe, s) && this.getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(this.checkBlackCanArrive(5, 3, s))
-				{
-					return this.MIN_VALUE+1;
-				}
-			}			
-		}
+		}		
 		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re, esso ha liberato un'intera colonna, in cui vincere (al 100%) il turno successivo
@@ -348,36 +200,198 @@ public class IntelligenzaBianca implements IA {
 		return true;
 	}
 
-	private boolean kingCanBeCaptured(StateTablut s, int rigaRe, int colonnaRe)
+	
+	/*
+	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
+	 * Dopo aver controllato che sia il turno del nero la funzione distingue i tre casi di cattura:
+	 * -Re sul trono e quindi servono 4 pedine per la cattura
+	 * -Re adiacente al trono e quindi servono 3 pedine per la cattura
+	 * -Re lontano dal trono e quindi servono 2 pedine per la cattura
+	 */
+	private boolean kingCanBeCaptured(int rigaRe, int colonnaRe, StateTablut s)
 	{
+		//Se e' il turno del bianco ritorna false se no controlla i 3 casi
 		if(s.getTurn().equalsTurn("B"))
 		{
-			if(getKingNearBlackRight(rigaRe, colonnaRe, s))
+			//Controllo di cattura con il re sul trono
+			if(rigaRe==4 && colonnaRe==4)
 			{
-				if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
+				//bloccato sopra, destra e sinistra
+				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					return true;
+					if(this.checkBlackCanArrive(5, 4, s))
+					{
+						return true;
+					}
 				}
-			}
-			if(getKingNearBlackLeft(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
+				//bloccato sotto, destra, sinistra
+				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					return true;
+					if(this.checkBlackCanArrive(3, 4, s))
+					{
+						return true;
+					}
 				}
-			}
-			if(getKingNearBlackUp(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
+				//bloccato sopra, sotto, destra
+				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					return true;
+					if(this.checkBlackCanArrive(4, 3, s))
+					{
+						return true;
+					}
 				}
-			}
-			if(getKingNearBlackDown(rigaRe, colonnaRe, s))
-			{
-				if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
+				//bloccato sopra, sotto, sinistra
+				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					return true;
+					if(this.checkBlackCanArrive(4, 5, s))
+					{
+						return true;
+					}
+				}
+			} //Controllo di cattura con il re adiacente al trono
+			else if(rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3) 
+			{
+				//controllo casella adiacente sopra
+				if(rigaRe==3 && colonnaRe==4)
+				{
+					//bloccato sopra e a destra
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(3, 3, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sinistra e destra
+					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(2, 4, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sopra e a sinistra
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(3, 5, s))
+						{
+							return true;
+						}
+					}
+				}
+				//controllo casella adiacente sotto
+				if(rigaRe==5 && colonnaRe==4)
+				{
+					//bloccato destra e sinistra
+					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(6, 4, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sotto e a destra
+					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(5, 3, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sotto e a sinistra
+					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(5, 5, s))
+						{
+							return true;
+						}
+					}
+				}
+				//controllo casella adiacente destra
+				if(rigaRe==4 && colonnaRe==5)
+				{
+					//bloccato sotto e a destra
+					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(3, 5, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sopra e a destra
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(5, 5, s))
+						{
+							return true;
+						}
+					}
+					//bloccato sopra e sotto
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(4, 6, s))
+						{
+							return true;
+						}
+					}			
+				}
+				//controllo casella adiacente sinistra
+				if(rigaRe==4 && colonnaRe==3)
+				{
+					//bloccato sopra e sotto
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(4, 2, s))
+						{
+							return true;
+						}
+					}	
+					//bloccato sotto e a sinistra
+					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(3, 3, s))
+						{
+							return true;
+						}
+					}//bloccato sopra e a sinistra
+					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
+					{
+						if(this.checkBlackCanArrive(5, 3, s))
+						{
+							return true;
+						}
+					}			
+				}
+			} //Controllo di cattura con il re lontano dal trono
+			else
+			{
+				if(this.enemyOnTheRight(rigaRe, colonnaRe, s))
+				{
+					if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
+					{
+						return true;
+					}
+				}
+				if(this.enemyOnTheLeft(rigaRe, colonnaRe, s))
+				{
+					if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
+					{
+						return true;
+					}
+				}
+				if(this.enemyOnTheTop(rigaRe, colonnaRe, s))
+				{
+					if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
+					{
+						return true;
+					}
+				}
+				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s))
+				{
+					if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
+					{
+						return true;
+					}
 				}
 			}
 		}
@@ -389,7 +403,7 @@ public class IntelligenzaBianca implements IA {
 	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione get in questione
 	 * ritorna 0, non andando a modificare il numero di vie di fuga disponibili
 	 */
-	private int checkVieDiFugaRe(StateTablut s, int rigaRe, int colonnaRe)
+	private int checkVieDiFugaRe(int rigaRe, int colonnaRe, StateTablut s)
 	{
 		int vieDiFuga=4;
 		
@@ -553,37 +567,48 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 
-	private boolean getKingNearBlackRight(int rigaRe, int colonnaRe, StateTablut s)
+	/*
+	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente a destra
+	 */
+	private boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(rigaRe, colonnaRe+1).equalsPawn("B") || this.citadels.contains(s.getBox(rigaRe,  colonnaRe+1)))
+		if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	
-	private boolean getKingNearBlackLeft(int rigaRe, int colonnaRe, StateTablut s)
+	/*
+	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente a sinistra
+	 */
+	private boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(rigaRe, colonnaRe-1).equalsPawn("B") || this.citadels.contains(s.getBox(rigaRe,  colonnaRe-1)))
+		if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	private boolean getKingNearBlackUp(int rigaRe, int colonnaRe, StateTablut s)
+	/*
+	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente in alto
+	 */
+	private boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(rigaRe-1, colonnaRe).equalsPawn("B") || this.citadels.contains(s.getBox(rigaRe-1,  colonnaRe)))
+		if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	private boolean getKingNearBlackDown(int rigaRe, int colonnaRe, StateTablut s)
+	/*
+	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente in basso
+	 */
+	private boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(rigaRe+1, colonnaRe).equalsPawn("B") || this.citadels.contains(s.getBox(rigaRe+1,  colonnaRe)))
+		if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
 		{
 			return true;
 		}
