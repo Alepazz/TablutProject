@@ -208,7 +208,7 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/*
-	 * Funzione di euristica, di prova
+	 * Funzione di euristica, di prova <-- da modificare
 	 */
 	@Override
 	public int getHeuristicValueOfState(StateTablut s) {
