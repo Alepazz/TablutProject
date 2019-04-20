@@ -206,7 +206,179 @@ public class IntelligenzaBianca implements IA {
 		
 		return true;
 	}
-
+	
+	/*
+	 * Ritorna il numero di pedine bianche, compreso il re, ancora sul tabellone
+	 */
+	private int getNumberWhite(StateTablut s) {
+		
+		int result = 0;
+		
+		for(int i=0; i<9; i++) {
+			for(int j=0; j<9; j++) {
+				if(s.getPawn(i, j).equalsPawn("W")) {
+					result++;
+				}
+			}
+		}
+		
+		return result += 1; //aggiungo il re
+	}
+	
+	/*
+	 * Ritorna il numero di pedine nere, ancora sul tabellone
+	 */
+	private int getNumberBlack(StateTablut s) {
+		
+		int result = 0;
+		
+		for(int i=0; i<9; i++) {
+			for(int j=0; j<9; j++) {
+				if(s.getPawn(i, j).equalsPawn("B")) {
+					result++;
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	/*
+	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'e' la casella blu che permette al bianco di vincere
+	 * 
+	 * semicolonna = per semicolonna si intendono le colonne 1 e 7 che sono interrotte da una cittadella
+	 * 
+	 * semiriga = per semiriga si intendono le righe 1 e 7 che sono interrotte da una cittadella
+	 */
+	private int getNumberStarFree(StateTablut s) {
+		int result = 0;
+		
+		if(this.isColumnFree(2, s)) {
+			result += 1;
+		}
+		
+		if(this.isColumnFree(6, s)) {
+			result += 1;
+		}
+		
+		if(this.isSemicolumnFree(1, s)) {
+			result += 1;
+		}
+		
+		if(this.isSemicolumnFree(7, s)) {
+			result += 1;
+		}
+		
+		if(this.isRowFree(2, s)) {
+			result += 1;
+		}
+		
+		if(this.isRowFree(6, s)) {
+			result += 1;
+		}
+		
+		if(this.isSemirowFree(1, s)) {
+			result += 1;
+		}
+		
+		if(this.isSemirowFree(7, s)) {
+			result += 1;
+		}
+		
+		return result;
+	}
+	
+	/*
+	 * Ritorna true se la colonna passata come parametro e' libera
+	 * 
+	 * Controlla di fatto solo le colonne 2 e 6, per altre colonne ritorna sicuramente false
+	 */
+	private boolean isColumnFree(int numberCol, StateTablut s) {
+		
+		boolean result = true;
+		
+		for(int i=0; i<9; i++) {
+			if(s.getPawn(i, numberCol).equalsPawn("O")) {
+				result = result && true;
+			} else result = false;
+		}
+		
+		return result;
+	}
+	
+	/*
+	 * Ritorna true se la riga passata come parametro e' libera
+	 * 
+	 * Controlla di fatto solo le righe 2 e 6, per altre righe ritorna sicuramente false
+	 */
+	private boolean isRowFree(int numberRow, StateTablut s) {
+		
+		boolean result = true;
+		
+		for(int i=0; i<9; i++) {
+			if(s.getPawn(numberRow, i).equalsPawn("O")) {
+				result = result && true;
+			} else result = false;
+		}
+		
+		return result;
+	}
+	
+	/*
+	 * Ritorna true se la riga passata come parametro e' libera
+	 * 
+	 * Controlla di fatto solo le righe 1 e 7, per altre righe ritorna sicuramente false
+	 */
+	private boolean isSemirowFree(int numberRow, StateTablut s) {
+		
+		boolean result = true;
+		
+		for(int i=0; i<4; i++) {
+			if(s.getPawn(numberRow, i).equalsPawn("O")) {
+				result = result && true;
+			} else result = false;
+		} //controlla dalla colonna 0 alla 3
+		
+		if(!result) {
+			return result;
+		} else {
+			for(int i=5; i<9; i++) {
+				if(s.getPawn(numberRow, i).equalsPawn("O")) {
+					result = result && true;
+				} else result = false;
+			} //controlla dalla colonna 5 (quella dopo la cittadella) alla colonna 8
+		} 
+		
+		return result;
+	}
+	
+	/*
+	 * Ritorna true se la colonna passata come parametro e' libera
+	 * 
+	 * Controlla di fatto solo le colonne 1 e 7, per altre righe ritorna sicuramente false
+	 */
+	private boolean isSemicolumnFree(int numberColumn, StateTablut s) {
+		
+		boolean result = true;
+		
+		for(int i=0; i<4; i++) {
+			if(s.getPawn(i, numberColumn).equalsPawn("O")) {
+				result = result && true;
+			} else result = false;
+		} //controlla dalla riga 0 alla 3
+		
+		if(!result) {
+			return result;
+		} else {
+			for(int i=5; i<9; i++) {
+				if(s.getPawn(i, numberColumn).equalsPawn("O")) {
+					result = result && true;
+				} else result = false;
+			} //controlla dalla riga 5 (quella dopo la cittadella) alla riga 8
+		} 
+		
+		return result;
+	}
 	
 	/*
 	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
