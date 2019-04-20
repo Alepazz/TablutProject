@@ -36,7 +36,7 @@ public class IntelligenzaBianca implements IA {
 		this.citadels.add("e8");
 	}
 	
-	private float getHeuristicValue(StateTablut s) {
+	private int getHeuristicValue(StateTablut s) {
 		
 		if(s.getTurn().equalsTurn("WW"))
 		{
@@ -52,7 +52,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		
-		float value =0;
+		int value =0;
 		
 		//numero pedine
 		int nBianchi=0;
