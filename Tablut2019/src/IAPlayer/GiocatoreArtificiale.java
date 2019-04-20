@@ -11,14 +11,14 @@ public class GiocatoreArtificiale extends TablutClient {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 
-		if (args.length == 0) {
+		/*if (args.length == 0) {
 			System.out.println("You must specify which player you are (WHITE or BLACK)!");
 			System.exit(-1);
-		}
-		System.out.println("Selected this: " + args[0]);
+		}*/
+		//System.out.println("Selected this: " + args[0]);
 
 		//NOME DA CAMBIARE
-		TablutClient client = new GiocatoreArtificiale("args[0]", "DamaPerNordinici");
+		TablutClient client = new GiocatoreArtificiale("WHITE", "DamaPerNordinici");
 
 		client.run();
 	}
@@ -74,6 +74,8 @@ public class GiocatoreArtificiale extends TablutClient {
 			{
 				//CALCOLO LA MOSSA MIGLIORE
 				betterAction = this.intelligenza.getBetterMove((StateTablut) this.getCurrentState());
+				
+				System.out.println("Valore euristica: " + intelligenza.getHeuristicValueOfState((StateTablut) this.getCurrentState()));
 
 
 				//SCRIVO AL SERVER LA MOSSA

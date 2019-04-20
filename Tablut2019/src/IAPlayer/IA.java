@@ -5,7 +5,9 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
 public interface IA {
 	
-	//IL METODO CHE A SECONDA DEL GIOCATORE CHE IMPLEMENTA QUESTA INTERFACCIA DARà LA MOSSA MIGLIORE
+	//IL METODO CHE A SECONDA DEL GIOCATORE CHE IMPLEMENTA QUESTA INTERFACCIA DARï¿½ LA MOSSA MIGLIORE
 	public Action getBetterMove(StateTablut s);
+	
+	public int getHeuristicValueOfState(StateTablut s);
 
 }

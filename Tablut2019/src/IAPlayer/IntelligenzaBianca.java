@@ -208,6 +208,14 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/*
+	 * Funzione di euristica, di prova
+	 */
+	@Override
+	public int getHeuristicValueOfState(StateTablut s) {
+		return this.getNumberWhite(s) - this.getNumberBlack(s) + 2*this.getNumberStarFree(s);
+	}
+	
+	/*
 	 * Ritorna il numero di pedine bianche, compreso il re, ancora sul tabellone
 	 */
 	private int getNumberWhite(StateTablut s) {
