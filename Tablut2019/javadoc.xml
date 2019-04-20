@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="lib/gson-2.2.2.jar" destdir="doc" doctitle="Tablut Project" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="it.unibo.ai.didattica.competition.tablut.gui,it.unibo.ai.didattica.competition.tablut.tester,it.unibo.ai.didattica.competition.tablut.domain,it.unibo.ai.didattica.competition.tablut.exceptions,it.unibo.ai.didattica.competition.tablut.client,IAPlayer,it.unibo.ai.didattica.competition.tablut.server,it.unibo.ai.didattica.competition.tablut.util" source="1.8" sourcepath="src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

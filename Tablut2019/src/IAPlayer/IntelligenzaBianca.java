@@ -36,6 +36,12 @@ public class IntelligenzaBianca implements IA {
 		this.citadels.add("e8");
 	}
 	
+	/**
+	 * Funzione che valuta uno stato, e ritorna il corrispettivo valore intero
+	 * 
+	 * @param s StateTablut utile per valutare l'euristica
+	 * @return int valore attribuito alla valutazione di quel particolare stato s
+	 */
 	private int getHeuristicValue(StateTablut s) {
 		
 		if(s.getTurn().equalsTurn("WW"))
@@ -123,6 +129,7 @@ public class IntelligenzaBianca implements IA {
 		return value;
 		
 	}
+	
 	
 	private boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 		
@@ -215,8 +222,11 @@ public class IntelligenzaBianca implements IA {
 		return this.getNumberWhite(s) - this.getNumberBlack(s) + 2*this.getNumberStarFree(s);
 	}
 	
-	/*
-	 * Ritorna il numero di pedine bianche, compreso il re, ancora sul tabellone
+	/**
+	 * Restituisce il numero di pedine bianche presenti sul tabellone, dato lo stato s
+	 * Nel conteggio è compreso anche il re
+	 * @param s StateTablut rappresenta lo stato da valutare
+	 * @return numero di pedine bianche, comprensive del re, presenti sulla scacchiera
 	 */
 	private int getNumberWhite(StateTablut s) {
 		
@@ -233,8 +243,10 @@ public class IntelligenzaBianca implements IA {
 		return result += 1; //aggiungo il re
 	}
 	
-	/*
-	 * Ritorna il numero di pedine nere, ancora sul tabellone
+	/**
+	 * Restituisce il numero di pedine nere presenti sul tabellone
+	 * @param s StateTablut rappresenta lo stato da valutare
+	 * @return numero di pedine nere, presenti sulla scacchiera
 	 */
 	private int getNumberBlack(StateTablut s) {
 		
@@ -251,12 +263,14 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
-	/*
-	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'e' la casella blu che permette al bianco di vincere
+	/**
+	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'è la casella blu che permette al bianco di vincere
 	 * 
 	 * semicolonna = per semicolonna si intendono le colonne 1 e 7 che sono interrotte da una cittadella
 	 * 
 	 * semiriga = per semiriga si intendono le righe 1 e 7 che sono interrotte da una cittadella
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return numero di colonne/semicolonne e righe/semirighe libere, per permettere ai bianchi di vincere
 	 */
 	private int getNumberStarFree(StateTablut s) {
 		int result = 0;
@@ -296,17 +310,19 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
-	/*
-	 * Ritorna true se la colonna passata come parametro e' libera
-	 * 
-	 * Controlla di fatto solo le colonne 2 e 6, per altre colonne ritorna sicuramente false
+	/**
+	 * Controlla se una data colonna è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Attenzione! Funziona solo se viene passata come parametro la colonna 2 o 6
+	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la colonna, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
 	private boolean isColumnFree(int numberCol, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<9; i++) {
-			if(s.getPawn(i, numberCol).equalsPawn("O")) {
+			if(s.getPawn(i, numberCol).equalsPawn("O") && !this.citadels.contains(s.getBox(i, numberCol))) {
 				result = result && true;
 			} else result = false;
 		}
@@ -314,17 +330,19 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
-	/*
-	 * Ritorna true se la riga passata come parametro e' libera
-	 * 
-	 * Controlla di fatto solo le righe 2 e 6, per altre righe ritorna sicuramente false
+	/**
+	 * Controlla se una data riga è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Attenzione! Funziona solo se viene passata come parametro la riga 2 o 6
+	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
 	private boolean isRowFree(int numberRow, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<9; i++) {
-			if(s.getPawn(numberRow, i).equalsPawn("O")) {
+			if(s.getPawn(numberRow, i).equalsPawn("O") && !this.citadels.contains(s.getBox(numberRow, i))) {
 				result = result && true;
 			} else result = false;
 		}
@@ -332,10 +350,12 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
-	/*
-	 * Ritorna true se la riga passata come parametro e' libera
-	 * 
-	 * Controlla di fatto solo le righe 1 e 7, per altre righe ritorna sicuramente false
+	/**
+	 * Controlla se una data riga, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Attenzione! Funziona solo se viene passata come parametro la riga 1 e 7 (quelle intervallate da una cittadella)
+	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
 	private boolean isSemirowFree(int numberRow, StateTablut s) {
 		
@@ -360,10 +380,12 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
-	/*
-	 * Ritorna true se la colonna passata come parametro e' libera
-	 * 
-	 * Controlla di fatto solo le colonne 1 e 7, per altre righe ritorna sicuramente false
+	/**
+	 * Controlla se una data colonna, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Attenzione! Funziona solo se viene passata come parametro la colonna 1 e 7
+	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
 	private boolean isSemicolumnFree(int numberColumn, StateTablut s) {
 		
@@ -387,13 +409,17 @@ public class IntelligenzaBianca implements IA {
 		
 		return result;
 	}
-	
-	/*
+
+	/**
 	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
 	 * Dopo aver controllato che sia il turno del nero la funzione distingue i tre casi di cattura:
 	 * -Re sul trono e quindi servono 4 pedine per la cattura
 	 * -Re adiacente al trono e quindi servono 3 pedine per la cattura
 	 * -Re lontano dal trono e quindi servono 2 pedine per la cattura
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero lo stato al momento della valutazione
+	 * @return true se il re, in quello stato s, può essere catturato, false in caso contrario
 	 */
 	private boolean kingCanBeCaptured(int rigaRe, int colonnaRe, StateTablut s)
 	{
@@ -590,6 +616,15 @@ public class IntelligenzaBianca implements IA {
 	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione get in questione
 	 * ritorna 0, non andando a modificare il numero di vie di fuga disponibili
 	 */
+	/**
+	 * Controlla se il re ha vie di fuga. Inizialmente le vie sono 4, e per ogni pedina nera su una delle possibili vie di fuga,
+	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione getViaDiFugaFromLATO in questione
+	 * ritorna 0, non andando a modificare il numero di vie di fuga disponibili
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero stato che si vuole valutare
+	 * @return Numero di vie di fuga disponibili per il re. Essendo 4 le mosse che il re può fare, questa funzione restituisce un numero compreso tra [0, 4]
+	 */
 	private int checkVieDiFugaRe(int rigaRe, int colonnaRe, StateTablut s)
 	{
 		int vieDiFuga=4;
@@ -602,10 +637,13 @@ public class IntelligenzaBianca implements IA {
 		return vieDiFuga;
 	}
 	
-	/*
+	/**
 	 * Controlla se esiste almeno una pedina nera nella riga sotto la riga in cui si trova il re
 	 * 
-	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero stato che si vuole valutare
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	private int getViaDiFugaFromBottom(int rigaRe, int colonnaRe, StateTablut s) {
 		for (int i=rigaRe+1; i<9; i++) {
@@ -617,11 +655,14 @@ public class IntelligenzaBianca implements IA {
 		
 		return 0;
 	}
-	
-	/*
+
+	/**
 	 * Controlla se esiste almeno una pedina nera nella riga sopra la riga in cui si trova il re
 	 * 
-	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero stato che si vuole valutare
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	private int getViaDiFugaFromTop(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=rigaRe-1; i>=0; i--)
@@ -633,11 +674,14 @@ public class IntelligenzaBianca implements IA {
 		}
 		return 0;
 	}
-	
-	/*
+
+	/**
 	 * Controlla se esiste almeno una pedina nera nella colonna a destra della colonna in cui si trova il re
 	 * 
-	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero stato che si vuole valutare
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	private int getViaDiFugaFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i<9; i++)
@@ -650,11 +694,14 @@ public class IntelligenzaBianca implements IA {
 		
 		return 0;
 	}
-	
-	/*
+
+	/**
 	 * Controlla se esiste almeno una pedina nera nella colonna a sinistra della colonna in cui si trova il re
 	 * 
-	 * Return: ritorna -1 se la via di fuga non è disponibile, 0 se invece è disponibile
+	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
+	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
+	 * @param s StateTablut ovvero stato che si vuole valutare
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	private int getViaDiFugaFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i>=0; i--)
@@ -754,8 +801,13 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 
-	/*
-	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente a destra
+	/**
+	 * Controlla se esiste un nemico o un accampamento alla destra di una pedina bianca posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina nera o un accampamento è accando, sulla destra, alla pedina bianca passata come parametro, false in caso contrario
 	 */
 	private boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
@@ -765,9 +817,14 @@ public class IntelligenzaBianca implements IA {
 		}
 		return false;
 	}
-	
-	/*
-	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente a sinistra
+
+	/**
+	 * Controlla se esiste un nemico o un accampamento alla sinistra di una pedina bianca posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina nera o un accampamento è accando, sulla sinistra, alla pedina bianca passata come parametro, false in caso contrario
 	 */
 	private boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
@@ -778,8 +835,13 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	/*
-	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente in alto
+	/**
+	 * Controlla se esiste un nemico o un accampamento in alto rispetto alla pedina bianca posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina nera o un accampamento è sopra alla pedina bianca passata come parametro, false in caso contrario
 	 */
 	private boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
 	{
@@ -790,8 +852,13 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	/*
-	 * Controlla se e' presente una pedina nera(o un accampamento) adiacente in basso
+	/**
+	 * Controlla se esiste un nemico o un accampamento in basso (sotto) rispetto alla pedina bianca posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina nera o un accampamento è sotto alla pedina bianca passata come parametro, false in caso contrario
 	 */
 	private boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
 	{
@@ -802,8 +869,13 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	/*
+	/**
 	 * Funzione che controlla se il re, muovendosi di una o più mosse da sinistra a destra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 * 
+	 * @param rigaRe Riga in cui si trova il re
+	 * @param colonnaRe Colonna in cui si trova il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se il re, spostandosi orizzontalmente da sinistra a destra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
 	private boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i==6;i++)
@@ -830,8 +902,13 @@ public class IntelligenzaBianca implements IA {
 		//checkBlack deve essere falso per far ritornare true il return
 	}
 	
-	/*
+	/**
 	 * Funzione che controlla se il re, muovendosi di una o più mosse da destra a sinistra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 * 
+	 * @param rigaRe Riga in cui si trova il re
+	 * @param colonnaRe Colonna in cui si trova il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se il re, spostandosi orizzontalmente da destra a sinistra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
 	private boolean checkFreeColComingFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i==2;i--)
@@ -857,10 +934,15 @@ public class IntelligenzaBianca implements IA {
 				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
 		//checkBlack deve essere falso per far ritornare true il return;
 	}
-	
-	/*
-	* Funzione che controlla se il re, muovendosi di una o più mosse dall'alto in basso (verticale), arriva ad avere un'intera riga libera, in cui vincere
-	*/
+
+	/**
+	 * Funzione che controlla se il re, muovendosi di una o più mosse dall'alto al basso (verticale), arriva ad avere un'intera riga libera, in cui vincere
+	 * 
+	 * @param rigaRe Riga in cui si trova il re
+	 * @param colonnaRe Colonna in cui si trova il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se il re, spostandosi verticalmente dall'alto al basso, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
+	 */
 	private boolean checkFreeRowComingFromTop(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe+1; i==6;i++)
 		{
@@ -884,11 +966,16 @@ public class IntelligenzaBianca implements IA {
 				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
 				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
 				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
-		}
+	}
 	
-	/*
-	* Funzione che controlla se il re, muovendosi di una o più mosse dal basso all'alto (verticale), arriva ad avere un'intera riga libera, in cui vincere
-	*/
+	/**
+	 * Funzione che controlla se il re, muovendosi di una o più mosse dal basso all' alto (verticale), arriva ad avere un'intera riga libera, in cui vincere
+	 * 
+	 * @param rigaRe Riga in cui si trova il re
+	 * @param colonnaRe Colonna in cui si trova il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se il re, spostandosi verticalmente dal basso all' alto, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
+	 */
 	private boolean checkFreeRowComingFromBottom(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe-1; i==2; i++){
 			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe-i, colonnaRe))) {
@@ -911,9 +998,14 @@ public class IntelligenzaBianca implements IA {
 				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, s) &&
 				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, s);
 	}
-	
-	/*
-	 * Controlla se una data riga, alla destra della pedina, e' libera
+
+	/**
+	 * Controlla se data una cella, tutte le celle alla destra sono libere (non occupate da bianchi, neri, trono o cittadelle)
+	 * 
+	 * @param rigaRe Riga in cui si trova la cella da valutare
+	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se non ci sono elementi alla destra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	private boolean checkFreeRowRight(int riga, int colonna, StateTablut s) {
 		for(int i=colonna+1; i<=9; i++){
@@ -925,8 +1017,13 @@ public class IntelligenzaBianca implements IA {
 		return true;
 	}
 
-	/*
-	 * Controlla se una data riga, alla sinsitra della pedina, e' libera
+	/**
+	 * Controlla se data una cella, tutte le celle alla sinsitra sono libere (non occupate da bianchi, neri, trono o cittadelle)
+	 * 
+	 * @param rigaRe Riga in cui si trova la cella da valutare
+	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se non ci sono elementi alla sinistra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	private boolean checkFreeRowLeft(int riga, int colonna, StateTablut s) {
 		for(int i=colonna-1; i>=0; i--) {
@@ -937,6 +1034,14 @@ public class IntelligenzaBianca implements IA {
 		return true;
 	}
 	
+	/**
+	 * Controlla se data una cella, tutte le celle sopra di essa sono libere (non occupate da bianchi, neri, trono o cittadelle)
+	 * 
+	 * @param rigaRe Riga in cui si trova la cella da valutare
+	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se non ci sono elementi sopra la cella specificata da @riga + @colonna, false in caso contrario
+	 */
 	private boolean checkFreeColTop(int rigaRe, int colonnaRe, StateTablut s) {
 		
 		for(int i=rigaRe-1; i>=0; i--) {
@@ -949,6 +1054,14 @@ public class IntelligenzaBianca implements IA {
 		
 	}
 	
+	/**
+	 * Controlla se data una cella, tutte le celle sotto di essa sono libere (non occupate da bianchi, neri, trono o cittadelle)
+	 * 
+	 * @param rigaRe Riga in cui si trova la cella da valutare
+	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se non ci sono elementi sotto la cella specificata da @riga + @colonna, false in caso contrario
+	 */
 	private boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=rigaRe+1; i<=9; i++) {
 			if(s.getPawn(rigaRe+i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe+i, colonnaRe).equalsPawn("W")) {
