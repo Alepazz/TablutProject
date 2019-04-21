@@ -7,25 +7,26 @@ import it.unibo.ai.didattica.competition.tablut.client.TablutClient;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
+//NON TOCCHIAMO PIù QUESTA CLASSE, LE STAMPE METTIAMOLE NEI METODI
 public class GiocatoreArtificiale extends TablutClient {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 
-		/*if (args.length == 0) {
+		if (args.length == 0) {
 			System.out.println("You must specify which player you are (WHITE or BLACK)!");
 			System.exit(-1);
-		}*/
+		}
 		//System.out.println("Selected this: " + args[0]);
 
 		//NOME DA CAMBIARE
-		TablutClient client = new GiocatoreArtificiale("WHITE", "DamaPerNordinici");
+		TablutClient client = new GiocatoreArtificiale("args[0]", "L'IMPORTANTE_E'_PARTECIPARE");
 
 		client.run();
 	}
 	
 	private IA intelligenza;
 	
-	//INIZIALIZZO IL GIOCATORE (BIANCO O NERO) GIï¿½ NEL COSTRUTTORE, DICHIARO ANCHE IL NOME AL SERVER QUI
+	//INIZIALIZZO IL GIOCATORE (BIANCO O NERO) GIA' NEL COSTRUTTORE
 	public GiocatoreArtificiale(String player, String name)
 			throws UnknownHostException, IOException {
 		super(player, name);
@@ -49,7 +50,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		}
 	}
 	
-	//METODO CHE INIZIA A GIOCARE, CONNESSIONE GIï¿½ EFFETTUATA E NOME GIï¿½ DATO
+	//METODO CHE INIZIA A GIOCARE, CONNESSIONE GIA' EFFETTUATA E NOME GIA' DATO
 	@Override
 	public void run() {
 		
@@ -69,15 +70,12 @@ public class GiocatoreArtificiale extends TablutClient {
 		//LOOP FINO A FINE PARTITA
 		while(!this.getCurrentState().getTurn().equalsTurn("D") && !this.getCurrentState().getTurn().equalsTurn("BW") && !this.getCurrentState().getTurn().equalsTurn("WW"))
 		{
-			//SE ï¿½ IL MIO TURNO CALCOLO
+			//SE E' IL MIO TURNO CALCOLO
 			if(this.getCurrentState().getTurn().equalsTurn(this.getPlayer().toString()))
 			{
 				//CALCOLO LA MOSSA MIGLIORE
 				betterAction = this.intelligenza.getBetterMove((StateTablut) this.getCurrentState());
 				
-				System.out.println("Valore euristica: " + intelligenza.getHeuristicValueOfState((StateTablut) this.getCurrentState()));
-
-
 				//SCRIVO AL SERVER LA MOSSA
 				try 
 				{

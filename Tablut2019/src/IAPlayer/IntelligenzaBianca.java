@@ -215,13 +215,14 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/*
-	 * Funzione di euristica, di prova <-- da modificare
+	 * Funzione di euristica, di prova <-- da modificare BRAVO ALE, HAI CAPITO COSA INTENDO
 	 */
-	@Override
-	public int getHeuristicValueOfState(StateTablut s) {
+	private int getHeuristicValueOfState(StateTablut s) {
 		return this.getNumberWhite(s) - this.getNumberBlack(s) + 2*this.getNumberStarFree(s);
 	}
 	
+	
+	//QUESTA MI PIACE POCO PERCHE NON RIUSCIAMO A CAPIRE DA UNA SINGOLA PASSATA QUANTE PEDINE CI SONO SUL TABELLONE E DOVE STA IL RE
 	/**
 	 * Restituisce il numero di pedine bianche presenti sul tabellone, dato lo stato s
 	 * Nel conteggio è compreso anche il re
@@ -243,6 +244,7 @@ public class IntelligenzaBianca implements IA {
 		return result += 1; //aggiungo il re
 	}
 	
+	//COME SOPRA
 	/**
 	 * Restituisce il numero di pedine nere presenti sul tabellone
 	 * @param s StateTablut rappresenta lo stato da valutare
@@ -263,6 +265,8 @@ public class IntelligenzaBianca implements IA {
 		return result;
 	}
 	
+	
+	//DOMANDA: SE UNA COLONNA è LIBERA ALLORA SI AGGIUNGE 3 PERCHE CONSIDERIAMO ANCHE LE 2 SEMICOLONNE?
 	/**
 	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'è la casella blu che permette al bianco di vincere
 	 * 
