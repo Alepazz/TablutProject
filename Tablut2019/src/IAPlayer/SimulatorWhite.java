@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Simulator {
+public class SimulatorWhite {
 	
 	private List<String> citadels;
+	private List<Nodo> nodiEsistenti;
 	
-	public Simulator()
+	public SimulatorWhite()
 	{
+		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.citadels = new ArrayList<String>();
 		this.citadels.add("a4");
 		this.citadels.add("a5");
@@ -720,142 +722,6 @@ public class Simulator {
 		return state;
 	}
 
-	public float getHeuristicValueBlackPlayer(State s)
-	{
-		float heu = 0;
-		
-		int nBlack=0;
-		int nWhite=0;
-		int kingR=-1, kingC=-1;
-		for(int i=0; i<8; i++)
-		{
-			if(s.getPawn(0, i).equals(State.Pawn.KING) || s.getPawn(i, 0).equals(State.Pawn.KING))
-			{
-				return -100;
-			}
-			if(s.getPawn(8, i).equals(State.Pawn.KING) || s.getPawn(i, 8).equals(State.Pawn.KING))
-			{
-				return -100;
-			}
-			
-			if(s.getPawn(0, i).equals(State.Pawn.BLACK))
-			{
-				nBlack++;
-			}
-			if(s.getPawn(0, i).equals(State.Pawn.WHITE))
-			{
-				nWhite++;
-			}
-			if(s.getPawn(i, 0).equals(State.Pawn.BLACK))
-			{
-				nBlack++;
-			}
-			if(s.getPawn(i, 0).equals(State.Pawn.WHITE))
-			{
-				nWhite++;
-			}
-			if(s.getPawn(8, i).equals(State.Pawn.BLACK))
-			{
-				nBlack++;
-			}
-			if(s.getPawn(8, i).equals(State.Pawn.WHITE))
-			{
-				nWhite++;
-			}
-			if(s.getPawn(i, 8).equals(State.Pawn.BLACK))
-			{
-				nBlack++;
-			}
-			if(s.getPawn(i, 8).equals(State.Pawn.WHITE))
-			{
-				nWhite++;
-			}
-			
-		}
-		for(int i=1; i<7; i++)
-		{
-			for(int j=1; j<7; j++)
-			{	
-				if(s.getPawn(j, i).equals(State.Pawn.KING))
-				{
-					kingR=j;
-					kingC=i;
-				}
-				if(s.getPawn(i, j).equals(State.Pawn.KING))
-				{
-					kingR=i;
-					kingC=j;
-				}
-				if(s.getPawn(j, i).equals(State.Pawn.BLACK))
-				{
-					nBlack++;
-				}
-				if(s.getPawn(i, j).equals(State.Pawn.WHITE))
-				{
-					nWhite++;
-				}
-			}
-		}
-		
-		boolean row3=false, row7 = false;
-		boolean column3=false, column7 = false;
-		for(int i=0; i<9; i++)
-		{
-			if(!s.getPawn(3, i).equals(State.Pawn.EMPTY) && !row3)
-			{
-				row3=true;
-			}
-			if(!s.getPawn(i, 3).equals(State.Pawn.EMPTY) && !column3)
-			{
-				column3=true;
-			}
-			if(!s.getPawn(3, i).equals(State.Pawn.EMPTY) && !row3)
-			{
-				row3=true;
-			}
-			if(!s.getPawn(i, 3).equals(State.Pawn.EMPTY) && !column3)
-			{
-				column3=true;
-			}
-		}
-		
-		heu = nBlack - 2*nWhite;
-		if(row3)
-		{
-			heu = heu - 3;
-		}
-		if(row7)
-		{
-			heu = heu - 3;
-		}
-		if(column3)
-		{
-			heu = heu - 3;
-		}
-		if(column7)
-		{
-			heu = heu - 3;
-		}
-		
-		
-		return heu;
-	}
-
-	public float getHeuristicValueWhitePlayer(State s)
-	{
-		float heu = 0;
-		for(int i=0; i<9; i++)
-		{
-			
-		}
-		
-		
-		
-		
-		
-		return heu;
-	}
-	
 	
 
 }

@@ -18,7 +18,6 @@ public class GiocatoreArtificiale extends TablutClient {
 		}
 		//System.out.println("Selected this: " + args[0]);
 
-		//NOME DA CAMBIARE
 		TablutClient client = new GiocatoreArtificiale("args[0]", "L'IMPORTANTE_E'_PARTECIPARE");
 
 		client.run();

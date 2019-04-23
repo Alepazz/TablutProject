@@ -15,7 +15,7 @@ public class TestingSimulator {
 		
         StateTablut state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
-		Simulator sim = new Simulator();
+		SimulatorWhite sim = new SimulatorWhite();
 		int cont = 0;
 		int c = 0;
 		long t1 = System.currentTimeMillis();

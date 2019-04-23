@@ -36,7 +36,7 @@ public class Nodo {
 		this.azione = azione;
 	}
 	
-	public List<Nodo> generaFigli(Simulator s, boolean isLastLevel) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+	public List<Nodo> generaFigli(SimulatorWhite s, boolean isLastLevel) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 	{
 		List<Nodo> figli = s.mossePossibiliComplete(stato, stato.getTurn());
 		for(Nodo n: figli)
