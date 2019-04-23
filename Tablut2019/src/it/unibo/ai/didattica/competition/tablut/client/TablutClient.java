@@ -57,6 +57,7 @@ public abstract class TablutClient implements Runnable {
 	public TablutClient(String player, String name) throws UnknownHostException, IOException {
 		int port = 0;
 		this.gson = new Gson();
+
 		if (player.toLowerCase().equals("white")) {
 			this.player = State.Turn.WHITE;
 			port = 5800;

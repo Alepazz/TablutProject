@@ -16,9 +16,9 @@ public class GiocatoreArtificiale extends TablutClient {
 			System.out.println("You must specify which player you are (WHITE or BLACK)!");
 			System.exit(-1);
 		}
-		//System.out.println("Selected this: " + args[0]);
+		System.out.println("Selected this: " + args[0]);
 
-		TablutClient client = new GiocatoreArtificiale("args[0]", "L'IMPORTANTE_E'_PARTECIPARE");
+		TablutClient client = new GiocatoreArtificiale(args[0], "IEP");
 
 		client.run();
 	}

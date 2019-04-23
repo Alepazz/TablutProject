@@ -14,8 +14,10 @@ public class IntelligenzaBianca implements IA {
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
+	private Simulator simulatore;
 	
 	public IntelligenzaBianca() {
+		this.simulatore = new Simulator();
 		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.citadels = new ArrayList<String>();
 		this.citadels.add("a4");
@@ -1092,17 +1094,18 @@ public class IntelligenzaBianca implements IA {
 		//QUESTA e' SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
 		//RISULTATO POSITIVO
 		Action a = null;
+		int betterValue=-100000;
 		try {
-		/*	if(this.isStart(s)) {
-				System.out.println("FATTOOOOOOOOOOO");
-			} else {
-				System.out.println("La scacchiera non e' riempita");
-
+			Nodo node = new Nodo(s);
+			for(Nodo n : this.simulatore.mossePossibiliComplete(node))
+			{
+				if(this.getHeuristicValueOfState(n.getStato())>=betterValue)
+				{
+					a = n.getAzione();
+				}
 			}
-			
-			*/
-			a = new Action("e4", "f4", State.Turn.WHITE);
-		} catch (IOException e) {
+		
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

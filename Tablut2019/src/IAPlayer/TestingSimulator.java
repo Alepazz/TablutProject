@@ -15,7 +15,7 @@ public class TestingSimulator {
 		
         StateTablut state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
-		SimulatorWhite sim = new SimulatorWhite();
+		Simulator sim = new Simulator();
 		int cont = 0;
 		int c = 0;
 		long t1 = System.currentTimeMillis();
@@ -30,7 +30,7 @@ public class TestingSimulator {
         	livello = new Livello();
         	for(Nodo nod: albero.get(cont).getNodi())
             {
-            	livello.add(nod.generaFigli(sim, false));
+            	//livello.add(nod.generaFigli(sim, false));
             }
         	albero.add(livello);
         }
