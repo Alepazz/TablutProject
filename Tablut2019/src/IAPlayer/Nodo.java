@@ -8,12 +8,14 @@ public class Nodo {
 	private StateTablut stato;
 	private Action azione;
 	private Nodo padre;
+	private float value;
 	
 	public Nodo(StateTablut stato) {
 		super();
 		this.stato = stato;
 		this.azione = null;
 		this.padre = null;
+		this.value = Float.NaN;
 	}
 	public StateTablut getStato() {
 		return stato;
@@ -53,6 +55,12 @@ public class Nodo {
 	}
 	public void setPadre(Nodo padre) {
 		this.padre = padre;
+	}
+	public float getValue() {
+		return value;
+	}
+	public void setValue(float value) {
+		this.value = value;
 	}
 
 	

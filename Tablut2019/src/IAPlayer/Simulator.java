@@ -19,7 +19,7 @@ public class Simulator {
 	public Simulator()
 	{
 		this.cache_size = 20;
-		this.repeated_moves_allowed = 1;
+		this.repeated_moves_allowed = 2;
 		this.drawConditions = new ArrayList<State>();
 		this.movesWithutCapturing=0;
 		this.citadels = new ArrayList<String>();
@@ -61,16 +61,25 @@ public class Simulator {
 						listaMossePossibili.add(nod);
 					}
 				}
+				
 				//se è il turno bianco conto le mosse delle pedine bianche
-				if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && (State.Pawn.WHITE.equalsPawn(node.getBoard()[i][j].toString())|| State.Pawn.KING.equalsPawn(node.getBoard()[i][j].toString())))
+				if(node.getTurn().equalsTurn(State.Turn.WHITE.toString())) 
 				{
-					for(Nodo nod: mossePossibiliPedina(node, i, j))
+					if(node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K"))
 					{
-						listaMossePossibili.add(nod);
+						//System.out.println("Analizzo pedina in " + node.getStato().getBox(i, j));
+						for(Nodo nod: mossePossibiliPedina(node, i, j))
+						{
+							listaMossePossibili.add(nod);
+						}
 					}
 				}
 			}
-		}	
+		}
+		for(Nodo n : listaMossePossibili)
+		{
+			n.setPadre(node);
+		}
 		return listaMossePossibili;
 	}
 	
@@ -87,6 +96,7 @@ public class Simulator {
 		}
 		if(canMoveDown(node.getStato(), riga, colonna))
 		{
+			
 			for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
 			{
 				listaMossePossibili.add(nod);
@@ -123,7 +133,8 @@ public class Simulator {
 			Nodo nodo2 = new Nodo(nuovoStato);
 			nodo2.setAzione(ac);
 			listaMossePossibili.add(nodo2);
-		}		
+			//System.out.println(ac);
+		}
 		return listaMossePossibili;
 	}
 	
@@ -138,9 +149,10 @@ public class Simulator {
 			c++;
 			Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga+c, colonna), node.getTurn());
 			StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
-			Nodo node2 = new Nodo(nuovoStato);
-			node2.setAzione(ac);
-			listaMossePossibili.add(node2);
+			Nodo nodo2 = new Nodo(nuovoStato);
+			nodo2.setAzione(ac);
+			listaMossePossibili.add(nodo2);
+			//System.out.println(ac);
 		}		
 		return listaMossePossibili;
 	}
@@ -155,9 +167,10 @@ public class Simulator {
 			c++;
 			Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna+c), node.getTurn());
 			StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
-			Nodo node2 = new Nodo(nuovoStato);
-			node2.setAzione(ac);
-			listaMossePossibili.add(node2);
+			Nodo nodo2 = new Nodo(nuovoStato);
+			nodo2.setAzione(ac);
+			listaMossePossibili.add(nodo2);
+			//System.out.println(ac);
 		}		
 		return listaMossePossibili;
 	}
@@ -171,10 +184,13 @@ public class Simulator {
 		{
 			c++;
 			Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna-c), node.getTurn());
-			StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
-			Nodo node2 = new Nodo(nuovoStato);
-			node2.setAzione(ac);
-			listaMossePossibili.add(node2);
+			StateTablut nuovoStato =  (StateTablut) this.checkMove(node.getStato(), ac);
+			/*System.out.println("AAAAA");
+			System.out.println(nuovoStato);*/
+			Nodo nodo2 = new Nodo(nuovoStato);
+			nodo2.setAzione(ac);
+			listaMossePossibili.add(nodo2);
+			//System.out.println(ac);
 		}			
 		return listaMossePossibili;
 	}
@@ -235,13 +251,13 @@ public class Simulator {
 	private State checkMove(State state, Action a) throws BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException {
 		
 		// se sono arrivato qui, muovo la pedina
-		state = this.movePawn(state, a);
+		StateTablut newState = (StateTablut) this.movePawn(state, a);
 
 		// a questo punto controllo lo stato per eventuali catture
-		if (state.getTurn().equalsTurn("W")) {
-			state = this.checkCaptureBlack(state, a);
-		} else if (state.getTurn().equalsTurn("B")) {
-			state = this.checkCaptureWhite(state, a);
+		if (newState.getTurn().equalsTurn("W")) {
+			newState = this.checkCaptureBlack(newState, a);
+		} else if (newState.getTurn().equalsTurn("B")) {
+			newState = this.checkCaptureWhite(newState, a);
 		}
 
 		// if something has been captured, clear cache for draws
@@ -253,12 +269,12 @@ public class Simulator {
 		int trovati = 0;
 		for (State s : drawConditions) {
 
-			System.out.println(s.toString());
+			//System.out.println(s.toString());
 
 			if (s.equals(state)) {
 					trovati++;
 				if (trovati > repeated_moves_allowed) {
-					state.setTurn(State.Turn.DRAW);
+					//state.setTurn(State.Turn.DRAW);
 					break;
 				}
 			}
@@ -269,12 +285,19 @@ public class Simulator {
 		this.drawConditions.add(state.clone());
 
 
-		return state;
+		return newState;
 	}
 	
 	private State movePawn(State state, Action a) {
+		StateTablut newState = new StateTablut();
+		
 		State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
-		State.Pawn[][] newBoard = state.getBoard();
+		State.Pawn[][] newBoard = new State.Pawn[9][9];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				newBoard[i][j] = state.getPawn(i, j);
+			}
+		}
 		//libero il trono o una casella qualunque
 		if(a.getColumnFrom()==4 && a.getRowFrom()==4)
 		{
@@ -288,22 +311,23 @@ public class Simulator {
 		//metto nel nuovo tabellone la pedina mossa
 		newBoard[a.getRowTo()][a.getColumnTo()]=pawn;
 		//aggiorno il tabellone
-		state.setBoard(newBoard);
+		newState.setBoard(newBoard);
+		
 		//cambio il turno
 		if(state.getTurn().equalsTurn(State.Turn.WHITE.toString()))
 		{
-			state.setTurn(State.Turn.BLACK);
+			newState.setTurn(State.Turn.BLACK);
 		}
 		else
 		{
-			state.setTurn(State.Turn.WHITE);
+			newState.setTurn(State.Turn.WHITE);
 		}
 		
 		
-		return state;
+		return newState;
 	}
 
-	private State checkCaptureWhite(State state, Action a) {
+	private StateTablut checkCaptureWhite(StateTablut state, Action a) {
 		// controllo se mangio a destra
 		if (a.getColumnTo() < state.getBoard().length - 2
 				&& state.getPawn(a.getRowTo(), a.getColumnTo() + 1).equalsPawn("B")
@@ -354,7 +378,7 @@ public class Simulator {
 		return state;
 	}
 
-	private State checkCaptureBlack(State state, Action a) {
+	private StateTablut checkCaptureBlack(StateTablut state, Action a) {
 		
 		this.checkCaptureBlackPawnRight(state, a);
 		this.checkCaptureBlackPawnLeft(state, a);
@@ -369,7 +393,7 @@ public class Simulator {
 		return state;
 	}
 
-	private State checkCaptureBlackKingLeft(State state, Action a){
+	private void checkCaptureBlackKingLeft(State state, Action a){
 		//ho il re sulla sinistra
 		if (a.getColumnTo()>1&&state.getPawn(a.getRowTo(), a.getColumnTo()-1).equalsPawn("K"))
 		{
@@ -421,10 +445,9 @@ public class Simulator {
 				}					
 			}
 		}		
-		return state;
 	}
 	
-	private State checkCaptureBlackKingRight(State state, Action a){
+	private void checkCaptureBlackKingRight(State state, Action a){
 		//ho il re sulla destra
 		if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
 		{
@@ -476,14 +499,13 @@ public class Simulator {
 				}					
 			}
 		}
-		return state;
 	}
 	
-	private State checkCaptureBlackKingDown(State state, Action a){
+	private void checkCaptureBlackKingDown(State state, Action a){
 		//ho il re sotto
 		if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
 		{
-			System.out.println("Ho il re sotto");
+			//System.out.println("Ho il re sotto");
 			//re sul trono
 			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
 			{
@@ -532,10 +554,9 @@ public class Simulator {
 				}					
 			}			
 		}		
-		return state;
 	}
 
-	private State checkCaptureBlackKingUp(State state, Action a){
+	private void checkCaptureBlackKingUp(State state, Action a){
 		//ho il re sopra
 		if (a.getRowTo()>1&&state.getPawn(a.getRowTo()-1, a.getColumnTo()).equalsPawn("K"))
 		{
@@ -587,10 +608,9 @@ public class Simulator {
 				}					
 			}	
 		}
-		return state;
 	}
 
-	private State checkCaptureBlackPawnRight(State state, Action a)	{
+	private void checkCaptureBlackPawnRight(State state, Action a)	{
 		//mangio a destra
 		if (a.getColumnTo() < state.getBoard().length - 2 && state.getPawn(a.getRowTo(), a.getColumnTo() + 1).equalsPawn("W"))
 		{
@@ -616,11 +636,9 @@ public class Simulator {
 			}
 			
 		}
-		
-		return state;
 	}
 	
-	private State checkCaptureBlackPawnLeft(State state, Action a){
+	private void checkCaptureBlackPawnLeft(State state, Action a){
 		//mangio a sinistra
 		if (a.getColumnTo() > 1
 				&& state.getPawn(a.getRowTo(), a.getColumnTo() - 1).equalsPawn("W")
@@ -632,10 +650,9 @@ public class Simulator {
 			state.removePawn(a.getRowTo(), a.getColumnTo() - 1);
 			this.movesWithutCapturing = -1;
 		}
-		return state;
 	}
 	
-	private State checkCaptureBlackPawnUp(State state, Action a){
+	private void checkCaptureBlackPawnUp(State state, Action a){
 		// controllo se mangio sopra
 		if (a.getRowTo() > 1
 				&& state.getPawn(a.getRowTo() - 1, a.getColumnTo()).equalsPawn("W")
@@ -647,10 +664,9 @@ public class Simulator {
 			state.removePawn(a.getRowTo()-1, a.getColumnTo());
 			this.movesWithutCapturing = -1;
 		}
-		return state;
 	}
 	
-	private State checkCaptureBlackPawnDown(State state, Action a){
+	private void checkCaptureBlackPawnDown(State state, Action a){
 		// controllo se mangio sotto
 		if (a.getRowTo() < state.getBoard().length - 2
 				&& state.getPawn(a.getRowTo() + 1, a.getColumnTo()).equalsPawn("W")
@@ -662,7 +678,6 @@ public class Simulator {
 			state.removePawn(a.getRowTo()+1, a.getColumnTo());
 			this.movesWithutCapturing = -1;
 		}
-		return state;
 	}
 	
 	

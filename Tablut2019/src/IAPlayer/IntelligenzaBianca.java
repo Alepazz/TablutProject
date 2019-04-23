@@ -1094,13 +1094,38 @@ public class IntelligenzaBianca implements IA {
 		//QUESTA e' SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
 		//RISULTATO POSITIVO
 		Action a = null;
-		int betterValue=-100000;
+		
+		float betterValue=-100000;
 		try {
 			Nodo node = new Nodo(s);
-			for(Nodo n : this.simulatore.mossePossibiliComplete(node))
+			Livello liv0 = new Livello();
+			Livello liv1 = new Livello();
+			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			int i = 1;
+			for(Nodo n : liv0.getNodi())
 			{
-				if(this.getHeuristicValueOfState(n.getStato())>=betterValue)
+				liv1.add(this.simulatore.mossePossibiliComplete(n));
+			}
+		
+			
+			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
+			for(Nodo n : liv1.getNodi())
+			{
+				float heu =this.getHeuristicValueOfState(n.getStato());
+				System.out.println(n.getStato().toString()+ " " + heu);
+				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
+					n.getPadre().setValue(heu);
+					System.out.println("Se non sono qua c'è qualcosa che non va");
+				}
+			}
+			
+			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
+			for(Nodo n : liv0.getNodi())
+			{
+				if(betterValue<=n.getValue())
+				{
+					betterValue = n.getValue();
 					a = n.getAzione();
 				}
 			}
