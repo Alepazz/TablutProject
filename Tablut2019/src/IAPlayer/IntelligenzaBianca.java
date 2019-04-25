@@ -617,11 +617,6 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	/*
-	 * Controlla se il re ha vie di fuga. Inizialmente le vie sono 4, e per ogni pedina nera su una delle possibili vie di fuga,
-	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione get in questione
-	 * ritorna 0, non andando a modificare il numero di vie di fuga disponibili
-	 */
 	/**
 	 * Controlla se il re ha vie di fuga. Inizialmente le vie sono 4, e per ogni pedina nera su una delle possibili vie di fuga,
 	 * queste diminuiscono (-1). Se non ci sono pedine nere su quella particolare riga/colonna, allora la funzione getViaDiFugaFromLATO in questione
