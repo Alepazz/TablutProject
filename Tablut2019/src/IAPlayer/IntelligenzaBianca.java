@@ -1127,27 +1127,28 @@ public class IntelligenzaBianca implements IA {
 
 	@Override
 	public Action getBetterMove(StateTablut s) {
-		
+		int i = 0;
 		Action a = null;
-		
+		long t1 = System.currentTimeMillis();
 		float betterValue=-100000;
 		try {
 			Nodo node = new Nodo(s);
 			Livello liv0 = new Livello();
 			Livello liv1 = new Livello();
 			liv0.add(this.simulatore.mossePossibiliComplete(node));
-			int i = 1;
+			
+			i = liv0.getNodi().size();
 			for(Nodo n : liv0.getNodi())
 			{
 				liv1.add(this.simulatore.mossePossibiliComplete(n));
 			}
-		
+			i = i + liv1.getNodi().size();
 			
 			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
 			for(Nodo n : liv1.getNodi())
 			{
 				float heu =this.getHeuristicValueOfState(n.getStato());
-				System.out.println(n.getStato().toString()+ " " + heu);
+				//System.out.println(n.getStato().toString()+ " " + heu);
 				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
 					n.getPadre().setValue(heu);
@@ -1168,6 +1169,9 @@ public class IntelligenzaBianca implements IA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		long t2 = System.currentTimeMillis();
+		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
+	    System.out.println("Nodi espansi: "+ i);
 		return a;
 	}
 
