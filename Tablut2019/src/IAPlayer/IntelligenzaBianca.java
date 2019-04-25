@@ -220,7 +220,51 @@ public class IntelligenzaBianca implements IA {
 	 * Funzione di euristica, di prova <-- da modificare BRAVO ALE, HAI CAPITO COSA INTENDO
 	 */
 	private int getHeuristicValueOfState(StateTablut s) {
-		return this.getNumberWhite(s) - this.getNumberBlack(s) + 2*this.getNumberStarFree(s);
+		if(s.getTurn().equalsTurn("WW"))
+		{
+			return this.MAX_VALUE;
+		}
+		if(s.getTurn().equalsTurn("BW"))
+		{
+			return this.MIN_VALUE;
+		}
+		if(s.getTurn().equalsTurn("D"))
+		{
+			return 0;
+		}
+		int value =0;
+		
+		//numero pedine
+		int nBianchi=0;
+		int nNeri=0;
+		int rigaRe=-1;
+		int colonnaRe=-1;
+		for(int i=0; i<8; i++)
+		{
+			for(int j=0; j<8; j++)
+			{
+				if(s.getBoard()[i][j].equalsPawn("B"))
+				{
+					nNeri++;
+				}
+				if(s.getBoard()[i][j].equalsPawn("W"))
+				{
+					nBianchi++;
+				}
+				if(s.getBoard()[i][j].equalsPawn("K"))
+				{
+					rigaRe=i;
+					colonnaRe=j;
+				}
+			}
+		}
+		//Controllo se il re viene mangiato in qualsiasi posizione sia
+		if(this.kingCanBeCaptured(rigaRe, colonnaRe, s))
+		{
+			return this.MIN_VALUE+1;
+		}
+		
+		return nBianchi - nNeri + 2*this.getNumberStarFree(s);
 	}
 	
 	
@@ -729,11 +773,11 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/*
-	 * Controlla se esiste un nero che possa arrivare, dal basso, adiacente alla pedina passata come parametro
+	 * Controlla se esiste un nero che possa arrivare, dal basso, nella casella passata 
 	 */
 	//TODO:verificare se il secondo if e' utile oppure no
 	private boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		for(int i=riga+1; i<9;i++)
+		for(int i=riga; i<9;i++)
 		{
 			if(s.getPawn(riga+i, colonna).equalsPawn("B"))
 			{
@@ -752,7 +796,7 @@ public class IntelligenzaBianca implements IA {
 	 * Controlla se esiste un nero che possa arrivare, dall'alto, adiacente alla pedina passata come parametro
 	 */
 	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		for(int i=riga-1; i>=0;i--)
+		for(int i=riga; i>=0;i--)
 		{
 			if(s.getPawn(riga-i, colonna).equalsPawn("B"))
 			{
@@ -770,9 +814,8 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da destra, adiacente alla pedina passata come parametro
 	 */
-	//TODO:verificare se il secondo if e' utile oppure no
 	private boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		for(int i=colonna+1; i<9;i++)
+		for(int i=colonna; i<9;i++)
 		{
 			if(s.getPawn(riga, colonna+i).equalsPawn("B"))
 			{
@@ -790,9 +833,8 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da sinistra, adiacente alla pedina passata come parametro
 	 */
-	//TODO:verificare se il secondo if e' utile oppure no
 	private boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		for(int i=colonna-1; i>=0;i--)
+		for(int i=colonna; i>=0;i--)
 		{
 			if(s.getPawn(riga, colonna-i).equalsPawn("B"))
 			{
@@ -1091,8 +1133,6 @@ public class IntelligenzaBianca implements IA {
 	@Override
 	public Action getBetterMove(StateTablut s) {
 		
-		//QUESTA e' SOLO UNA PROVA PER VEDERE SE EFFETTIVAMENTE IL NOSTRO GIOCATORE FUNZIONA
-		//RISULTATO POSITIVO
 		Action a = null;
 		
 		float betterValue=-100000;
@@ -1116,7 +1156,6 @@ public class IntelligenzaBianca implements IA {
 				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
 					n.getPadre().setValue(heu);
-					System.out.println("Se non sono qua c'è qualcosa che non va");
 				}
 			}
 			
