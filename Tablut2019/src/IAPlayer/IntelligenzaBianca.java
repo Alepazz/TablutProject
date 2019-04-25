@@ -149,7 +149,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			for(i=rigaRe+1; i<9; i++)
 			{
-				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				if(this.checkPawnCanArrive(i, colonnaRe, "W", s))
 				{
 					return false;
 				}
@@ -168,7 +168,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			for(i=rigaRe-1; i>=0; i--)
 			{
-				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				if(this.checkPawnCanArrive(i, colonnaRe, "W", s))
 				{
 					return false;
 				}
@@ -187,7 +187,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			for(i=colonnaRe+1; i<9; i++)
 			{
-				if(this.checkBlackCanArrive(rigaRe, i, s))
+				if(this.checkPawnCanArrive(rigaRe, i, "W", s))
 				{
 					return false;
 				}
@@ -206,7 +206,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			for(i=colonnaRe-1; i>=0; i--)
 			{
-				if(this.checkBlackCanArrive(rigaRe, i, s))
+				if(this.checkPawnCanArrive(rigaRe, i, "W", s))
 				{
 					return false;
 				}
@@ -264,7 +264,7 @@ public class IntelligenzaBianca implements IA {
 			return this.MIN_VALUE+1;
 		}
 		
-		return nBianchi - nNeri + 2*this.getNumberStarFree(s);
+		return nBianchi - nNeri + 2*this.getNumberStarFree(s) + 2 * checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
 	
@@ -482,7 +482,7 @@ public class IntelligenzaBianca implements IA {
 				//bloccato sopra, destra e sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(5, 4, s))
+					if(this.checkPawnCanArrive(5, 4, "W", s))
 					{
 						return true;
 					}
@@ -490,7 +490,7 @@ public class IntelligenzaBianca implements IA {
 				//bloccato sotto, destra, sinistra
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(3, 4, s))
+					if(this.checkPawnCanArrive(3, 4, "W", s))
 					{
 						return true;
 					}
@@ -498,7 +498,7 @@ public class IntelligenzaBianca implements IA {
 				//bloccato sopra, sotto, destra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(4, 3, s))
+					if(this.checkPawnCanArrive(4, 3, "W", s))
 					{
 						return true;
 					}
@@ -506,7 +506,7 @@ public class IntelligenzaBianca implements IA {
 				//bloccato sopra, sotto, sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(4, 5, s))
+					if(this.checkPawnCanArrive(4, 5, "W", s))
 					{
 						return true;
 					}
@@ -520,7 +520,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sopra e a destra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(3, 3, s))
+						if(this.checkPawnCanArrive(3, 3, "W", s))
 						{
 							return true;
 						}
@@ -528,7 +528,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sinistra e destra
 					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(2, 4, s))
+						if(this.checkPawnCanArrive(2, 4, "W", s))
 						{
 							return true;
 						}
@@ -536,7 +536,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sopra e a sinistra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(3, 5, s))
+						if(this.checkPawnCanArrive(3, 5, "W", s))
 						{
 							return true;
 						}
@@ -548,7 +548,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato destra e sinistra
 					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(6, 4, s))
+						if(this.checkPawnCanArrive(6, 4, "W", s))
 						{
 							return true;
 						}
@@ -556,7 +556,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sotto e a destra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(5, 3, s))
+						if(this.checkPawnCanArrive(5, 3, "W", s))
 						{
 							return true;
 						}
@@ -564,7 +564,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sotto e a sinistra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(5, 5, s))
+						if(this.checkPawnCanArrive(5, 5, "W", s))
 						{
 							return true;
 						}
@@ -576,7 +576,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sotto e a destra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(3, 5, s))
+						if(this.checkPawnCanArrive(3, 5, "W", s))
 						{
 							return true;
 						}
@@ -584,7 +584,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sopra e a destra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(5, 5, s))
+						if(this.checkPawnCanArrive(5, 5, "W", s))
 						{
 							return true;
 						}
@@ -592,7 +592,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sopra e sotto
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(4, 6, s))
+						if(this.checkPawnCanArrive(4, 6, "W", s))
 						{
 							return true;
 						}
@@ -604,7 +604,7 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sopra e sotto
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(4, 2, s))
+						if(this.checkPawnCanArrive(4, 2, "W", s))
 						{
 							return true;
 						}
@@ -612,14 +612,14 @@ public class IntelligenzaBianca implements IA {
 					//bloccato sotto e a sinistra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(3, 3, s))
+						if(this.checkPawnCanArrive(3, 3, "W", s))
 						{
 							return true;
 						}
 					}//bloccato sopra e a sinistra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkBlackCanArrive(5, 3, s))
+						if(this.checkPawnCanArrive(5, 3, "W", s))
 						{
 							return true;
 						}
@@ -630,28 +630,28 @@ public class IntelligenzaBianca implements IA {
 			{
 				if(this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
+					if(checkPawnCanArrive(rigaRe, colonnaRe-1, "W", s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
+					if(checkPawnCanArrive(rigaRe, colonnaRe+1, "W", s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
+					if(checkPawnCanArrive(rigaRe+1, colonnaRe, "W", s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
+					if(checkPawnCanArrive(rigaRe-1, colonnaRe, "W", s))
 					{
 						return true;
 					}
@@ -659,6 +659,303 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		return false;
+	}
+	
+	private boolean checkBlackCanBeCapture(int riga, int colonna, StateTablut s) {
+		
+		//sottointeso turno bianco
+		
+		if(this.checkPedinaIsolata(riga, colonna, s)) {
+			return false; //il nero non può essere catturato
+		}
+		
+		if(this.checkNeighbourTop(riga, colonna, s).equals("B") && this.checkNeighbourLeft(riga, colonna, s).equals("B")) {
+			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non può essere catturata
+		}
+		
+		if(this.checkNeighbourTop(riga, colonna, s).equals("B") && this.checkNeighbourRight(riga, colonna, s).equals("B")) {
+			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non può essere catturata
+		}
+		
+		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") && this.checkNeighbourLeft(riga, colonna, s).equals("B")) {
+			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non può essere catturata
+		}
+		
+		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") && this.checkNeighbourRight(riga, colonna, s).equals("B")) {
+			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non può essere catturata
+		}
+		
+		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * Controlla se una pedina passata come parametro può essere catturata
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la pedina può essere catturata, false in caso contrario
+	 */
+	private boolean checkWhiteCanBeCapture(int riga, int colonna, StateTablut s) {
+		
+		//sottointeso turno nero
+		
+		if( this.checkPedinaIsolata(riga, colonna, s)) {
+			return false; //se la pedina non ha vicini, non può essere catturata
+		}
+		
+		if((this.checkNeighbourTop(riga, colonna, s).equals("W")|| this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
+			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non può essere catturata
+		}
+		
+		if((this.checkNeighbourTop(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
+			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non può essere catturata
+		}
+		
+		if((this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
+			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non può essere catturata
+		}
+		
+		if((this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
+			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non può essere catturata
+		}
+		
+		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("B") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+				return true;
+			}
+		}
+		
+		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
+			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina non ha vicini
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la pedina non ha vicini, false in caso contrario
+	 */
+	private boolean checkPedinaIsolata(int riga, int colonna, StateTablut s) {
+		return this.checkNeighbourTop(riga, colonna, s).equals("O") &&
+				this.checkNeighbourBottom(riga, colonna, s).equals("O") &&
+				this.checkNeighbourLeft(riga, colonna, s).equals("O") &&
+				this.checkNeighbourRight(riga, colonna, s).equals("O");
+	}
+	
+	/**
+	 * Controlla chi è il vicino superiore della pedina passata come parametro
+	 * @param riga Riga della pedina
+	 * @param colonna Colonna della pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Una stringa indicante il tipo di vicino 
+	 * -O = cella libera;
+	 * -K = il re;
+	 * -B = una pedina nera;
+	 * -W = una pedina bianca;
+	 * -T = il trono;
+	 * -C = una cittadella;
+	 */
+	private String checkNeighbourTop(int riga, int colonna, StateTablut s) {
+		if(s.getPawn(riga-1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga-1, colonna))) {
+			return "O"; //c'è una cella libera
+		} else {
+			if(s.getPawn(riga-1, colonna).equalsPawn("K")) {
+				return "K"; //c'è il re
+			}
+			
+			if(s.getPawn(riga-1, colonna).equalsPawn("B")) {
+				return "B"; //c'è un nero
+			}
+			
+			if(s.getPawn(riga-1, colonna).equalsPawn("W")) {
+				return "W"; //c'è un bianco
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				return "T"; //c'è il trono
+			}
+		}
+		
+		return "C"; //c'è la cittadella
+	}
+	
+	/**
+	 * Controlla chi è il vicino inferiore della pedina passata come parametro
+	 * @param riga Riga della pedina
+	 * @param colonna Colonna della pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Una stringa indicante il tipo di vicino 
+	 * -O = cella libera;
+	 * -K = il re;
+	 * -B = una pedina nera;
+	 * -W = una pedina bianca;
+	 * -T = il trono;
+	 * -C = una cittadella;
+	 */
+	private String checkNeighbourBottom(int riga, int colonna, StateTablut s) {
+		if(s.getPawn(riga+1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga+1, colonna))) {
+			return "O"; //c'è una cella libera
+		} else {
+			if(s.getPawn(riga+1, colonna).equalsPawn("K")) {
+				return "K"; //c'è il re
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("B")) {
+				return "B"; //c'è un nero
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("W")) {
+				return "W"; //c'è un bianco
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				return "T"; //c'è il trono
+			}
+		}
+		
+		return "C"; //c'è la cittadella
+	}
+	
+	/**
+	 * Controlla chi è il vicino sinistro della pedina passata come parametro
+	 * @param riga Riga della pedina
+	 * @param colonna Colonna della pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Una stringa indicante il tipo di vicino 
+	 * -O = cella libera;
+	 * -K = il re;
+	 * -B = una pedina nera;
+	 * -W = una pedina bianca;
+	 * -T = il trono;
+	 * -C = una cittadella;
+	 */
+	private String checkNeighbourLeft(int riga, int colonna, StateTablut s) {
+		if(s.getPawn(riga, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+			return "O"; //c'è una cella libera
+		} else {
+			if(s.getPawn(riga, colonna-1).equalsPawn("K")) {
+				return "K"; //c'è il re
+			}
+			
+			if(s.getPawn(riga, colonna-1).equalsPawn("B")) {
+				return "B"; //c'è un nero
+			}
+			
+			if(s.getPawn(riga, colonna-1).equalsPawn("W")) {
+				return "W"; //c'è un bianco
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				return "T"; //c'è il trono
+			}
+		}
+		
+		return "C"; //c'è la cittadella
+	}
+	
+	/**
+	 * Controlla chi è il vicino destro della pedina passata come parametro
+	 * @param riga Riga della pedina
+	 * @param colonna Colonna della pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Una stringa indicante il tipo di vicino 
+	 * -O = cella libera;
+	 * -K = il re;
+	 * -B = una pedina nera;
+	 * -W = una pedina bianca;
+	 * -T = il trono;
+	 * -C = una cittadella;
+	 */
+	private String checkNeighbourRight(int riga, int colonna, StateTablut s) {
+		if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+			return "O"; //c'è una cella libera
+		} else {
+			if(s.getPawn(riga, colonna+1).equalsPawn("K")) {
+				return "K"; //c'è il re
+			}
+			
+			if(s.getPawn(riga, colonna+1).equalsPawn("B")) {
+				return "B"; //c'è un nero
+			}
+			
+			if(s.getPawn(riga, colonna+1).equalsPawn("W")) {
+				return "W"; //c'è un bianco
+			}
+			
+			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				return "T"; //c'è il trono
+			}
+		}
+		
+		return "C"; //c'è la cittadella
+	}
+
+	/**
+	 * Verifica dove è posizionato il re (metà superiore, riga centrale, metà inferiore)
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return 0 se il re si trova nella metà superiore della scacchiera;
+	 * 1 se il re si trova esattamente nella riga 5 della scacchiera;
+	 * 2 se il re si trova nella metà inferiore della scacchiera
+	 */
+	private int kingInTop(StateTablut s) {
+		for(int i=1; i<3; i++) {
+			for(int j=1; j<8; j++) {
+				if(s.getPawn(i, j).equalsPawn("K")){
+					return 0; //il re è nella meta superiore
+				}
+			}
+		}
+		
+		for(int i=0; i<9; i++) {
+			if(s.getPawn(4, i).equalsPawn("K")) {
+				return 1; //il re è nella riga 5(quella del trono)
+			}
+		}
+		
+		return 2; //il re è nella meta inferiore
 	}
 	
 	/**
@@ -758,30 +1055,51 @@ public class IntelligenzaBianca implements IA {
 		}
 		return 0;
 	}
-	
-	private boolean checkBlackCanArrive(int riga, int colonna, StateTablut s)
+	/**
+	 * Controlla se una pedina del colore opposto può giungere adiacente, in uno qualunque dei lati, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param pedina Accetta solo due parametri: W se la pedina che vogliamo controllare è una bianca, B se una nera
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina del colore opposto può arrivare, false in caso contrario
+	 */
+	private boolean checkPawnCanArrive(int riga, int colonna, String pedina, StateTablut s)
 	{
-		return checkBlackCanArriveFromBottom(riga, colonna, s) && 
-				checkBlackCanArriveFromTop(riga, colonna, s) && 
-				checkBlackCanArriveFromRight(riga, colonna, s) && 
-				checkBlackCanArriveFromLeft(riga, colonna, s);
+		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) && 
+				checkBlackCanArriveFromTop(riga, colonna, pedina, s) && 
+				checkBlackCanArriveFromRight(riga, colonna, pedina, s) && 
+				checkBlackCanArriveFromLeft(riga, colonna, pedina, s);
 	}
 	
 	/*
-	 * Controlla se esiste un nero che possa arrivare, dal basso, nella casella passata 
+	 * Controlla se esiste un nero che possa arrivare, dal basso, nella casella adiacente a quella passata 
 	 */
 	//TODO:verificare se il secondo if e' utile oppure no
-	private boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		for(int i=riga; i<9;i++)
-		{
-			if(s.getPawn(riga+i, colonna).equalsPawn("B"))
+	private boolean checkBlackCanArriveFromBottom(int riga, int colonna, String pedina, StateTablut s) {
+		if(pedina.equals("W")) {
+			for(int i=riga+1; i<9;i++)
 			{
-				return true;
+				if(s.getPawn(riga+i, colonna).equalsPawn("B"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga+i, colonna).equalsPawn("W") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
+				{
+					return false;
+				}			
 			}
-			if(s.getPawn(riga+i, colonna).equalsPawn("W") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
+		} else if(pedina.equals("B")){
+			for(int i=riga+1; i<9;i++)
 			{
-				return false;
-			}			
+				if(s.getPawn(riga+i, colonna).equalsPawn("W"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga+i, colonna).equalsPawn("B") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
+				{
+					return false;
+				}			
+			}
 		}
 		
 		return false;
@@ -790,17 +1108,29 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, dall'alto, adiacente alla pedina passata come parametro
 	 */
-	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		for(int i=riga; i>=0;i--)
-		{
-			if(s.getPawn(riga-i, colonna).equalsPawn("B"))
-			{
-				return true;
+	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, String pedina, StateTablut s) {
+		if(pedina.equals("W")) {
+			for(int i=riga-1; i>=0;i--) {
+				if(s.getPawn(riga-i, colonna).equalsPawn("B"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga-i, colonna).equalsPawn("W") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
+				{
+					return false;
+				}			
 			}
-			if(s.getPawn(riga-i, colonna).equalsPawn("W") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
-			{
-				return false;
-			}			
+		} else if(pedina.equals("B")) {
+			for(int i=riga-1; i>=0;i--) {
+				if(s.getPawn(riga-i, colonna).equalsPawn("W"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga-i, colonna).equalsPawn("B") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
+				{
+					return false;
+				}			
+			}
 		}
 		
 		return false;
@@ -809,17 +1139,31 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da destra, adiacente alla pedina passata come parametro
 	 */
-	private boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		for(int i=colonna; i<9;i++)
-		{
-			if(s.getPawn(riga, colonna+i).equalsPawn("B"))
+	private boolean checkBlackCanArriveFromRight(int riga, int colonna, String pedina, StateTablut s) {
+		if(pedina.equals("W")) {
+			for(int i=colonna+1; i<9;i++)
 			{
-				return true;
+				if(s.getPawn(riga, colonna+i).equalsPawn("B"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
+				{
+					return false;
+				}			
 			}
-			if(s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
+		} else if(pedina.equals("B")) {
+			for(int i=colonna+1; i<9;i++)
 			{
-				return false;
-			}			
+				if(s.getPawn(riga, colonna+i).equalsPawn("W"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga, colonna+i).equalsPawn("B") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
+				{
+					return false;
+				}			
+			}
 		}
 		
 		return false;
@@ -828,17 +1172,31 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da sinistra, adiacente alla pedina passata come parametro
 	 */
-	private boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		for(int i=colonna; i>=0;i--)
-		{
-			if(s.getPawn(riga, colonna-i).equalsPawn("B"))
+	private boolean checkBlackCanArriveFromLeft(int riga, int colonna, String pedina, StateTablut s) {
+		if(pedina.equals("W")) {	
+			for(int i=colonna-1; i>=0;i--)
 			{
-				return true;
+				if(s.getPawn(riga, colonna-i).equalsPawn("B"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
+				{
+					return false;
+				}			
 			}
-			if(s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
+		}else if(pedina.equals("B")) {
+			for(int i=colonna-1; i>=0;i--)
 			{
-				return false;
-			}			
+				if(s.getPawn(riga, colonna-i).equalsPawn("W"))
+				{
+					return true;
+				}
+				if(s.getPawn(riga, colonna-i).equalsPawn("B") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
+				{
+					return false;
+				}			
+			}
 		}
 		
 		return false;
@@ -939,9 +1297,9 @@ public class IntelligenzaBianca implements IA {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, "W", s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, "W", s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
+				!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, "W", s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
 		//checkBlack deve essere falso per far ritornare true il return
 	}
 	
@@ -972,9 +1330,9 @@ public class IntelligenzaBianca implements IA {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
-				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, "W", s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, "W", s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
+				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, "W", s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
 		//checkBlack deve essere falso per far ritornare true il return;
 	}
 
@@ -1006,9 +1364,9 @@ public class IntelligenzaBianca implements IA {
 		
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) &&
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
-				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
-				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, "W", s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
+				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, "W", s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
+				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, "W", s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
 	}
 	
 	/**
@@ -1037,9 +1395,9 @@ public class IntelligenzaBianca implements IA {
 
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) && 
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, s) &&
-				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, s);
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe, "W", s) && 
+				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, "W", s) &&
+				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, "W", s);
 	}
 
 	/**
