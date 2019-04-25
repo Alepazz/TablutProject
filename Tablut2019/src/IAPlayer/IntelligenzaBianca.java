@@ -1135,17 +1135,35 @@ public class IntelligenzaBianca implements IA {
 			Nodo node = new Nodo(s);
 			Livello liv0 = new Livello();
 			Livello liv1 = new Livello();
-			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			Livello liv2 = new Livello();
+			Livello liv3 = new Livello();
 			
-			i = liv0.getNodi().size();
+			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			System.out.println("Livello 0 espanso");
+			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
+			
 			for(Nodo n : liv0.getNodi())
 			{
 				liv1.add(this.simulatore.mossePossibiliComplete(n));
 			}
-			i = i + liv1.getNodi().size();
+			System.out.println("Livello 1 espanso");
 			
-			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
 			for(Nodo n : liv1.getNodi())
+			{
+				liv2.add(this.simulatore.mossePossibiliComplete(n));
+			}
+			System.out.println("Livello 2 espanso");
+			
+			/*for(Nodo n : liv2.getNodi())
+			{
+				liv3.add(this.simulatore.mossePossibiliComplete(n));
+			}
+			System.out.println("Livello 3 espanso");*/
+			
+			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
+			System.out.println("Nodi espansi: "+ i);
+			//ciclo tutto il livello 4 (turno nero, becco il min)
+			for(Nodo n : liv3.getNodi())
 			{
 				float heu =this.getHeuristicValueOfState(n.getStato());
 				//System.out.println(n.getStato().toString()+ " " + heu);
@@ -1155,12 +1173,43 @@ public class IntelligenzaBianca implements IA {
 				}
 			}
 			
+			//ciclo tutti il livello 3 (turno bianco, becco il max)
+			for(Nodo n : liv2.getNodi())
+			{
+				float heu =this.getHeuristicValueOfState(n.getStato());
+				//System.out.println(n.getStato().toString()+ " " + heu);
+				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
+				{
+					n.getPadre().setValue(heu);
+				}
+				/*float b = n.getValue();
+				if(betterValue<=b)
+				{
+					betterValue = b;
+					n.getPadre().setValue(betterValue);
+				}*/
+			}
+			
+			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
+			betterValue=-10000;
+			for(Nodo n : liv1.getNodi())
+			{
+				float b = n.getValue();
+				if(betterValue>=b)
+				{
+					betterValue = b;
+					n.getPadre().setValue(betterValue);
+				}
+			}
+			
+			betterValue=-100000;
 			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
 			for(Nodo n : liv0.getNodi())
 			{
-				if(betterValue<=n.getValue())
+				float b = n.getValue();
+				if(betterValue<=b)
 				{
-					betterValue = n.getValue();
+					betterValue = b;
 					a = n.getAzione();
 				}
 			}
@@ -1171,7 +1220,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-	    System.out.println("Nodi espansi: "+ i);
+	    
 		return a;
 	}
 
