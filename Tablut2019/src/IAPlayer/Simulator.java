@@ -41,6 +41,18 @@ public class Simulator {
 		this.citadels.add("e8");
 	}
 	
+	public boolean assiSimmetrici(StateTablut s)
+	{
+		for(int i=0; i<8; i++)
+		{
+			if(!s.getPawn(i, 4).equalsPawn(s.getPawn(4, i).toString()))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	//controllo che lo stato sia simmetrico Verticalmente(asse di simmetrica colonna e)
 	public boolean statoSimmetricoVerticalmente(StateTablut s)
 	{
@@ -80,6 +92,7 @@ public class Simulator {
 		List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 		boolean simmV = this.statoSimmetricoVerticalmente(node.getStato());
 		boolean simmO = this.statoSimmetricoOrizontalmente(node.getStato());
+		boolean statiSimm = this.assiSimmetrici(node.getStato());
 		//itero su tutta la scacchiera
 		int righeDaControllare = 9;
 		int colonneDaControllare = 9;
@@ -91,10 +104,10 @@ public class Simulator {
 		{
 			righeDaControllare = 5;
 		}
-		/*if(simmV && simmO)
+		if(simmV && simmO && statiSimm)
 		{
 			righeDaControllare = 4;
-		}*/
+		}
 		
 		
 		//prima le righe
@@ -106,7 +119,7 @@ public class Simulator {
 				//se è il turno nero conto le mosse delle pedine nere
 				if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()))
 				{
-					if(simmV && simmO && j==4)
+					if(statiSimm && j==4)
 					{
 						for(Nodo nod: mossePossibiliPedinaCS(node, i, j))
 						{
@@ -115,41 +128,9 @@ public class Simulator {
 					}
 					else
 					{
-						if(simmV && j==4)
-						{
-							for(Nodo nod: mossePossibiliPedinaSV(node, i, j))
-							{
-								listaMossePossibili.add(nod);
-							}
-						}
-						else
-						{
-							if(simmO && i==4)
-							{
-								for(Nodo nod: mossePossibiliPedinaSO(node, i, j))
-								{
-									listaMossePossibili.add(nod);
-								}
-							}
-							else
-							{
-								for(Nodo nod: mossePossibiliPedina(node, i, j))
-								{
-									listaMossePossibili.add(nod);
-								}
-							}
-						}	
-					}			
-				}
-				
-				//se è il turno bianco conto le mosse delle pedine bianche
-				if(node.getTurn().equalsTurn(State.Turn.WHITE.toString())) 
-				{
-					if(node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K"))
-					{
 						if(simmV && simmO && j==4)
 						{
-							for(Nodo nod: mossePossibiliPedinaCS(node, i, j))
+							for(Nodo nod: mossePossibiliPedinaCCS(node, i, j))
 							{
 								listaMossePossibili.add(nod);
 							}
@@ -180,6 +161,59 @@ public class Simulator {
 									}
 								}
 							}	
+						}	
+					}
+							
+				}
+				
+				//se è il turno bianco conto le mosse delle pedine bianche
+				if(node.getTurn().equalsTurn(State.Turn.WHITE.toString())) 
+				{
+					if(node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K"))
+					{
+						if(statiSimm && j==4)
+						{
+							for(Nodo nod: mossePossibiliPedinaCS(node, i, j))
+							{
+								listaMossePossibili.add(nod);
+							}
+						}
+						else
+						{
+							if(simmV && simmO && j==4)
+							{
+								for(Nodo nod: mossePossibiliPedinaCCS(node, i, j))
+								{
+									listaMossePossibili.add(nod);
+								}
+							}
+							else
+							{
+								if(simmV && j==4)
+								{
+									for(Nodo nod: mossePossibiliPedinaSV(node, i, j))
+									{
+										listaMossePossibili.add(nod);
+									}
+								}
+								else
+								{
+									if(simmO && i==4)
+									{
+										for(Nodo nod: mossePossibiliPedinaSO(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+									else
+									{
+										for(Nodo nod: mossePossibiliPedina(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+								}	
+							}		
 						}	
 					}
 				}
@@ -228,6 +262,26 @@ public class Simulator {
 			}
 			return listaMossePossibili;
 		}
+	
+	private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+	{
+		List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+		if(canMoveUp(node.getStato(), riga, colonna))
+		{
+			for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
+			{
+				listaMossePossibili.add(nod);
+			}
+		}
+		if(canMoveLeft(node.getStato(), riga, colonna))
+		{
+			for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+			{
+				listaMossePossibili.add(nod);
+			}
+		}
+		return listaMossePossibili;
+	}
 	
 	private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 	{

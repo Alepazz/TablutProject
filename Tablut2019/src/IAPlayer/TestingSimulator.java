@@ -19,8 +19,8 @@ public class TestingSimulator {
 		int cont = 0;
 		int c = 1;
 		long t1 = System.currentTimeMillis();
-		/*state.getBoard()[4][3] = State.Pawn.BLACK;
-		state.getBoard()[4][5] = State.Pawn.BLACK;*/
+		state.getBoard()[4][3] = State.Pawn.BLACK;
+		state.getBoard()[4][5] = State.Pawn.BLACK;
 		/*state.getBoard()[5][3] = State.Pawn.BLACK;
 		state.getBoard()[5][5] = State.Pawn.BLACK;*/
 		
