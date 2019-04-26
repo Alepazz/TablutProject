@@ -14,6 +14,8 @@ public class IntelligenzaBianca implements IA {
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
+	private final int VALUE_BLACK_PAWN = 100;
+	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	
 	public IntelligenzaBianca() {
@@ -67,17 +69,37 @@ public class IntelligenzaBianca implements IA {
 		int nNeri=0;
 		int rigaRe=-1;
 		int colonnaRe=-1;
-		for(int i=0; i<8; i++)
+		/* Per ogni pezzo trovato viene aggiunto il suo valore al valore totale dello stato
+		 * Valori definiti per adesso: <--- SI POSSONO CAMBIARE
+		 * Pedina Nera: 100
+		 * Pedina Mangiabile: 50
+		 * Pedina Bianca: 200
+		 * Pedina Bianca Mangiabile: 100
+		 * 
+		 * Il peso della pedina bianca e' il doppio di quella nera 
+		 */
+		
+		for(int i=0; i<9; i++)
 		{
-			for(int j=0; j<8; j++)
+			for(int j=0; j<9; j++)
 			{
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
 					nNeri++;
+					value=- VALUE_BLACK_PAWN;
+					if(checkBlackCanBeCapture(i, j, s))
+					{
+						value=+ VALUE_BLACK_PAWN/2;
+					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
 					nBianchi++;
+					value=+ VALUE_WHITE_PAWN;
+					if(checkWhiteCanBeCapture(i, j, s))
+					{
+						value=- VALUE_WHITE_PAWN/2;
+					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
 				{
@@ -128,8 +150,7 @@ public class IntelligenzaBianca implements IA {
 		}
 			
 				
-		return value;
-		
+		return value;	
 	}
 	
 	
@@ -239,9 +260,9 @@ public class IntelligenzaBianca implements IA {
 		int nNeri=0;
 		int rigaRe=-1;
 		int colonnaRe=-1;
-		for(int i=0; i<8; i++)
+		for(int i=0; i<9; i++)
 		{
-			for(int j=0; j<8; j++)
+			for(int j=0; j<9; j++)
 			{
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
