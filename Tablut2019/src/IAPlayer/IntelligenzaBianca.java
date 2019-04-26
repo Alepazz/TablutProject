@@ -1522,7 +1522,7 @@ public class IntelligenzaBianca implements IA {
 			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
 			System.out.println("Nodi espansi: "+ i);
 			//ciclo tutto il livello 4 (turno nero, becco il min)
-			for(Nodo n : liv3.getNodi())
+			/*for(Nodo n : liv3.getNodi())
 			{
 				float heu =this.getHeuristicValueOfState(n.getStato());
 				//System.out.println(n.getStato().toString()+ " " + heu);
@@ -1530,13 +1530,13 @@ public class IntelligenzaBianca implements IA {
 				{
 					n.getPadre().setValue(heu);
 				}
-			}
+			}*/
 			
 			//ciclo tutti il livello 3 (turno bianco, becco il max)
 			for(Nodo n : liv2.getNodi())
 			{
 				float heu =this.getHeuristicValueOfState(n.getStato());
-				//System.out.println(n.getStato().toString()+ " " + heu);
+				System.out.println(n.getStato().toString()+ " " + heu);
 				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
 					n.getPadre().setValue(heu);
@@ -1550,7 +1550,7 @@ public class IntelligenzaBianca implements IA {
 			}
 			
 			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
-			betterValue=-10000;
+			betterValue=10000;
 			for(Nodo n : liv1.getNodi())
 			{
 				float b = n.getValue();

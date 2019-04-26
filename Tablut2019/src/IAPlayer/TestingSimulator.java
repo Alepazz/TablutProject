@@ -38,8 +38,8 @@ public class TestingSimulator {
 		*/
 		
 		IntelligenzaBianca ia = new IntelligenzaBianca();
-		ia.getBetterMove(state);
-		
+		Action a = ia.getBetterMove(state);
+		System.out.println(a.toString());
 		long t2 = System.currentTimeMillis();
         //System.out.println(t2);
         System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
