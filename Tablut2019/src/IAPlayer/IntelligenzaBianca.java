@@ -1515,8 +1515,9 @@ public class IntelligenzaBianca implements IA {
 			/*for(Nodo n : liv2.getNodi())
 			{
 				liv3.add(this.simulatore.mossePossibiliComplete(n));
-			}
-			System.out.println("Livello 3 espanso");*/
+				System.out.println(liv3.getNodi().size());
+			}*/
+			//System.out.println("Livello 3 espanso");
 			
 			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
 			System.out.println("Nodi espansi: "+ i);

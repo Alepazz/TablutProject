@@ -18,7 +18,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		}
 		System.out.println("Selected this: " + args[0]);
 
-		TablutClient client = new GiocatoreArtificiale(args[0], "IEP");
+		TablutClient client = new GiocatoreArtificiale(args[0], "Partecipare_e_importante");
 
 		client.run();
 	}

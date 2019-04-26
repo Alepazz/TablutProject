@@ -39,17 +39,6 @@ public class Nodo {
 	}
 	
 	
-	/*public List<Nodo> generaFigli(SimulatorWhite s, boolean isLastLevel) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
-	{
-		List<Nodo> figli = s.mossePossibiliComplete(stato, stato.getTurn());
-		for(Nodo n: figli)
-		{
-			this.figli.add(n);
-			n.setPadre(this);
-		}
-		return figli;
-	}*/
-	
 	public Nodo getPadre() {
 		return padre;
 	}
