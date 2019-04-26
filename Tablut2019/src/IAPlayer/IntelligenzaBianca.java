@@ -1120,11 +1120,11 @@ public class IntelligenzaBianca implements IA {
 		if(pedina.equals("W")) {
 			for(int i=riga+1; i<9;i++)
 			{
-				if(s.getPawn(riga+i, colonna).equalsPawn("B"))
+				if(s.getPawn(i, colonna).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga+i, colonna).equalsPawn("W") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
+				if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
 				{
 					return false;
 				}			
@@ -1132,11 +1132,11 @@ public class IntelligenzaBianca implements IA {
 		} else if(pedina.equals("B")){
 			for(int i=riga+1; i<9;i++)
 			{
-				if(s.getPawn(riga+i, colonna).equalsPawn("W"))
+				if(s.getPawn(i, colonna).equalsPawn("W"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga+i, colonna).equalsPawn("B") || s.getPawn(riga+i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+i, colonna)))
+				if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
 				{
 					return false;
 				}			
@@ -1152,22 +1152,22 @@ public class IntelligenzaBianca implements IA {
 	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, String pedina, StateTablut s) {
 		if(pedina.equals("W")) {
 			for(int i=riga-1; i>=0;i--) {
-				if(s.getPawn(riga-i, colonna).equalsPawn("B"))
+				if(s.getPawn(i, colonna).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga-i, colonna).equalsPawn("W") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
+				if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
 				{
 					return false;
 				}			
 			}
 		} else if(pedina.equals("B")) {
 			for(int i=riga-1; i>=0;i--) {
-				if(s.getPawn(riga-i, colonna).equalsPawn("W"))
+				if(s.getPawn(i, colonna).equalsPawn("W"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga-i, colonna).equalsPawn("B") || s.getPawn(riga-i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-i, colonna)))
+				if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
 				{
 					return false;
 				}			
@@ -1184,11 +1184,11 @@ public class IntelligenzaBianca implements IA {
 		if(pedina.equals("W")) {
 			for(int i=colonna+1; i<9;i++)
 			{
-				if(s.getPawn(riga, colonna+i).equalsPawn("B"))
+				if(s.getPawn(riga, i).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
+				if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
@@ -1196,11 +1196,11 @@ public class IntelligenzaBianca implements IA {
 		} else if(pedina.equals("B")) {
 			for(int i=colonna+1; i<9;i++)
 			{
-				if(s.getPawn(riga, colonna+i).equalsPawn("W"))
+				if(s.getPawn(riga, i).equalsPawn("W"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga, colonna+i).equalsPawn("B") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i)))
+				if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
@@ -1217,11 +1217,11 @@ public class IntelligenzaBianca implements IA {
 		if(pedina.equals("W")) {	
 			for(int i=colonna-1; i>=0;i--)
 			{
-				if(s.getPawn(riga, colonna-i).equalsPawn("B"))
+				if(s.getPawn(riga, i).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
+				if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
@@ -1233,7 +1233,7 @@ public class IntelligenzaBianca implements IA {
 				{
 					return true;
 				}
-				if(s.getPawn(riga, colonna-i).equalsPawn("B") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i)))
+				if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
