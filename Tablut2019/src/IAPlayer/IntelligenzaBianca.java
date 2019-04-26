@@ -1229,7 +1229,7 @@ public class IntelligenzaBianca implements IA {
 		}else if(pedina.equals("B")) {
 			for(int i=colonna-1; i>=0;i--)
 			{
-				if(s.getPawn(riga, colonna-i).equalsPawn("W"))
+				if(s.getPawn(riga, i).equalsPawn("W"))
 				{
 					return true;
 				}
