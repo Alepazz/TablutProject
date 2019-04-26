@@ -800,10 +800,10 @@ public class IntelligenzaBianca implements IA {
 	 * @return true se la pedina non ha vicini, false in caso contrario
 	 */
 	private boolean checkPedinaIsolata(int riga, int colonna, StateTablut s) {
-		return this.checkNeighbourTop(riga, colonna, s).equals("O") &&
-				this.checkNeighbourBottom(riga, colonna, s).equals("O") &&
-				this.checkNeighbourLeft(riga, colonna, s).equals("O") &&
-				this.checkNeighbourRight(riga, colonna, s).equals("O");
+		return (this.checkNeighbourTop(riga, colonna, s).equals("O") || this.checkNeighbourTop(riga, colonna, s).equals("X")) &&
+				(this.checkNeighbourBottom(riga, colonna, s).equals("O") || this.checkNeighbourBottom(riga, colonna, s).equals("X")) &&
+				(this.checkNeighbourLeft(riga, colonna, s).equals("O") || this.checkNeighbourLeft(riga, colonna, s).equals("X")) &&
+				(this.checkNeighbourRight(riga, colonna, s).equals("O") || this.checkNeighbourRight(riga, colonna, s).equals("X"));
 	}
 	
 	/**
@@ -818,29 +818,34 @@ public class IntelligenzaBianca implements IA {
 	 * -W = una pedina bianca;
 	 * -T = il trono;
 	 * -C = una cittadella;
+	 * -X = cella fuori dalla tavola;
 	 */
 	private String checkNeighbourTop(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga-1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga-1, colonna))) {
-			return "O"; //c'è una cella libera
+		if(riga!=0) {
+			if(s.getPawn(riga-1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga-1, colonna))) {
+				return "O"; //c'è una cella libera
+			} else {
+				if(s.getPawn(riga-1, colonna).equalsPawn("K")) {
+					return "K"; //c'è il re
+				}
+				
+				if(s.getPawn(riga-1, colonna).equalsPawn("B")) {
+					return "B"; //c'è un nero
+				}
+				
+				if(s.getPawn(riga-1, colonna).equalsPawn("W")) {
+					return "W"; //c'è un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+					return "T"; //c'è il trono
+				}
+			}
+			
+			return "C"; //c'è la cittadella
 		} else {
-			if(s.getPawn(riga-1, colonna).equalsPawn("K")) {
-				return "K"; //c'è il re
-			}
-			
-			if(s.getPawn(riga-1, colonna).equalsPawn("B")) {
-				return "B"; //c'è un nero
-			}
-			
-			if(s.getPawn(riga-1, colonna).equalsPawn("W")) {
-				return "W"; //c'è un bianco
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
-				return "T"; //c'è il trono
-			}
-		}
-		
-		return "C"; //c'è la cittadella
+			return "X";
+		}		
 	}
 	
 	/**
@@ -855,29 +860,34 @@ public class IntelligenzaBianca implements IA {
 	 * -W = una pedina bianca;
 	 * -T = il trono;
 	 * -C = una cittadella;
+	 * -X = cella fuori dalla tavola;
 	 */
 	private String checkNeighbourBottom(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga+1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga+1, colonna))) {
-			return "O"; //c'è una cella libera
+		if(riga!=8) {
+			if(s.getPawn(riga+1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga+1, colonna))) {
+				return "O"; //c'è una cella libera
+			} else {
+				if(s.getPawn(riga+1, colonna).equalsPawn("K")) {
+					return "K"; //c'è il re
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("B")) {
+					return "B"; //c'è un nero
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("W")) {
+					return "W"; //c'è un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+					return "T"; //c'è il trono
+				}
+			}
+			
+			return "C"; //c'è la cittadella
 		} else {
-			if(s.getPawn(riga+1, colonna).equalsPawn("K")) {
-				return "K"; //c'è il re
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("B")) {
-				return "B"; //c'è un nero
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("W")) {
-				return "W"; //c'è un bianco
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
-				return "T"; //c'è il trono
-			}
-		}
-		
-		return "C"; //c'è la cittadella
+			return "X";
+		}	
 	}
 	
 	/**
@@ -892,29 +902,34 @@ public class IntelligenzaBianca implements IA {
 	 * -W = una pedina bianca;
 	 * -T = il trono;
 	 * -C = una cittadella;
+	 * -X = cella fuori dalla tavola;
 	 */
 	private String checkNeighbourLeft(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
-			return "O"; //c'è una cella libera
+		if(colonna!=0) {
+			if(s.getPawn(riga, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'è una cella libera
+			} else {
+				if(s.getPawn(riga, colonna-1).equalsPawn("K")) {
+					return "K"; //c'è il re
+				}
+				
+				if(s.getPawn(riga, colonna-1).equalsPawn("B")) {
+					return "B"; //c'è un nero
+				}
+				
+				if(s.getPawn(riga, colonna-1).equalsPawn("W")) {
+					return "W"; //c'è un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+					return "T"; //c'è il trono
+				}
+			}
+			
+			return "C"; //c'è la cittadella
 		} else {
-			if(s.getPawn(riga, colonna-1).equalsPawn("K")) {
-				return "K"; //c'è il re
-			}
-			
-			if(s.getPawn(riga, colonna-1).equalsPawn("B")) {
-				return "B"; //c'è un nero
-			}
-			
-			if(s.getPawn(riga, colonna-1).equalsPawn("W")) {
-				return "W"; //c'è un bianco
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
-				return "T"; //c'è il trono
-			}
-		}
-		
-		return "C"; //c'è la cittadella
+			return "X";
+		}		
 	}
 	
 	/**
@@ -929,29 +944,34 @@ public class IntelligenzaBianca implements IA {
 	 * -W = una pedina bianca;
 	 * -T = il trono;
 	 * -C = una cittadella;
+	 * -X = cella fuori dalla tavola;
 	 */
 	private String checkNeighbourRight(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
-			return "O"; //c'è una cella libera
+		if(colonna!=8) {
+			if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'è una cella libera
+			} else {
+				if(s.getPawn(riga, colonna+1).equalsPawn("K")) {
+					return "K"; //c'è il re
+				}
+				
+				if(s.getPawn(riga, colonna+1).equalsPawn("B")) {
+					return "B"; //c'è un nero
+				}
+				
+				if(s.getPawn(riga, colonna+1).equalsPawn("W")) {
+					return "W"; //c'è un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+					return "T"; //c'è il trono
+				}
+			}
+			
+			return "C"; //c'è la cittadella
 		} else {
-			if(s.getPawn(riga, colonna+1).equalsPawn("K")) {
-				return "K"; //c'è il re
-			}
-			
-			if(s.getPawn(riga, colonna+1).equalsPawn("B")) {
-				return "B"; //c'è un nero
-			}
-			
-			if(s.getPawn(riga, colonna+1).equalsPawn("W")) {
-				return "W"; //c'è un bianco
-			}
-			
-			if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
-				return "T"; //c'è il trono
-			}
-		}
-		
-		return "C"; //c'è la cittadella
+			return "X";
+		}		
 	}
 
 	/**
@@ -1556,7 +1576,7 @@ public class IntelligenzaBianca implements IA {
 			//ciclo tutti il livello 3 (turno bianco, becco il max)
 			for(Nodo n : liv2.getNodi())
 			{
-				float heu =this.getHeuristicValueOfState(n.getStato());
+				float heu =this.getHeuristicValue(n.getStato());
 				System.out.println(n.getStato().toString()+ " " + heu);
 				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
