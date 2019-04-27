@@ -182,7 +182,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
-				i=20;
+				i=-1;
 			}
 		}
 		if(i!=20)
@@ -201,7 +201,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
 			{
-				i=-1;
+				i=20;
 			}
 		}
 		if(i!=20)
@@ -837,7 +837,7 @@ public class IntelligenzaBianca implements IA {
 					return "W"; //c'è un bianco
 				}
 				
-				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				if(s.getPawn(riga-1, colonna).equalsPawn("T")) {
 					return "T"; //c'è il trono
 				}
 			}
@@ -921,7 +921,7 @@ public class IntelligenzaBianca implements IA {
 					return "W"; //c'è un bianco
 				}
 				
-				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				if(s.getPawn(riga, colonna-1).equalsPawn("T")) {
 					return "T"; //c'è il trono
 				}
 			}
@@ -963,7 +963,7 @@ public class IntelligenzaBianca implements IA {
 					return "W"; //c'è un bianco
 				}
 				
-				if(s.getPawn(riga+1, colonna).equalsPawn("T")) {
+				if(s.getPawn(riga, colonna+1).equalsPawn("T")) {
 					return "T"; //c'è il trono
 				}
 			}
@@ -1322,7 +1322,7 @@ public class IntelligenzaBianca implements IA {
 	private boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i==6;i++)
 		{
-			if(s.getPawn(rigaRe, colonnaRe+i).equalsPawn("B") || s.getPawn(rigaRe, colonnaRe+i).equalsPawn("W") || s.getPawn(rigaRe, colonnaRe+i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe,  colonnaRe+i))){
+			if(s.getPawn(rigaRe, i).equalsPawn("B") || s.getPawn(rigaRe, i).equalsPawn("W") || s.getPawn(rigaRe, i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe,  i))){
 				return false; //c'e' una pedina nera/bianca che intralcia la mossa o c'e' il trono
 			}//il caso della cittadella si verifica solo nella riga 1 e nella riga 7		
 		}
@@ -1388,7 +1388,7 @@ public class IntelligenzaBianca implements IA {
 	private boolean checkFreeRowComingFromTop(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe+1; i==6;i++)
 		{
-			if(s.getPawn(rigaRe+i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe+i, colonnaRe).equalsPawn("W") || s.getPawn(rigaRe+i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe+i, colonnaRe)))
+			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W") || s.getPawn(i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
 				return false;
 			} // il caso in cui sia la cittadella ad intralciare la mossa del re, e' il caso in cui il re si muova lungo la colonna 1 o 7
@@ -1450,8 +1450,8 @@ public class IntelligenzaBianca implements IA {
 	 * @return true se non ci sono elementi alla destra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	private boolean checkFreeRowRight(int riga, int colonna, StateTablut s) {
-		for(int i=colonna+1; i<=9; i++){
-			if(s.getPawn(riga, colonna+i).equalsPawn("B") || s.getPawn(riga, colonna+i).equalsPawn("W") || s.getPawn(riga, colonna+i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna+i))) {
+		for(int i=colonna+1; i<9; i++){
+			if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i))) {
 				return false;
 			}
 		}
@@ -1505,8 +1505,8 @@ public class IntelligenzaBianca implements IA {
 	 * @return true se non ci sono elementi sotto la cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	private boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
-		for(int i=rigaRe+1; i<=9; i++) {
-			if(s.getPawn(rigaRe+i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe+i, colonnaRe).equalsPawn("W")) {
+		for(int i=rigaRe+1; i<9; i++) {
+			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W")) {
 				return false;
 			}
 		}
