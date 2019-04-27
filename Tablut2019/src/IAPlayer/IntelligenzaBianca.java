@@ -1576,7 +1576,7 @@ public class IntelligenzaBianca implements IA {
 			//ciclo tutti il livello 3 (turno bianco, becco il max)
 			for(Nodo n : liv2.getNodi())
 			{
-				float heu =this.getHeuristicValue(n.getStato());
+				float heu =this.getHeuristicValueOfState(n.getStato());
 				System.out.println(n.getStato().toString()+ " " + heu);
 				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
 				{
