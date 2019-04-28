@@ -1253,11 +1253,16 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
-		{
-			return true;
-		}
-		return false;
+		if(colonna!=8) {
+			if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
+			{
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}	
 	}
 
 	/**
@@ -1270,11 +1275,16 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
-		{
-			return true;
-		}
-		return false;
+		if(colonna!=0) {
+			if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
+			{
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}				
 	}
 	
 	/**
@@ -1287,11 +1297,16 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
-		{
-			return true;
-		}
-		return false;
+		if(riga!=0) {
+			if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
+			{
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}	
 	}
 	
 	/**
@@ -1304,11 +1319,16 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
 	{
-		if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
-		{
-			return true;
-		}
-		return false;
+		if(riga!=8) {
+			if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
+			{
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}	
 	}
 	
 	/**
