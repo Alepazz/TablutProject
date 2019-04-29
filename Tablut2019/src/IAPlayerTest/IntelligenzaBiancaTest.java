@@ -469,6 +469,40 @@ class IntelligenzaBiancaTest {
 		//Esecuzione Test
 		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
 	}
+	
+	@Test
+	void kingCanBeCapturedTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		board[3][4] = Pawn.BLACK;
+		board[5][4] = Pawn.BLACK;
+		board[4][5] = Pawn.BLACK;
+		board[4][0] = Pawn.BLACK;
+		board[4][3] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * BOOWKBOOO
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
+	}
 
 }
 
