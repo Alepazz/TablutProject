@@ -370,6 +370,105 @@ class IntelligenzaBiancaTest {
 		//Esecuzione Test
 		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
 	}
+	
+	@Test
+	void kingCanBeCapturedTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		board[3][4] = Pawn.BLACK;
+		board[5][4] = Pawn.BLACK;
+		board[4][3] = Pawn.BLACK;
+		board[4][8] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOOBKOOOB
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		board[3][4] = Pawn.BLACK;
+		board[8][4] = Pawn.BLACK;
+		board[4][5] = Pawn.BLACK;
+		board[4][3] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOOBKBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		board[0][4] = Pawn.BLACK;
+		board[5][4] = Pawn.BLACK;
+		board[4][5] = Pawn.BLACK;
+		board[4][3] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBKBOOO
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+	}
 
 }
 

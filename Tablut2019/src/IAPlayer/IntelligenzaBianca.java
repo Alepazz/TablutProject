@@ -1106,9 +1106,9 @@ public class IntelligenzaBianca implements IA {
 	 */
 	public boolean checkPawnCanArrive(int riga, int colonna, String pedina, StateTablut s)
 	{
-		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) && 
-				checkBlackCanArriveFromTop(riga, colonna, pedina, s) && 
-				checkBlackCanArriveFromRight(riga, colonna, pedina, s) && 
+		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) || 
+				checkBlackCanArriveFromTop(riga, colonna, pedina, s) || 
+				checkBlackCanArriveFromRight(riga, colonna, pedina, s) || 
 				checkBlackCanArriveFromLeft(riga, colonna, pedina, s);
 	}
 	
