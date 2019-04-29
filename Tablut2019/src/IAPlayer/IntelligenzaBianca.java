@@ -519,6 +519,7 @@ public class IntelligenzaBianca implements IA {
 				//bloccato sopra, sotto, destra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
+					System.out.println("enemyOnLeft");
 					if(this.checkPawnCanArrive(4, 3, "W", s))
 					{
 						return true;
@@ -1104,20 +1105,20 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina del colore opposto può arrivare, false in caso contrario
 	 */
-	public boolean checkPawnCanArrive(int riga, int colonna, String pedina, StateTablut s)
+	public boolean checkPawnCanArrive(int riga, int colonna, String turno, StateTablut s)
 	{
-		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) || 
-				checkBlackCanArriveFromTop(riga, colonna, pedina, s) || 
-				checkBlackCanArriveFromRight(riga, colonna, pedina, s) || 
-				checkBlackCanArriveFromLeft(riga, colonna, pedina, s);
+		return checkBlackCanArriveFromBottom(riga, colonna, turno, s) || 
+				checkBlackCanArriveFromTop(riga, colonna, turno, s) || 
+				checkBlackCanArriveFromRight(riga, colonna, turno, s) || 
+				checkBlackCanArriveFromLeft(riga, colonna, turno, s);
 	}
 	
 	/*
 	 * Controlla se esiste un nero che possa arrivare, dal basso, nella casella adiacente a quella passata 
 	 */
 	//TODO:verificare se il secondo if e' utile oppure no
-	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, String pedina, StateTablut s) {
-		if(pedina.equals("W")) {
+	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s) {
+		if(turno.equals("W")) {
 			for(int i=riga+1; i<9;i++)
 			{
 				if(s.getPawn(i, colonna).equalsPawn("B"))
@@ -1129,7 +1130,7 @@ public class IntelligenzaBianca implements IA {
 					return false;
 				}			
 			}
-		} else if(pedina.equals("B")){
+		} else if(turno.equals("B")){
 			for(int i=riga+1; i<9;i++)
 			{
 				if(s.getPawn(i, colonna).equalsPawn("W"))
@@ -1149,8 +1150,8 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, dall'alto, adiacente alla pedina passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, String pedina, StateTablut s) {
-		if(pedina.equals("W")) {
+	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, String turno, StateTablut s) {
+		if(turno.equals("W")) {
 			for(int i=riga-1; i>=0;i--) {
 				if(s.getPawn(i, colonna).equalsPawn("B"))
 				{
@@ -1161,7 +1162,7 @@ public class IntelligenzaBianca implements IA {
 					return false;
 				}			
 			}
-		} else if(pedina.equals("B")) {
+		} else if(turno.equals("B")) {
 			for(int i=riga-1; i>=0;i--) {
 				if(s.getPawn(i, colonna).equalsPawn("W"))
 				{
@@ -1180,8 +1181,8 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da destra, adiacente alla pedina passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromRight(int riga, int colonna, String pedina, StateTablut s) {
-		if(pedina.equals("W")) {
+	public boolean checkBlackCanArriveFromRight(int riga, int colonna, String turno, StateTablut s) {
+		if(turno.equals("W")) {
 			for(int i=colonna+1; i<9;i++)
 			{
 				if(s.getPawn(riga, i).equalsPawn("B"))
@@ -1193,7 +1194,7 @@ public class IntelligenzaBianca implements IA {
 					return false;
 				}			
 			}
-		} else if(pedina.equals("B")) {
+		} else if(turno.equals("B")) {
 			for(int i=colonna+1; i<9;i++)
 			{
 				if(s.getPawn(riga, i).equalsPawn("W"))
@@ -1211,22 +1212,23 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/*
-	 * Controlla se esiste un nero che possa arrivare, da sinistra, adiacente alla pedina passata come parametro
+	 * Controlla se esiste un nero che possa arrivare, da sinistra, sulla casella (riga, colonna) passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, String pedina, StateTablut s) {
-		if(pedina.equals("W")) {	
-			for(int i=colonna-1; i>=0;i--)
+	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, String turno, StateTablut s) {
+		if(turno.equals("W")) {	
+			for(int i=colonna; i>=0;i--)
 			{
 				if(s.getPawn(riga, i).equalsPawn("B"))
 				{
 					return true;
 				}
+				System.out.println("Riga: " + riga + ", colonna: " + i);
 				if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
 			}
-		}else if(pedina.equals("B")) {
+		}else if(turno.equals("B")) {
 			for(int i=colonna-1; i>=0;i--)
 			{
 				if(s.getPawn(riga, i).equalsPawn("W"))

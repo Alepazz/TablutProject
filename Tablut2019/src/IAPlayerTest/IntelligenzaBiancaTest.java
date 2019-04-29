@@ -499,7 +499,7 @@ class IntelligenzaBiancaTest {
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.BLACK);
-		
+		System.out.println("qui");
 		//Esecuzione Test
 		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
 	}
