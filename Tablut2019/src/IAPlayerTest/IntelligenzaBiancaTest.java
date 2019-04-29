@@ -1,8 +1,5 @@
 package IAPlayerTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.Assert;
 
 import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
