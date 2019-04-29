@@ -87,7 +87,7 @@ public class IntelligenzaBianca implements IA {
 				{
 					nNeri++;
 					value=- VALUE_BLACK_PAWN;
-					if(checkBlackCanBeCapture(i, j, s))
+					if(checkBlackCanBeCaptured(i, j, s))
 					{
 						value=+ VALUE_BLACK_PAWN/2;
 					}
@@ -96,7 +96,7 @@ public class IntelligenzaBianca implements IA {
 				{
 					nBianchi++;
 					value=+ VALUE_WHITE_PAWN;
-					if(checkWhiteCanBeCapture(i, j, s))
+					if(checkWhiteCanBeCaptured(i, j, s))
 					{
 						value=- VALUE_WHITE_PAWN/2;
 					}
@@ -682,7 +682,7 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	public boolean checkBlackCanBeCapture(int riga, int colonna, StateTablut s) {
+	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno bianco
 		
@@ -741,7 +741,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina può essere catturata, false in caso contrario
 	 */
-	public boolean checkWhiteCanBeCapture(int riga, int colonna, StateTablut s) {
+	public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno nero
 		

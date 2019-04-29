@@ -1,0 +1,38 @@
+apr 29, 2019 2:14:03 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+FINE: Players:	White:	testW	vs	testB
+apr 29, 2019 2:14:03 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+FINE: Repeated moves allowed:	0	Cache:	-1
+apr 29, 2019 2:14:03 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+FINE: Inizio partita
+apr 29, 2019 2:14:03 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut <init>
+FINE: Stato:
+OOOBBBOOO
+OOOOBOOOO
+OOOOWOOOO
+BOOOWOOOB
+BBWWKWWBB
+BOOOWOOOB
+OOOOWOOOO
+OOOOBOOOO
+OOOBBBOOO
+-
+B
+apr 29, 2019 2:14:52 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+FINE: Turn: B Pawn from a5 to c5
+apr 29, 2019 2:14:52 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut movePawn
+FINE: Movimento pedina
+apr 29, 2019 2:14:52 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+FINE: Current draw cache size: 1
+apr 29, 2019 2:14:52 PM it.unibo.ai.didattica.competition.tablut.domain.GameAshtonTablut checkMove
+FINE: Stato:
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOBOTOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+OOOOOOOOO
+-
+W
