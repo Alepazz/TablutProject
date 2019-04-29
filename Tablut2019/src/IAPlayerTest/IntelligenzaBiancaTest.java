@@ -5,6 +5,8 @@ import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import IAPlayer.IntelligenzaBianca;
