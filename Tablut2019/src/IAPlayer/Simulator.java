@@ -43,7 +43,7 @@ public class Simulator {
 	
 	public boolean assiSimmetrici(StateTablut s)
 	{
-		for(int i=0; i<9; i++)
+		for(int i=0; i<8; i++)
 		{
 			if(!s.getPawn(i, 4).equalsPawn(s.getPawn(4, i).toString()))
 			{

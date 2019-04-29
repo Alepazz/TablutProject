@@ -18,7 +18,8 @@ public class IntelligenzaBianca implements IA {
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	
-	public IntelligenzaBianca() {
+	public IntelligenzaBianca() 
+	{
 		this.simulatore = new Simulator();
 		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.citadels = new ArrayList<String>();
@@ -87,7 +88,7 @@ public class IntelligenzaBianca implements IA {
 				{
 					nNeri++;
 					value=- VALUE_BLACK_PAWN;
-					if(checkBlackCanBeCaptured(i, j, s))
+					if(checkBlackCanBeCapture(i, j, s))
 					{
 						value=+ VALUE_BLACK_PAWN/2;
 					}
@@ -96,7 +97,7 @@ public class IntelligenzaBianca implements IA {
 				{
 					nBianchi++;
 					value=+ VALUE_WHITE_PAWN;
-					if(checkWhiteCanBeCaptured(i, j, s))
+					if(checkWhiteCanBeCapture(i, j, s))
 					{
 						value=- VALUE_WHITE_PAWN/2;
 					}
@@ -154,7 +155,7 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	
-	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
+	private boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 		
 		int i;
 		
@@ -285,7 +286,7 @@ public class IntelligenzaBianca implements IA {
 			return this.MIN_VALUE+1;
 		}
 		
-		return nBianchi - nNeri + 2*this.getNumberStarFree(s) + 2 * checkVieDiFugaRe(rigaRe, colonnaRe, s);
+		return nBianchi - 30*nNeri + 2*this.getNumberStarFree(s) + 2 * checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
 	
@@ -296,7 +297,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut rappresenta lo stato da valutare
 	 * @return numero di pedine bianche, comprensive del re, presenti sulla scacchiera
 	 */
-	public int getNumberWhite(StateTablut s) {
+	private int getNumberWhite(StateTablut s) {
 		
 		int result = 0;
 		
@@ -317,7 +318,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut rappresenta lo stato da valutare
 	 * @return numero di pedine nere, presenti sulla scacchiera
 	 */
-	public int getNumberBlack(StateTablut s) {
+	private int getNumberBlack(StateTablut s) {
 		
 		int result = 0;
 		
@@ -343,7 +344,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return numero di colonne/semicolonne e righe/semirighe libere, per permettere ai bianchi di vincere
 	 */
-	public int getNumberStarFree(StateTablut s) {
+	private int getNumberStarFree(StateTablut s) {
 		int result = 0;
 		
 		if(this.isColumnFree(2, s)) {
@@ -388,7 +389,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la colonna, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
-	public boolean isColumnFree(int numberCol, StateTablut s) {
+	private boolean isColumnFree(int numberCol, StateTablut s) {
 		
 		boolean result = true;
 		
@@ -408,7 +409,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
-	public boolean isRowFree(int numberRow, StateTablut s) {
+	private boolean isRowFree(int numberRow, StateTablut s) {
 		
 		boolean result = true;
 		
@@ -428,7 +429,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
-	public boolean isSemirowFree(int numberRow, StateTablut s) {
+	private boolean isSemirowFree(int numberRow, StateTablut s) {
 		
 		boolean result = true;
 		
@@ -458,7 +459,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
-	public boolean isSemicolumnFree(int numberColumn, StateTablut s) {
+	private boolean isSemicolumnFree(int numberColumn, StateTablut s) {
 		
 		boolean result = true;
 		
@@ -492,7 +493,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato al momento della valutazione
 	 * @return true se il re, in quello stato s, può essere catturato, false in caso contrario
 	 */
-	public boolean kingCanBeCaptured(int rigaRe, int colonnaRe, StateTablut s)
+	private boolean kingCanBeCaptured(int rigaRe, int colonnaRe, StateTablut s)
 	{
 		//Se e' il turno del bianco ritorna false se no controlla i 3 casi
 		if(s.getTurn().equalsTurn("B"))
@@ -682,7 +683,7 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
+	private boolean checkBlackCanBeCapture(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno bianco
 		
@@ -741,7 +742,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina può essere catturata, false in caso contrario
 	 */
-	public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
+	private boolean checkWhiteCanBeCapture(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno nero
 		
@@ -799,7 +800,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina non ha vicini, false in caso contrario
 	 */
-	public boolean checkPedinaIsolata(int riga, int colonna, StateTablut s) {
+	private boolean checkPedinaIsolata(int riga, int colonna, StateTablut s) {
 		return (this.checkNeighbourTop(riga, colonna, s).equals("O") || this.checkNeighbourTop(riga, colonna, s).equals("X")) &&
 				(this.checkNeighbourBottom(riga, colonna, s).equals("O") || this.checkNeighbourBottom(riga, colonna, s).equals("X")) &&
 				(this.checkNeighbourLeft(riga, colonna, s).equals("O") || this.checkNeighbourLeft(riga, colonna, s).equals("X")) &&
@@ -820,7 +821,7 @@ public class IntelligenzaBianca implements IA {
 	 * -C = una cittadella;
 	 * -X = cella fuori dalla tavola;
 	 */
-	public String checkNeighbourTop(int riga, int colonna, StateTablut s) {
+	private String checkNeighbourTop(int riga, int colonna, StateTablut s) {
 		if(riga!=0) {
 			if(s.getPawn(riga-1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga-1, colonna))) {
 				return "O"; //c'è una cella libera
@@ -862,7 +863,7 @@ public class IntelligenzaBianca implements IA {
 	 * -C = una cittadella;
 	 * -X = cella fuori dalla tavola;
 	 */
-	public String checkNeighbourBottom(int riga, int colonna, StateTablut s) {
+	private String checkNeighbourBottom(int riga, int colonna, StateTablut s) {
 		if(riga!=8) {
 			if(s.getPawn(riga+1, colonna).equalsPawn("O") && !this.citadels.contains(s.getBox(riga+1, colonna))) {
 				return "O"; //c'è una cella libera
@@ -904,7 +905,7 @@ public class IntelligenzaBianca implements IA {
 	 * -C = una cittadella;
 	 * -X = cella fuori dalla tavola;
 	 */
-	public String checkNeighbourLeft(int riga, int colonna, StateTablut s) {
+	private String checkNeighbourLeft(int riga, int colonna, StateTablut s) {
 		if(colonna!=0) {
 			if(s.getPawn(riga, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
 				return "O"; //c'è una cella libera
@@ -946,7 +947,7 @@ public class IntelligenzaBianca implements IA {
 	 * -C = una cittadella;
 	 * -X = cella fuori dalla tavola;
 	 */
-	public String checkNeighbourRight(int riga, int colonna, StateTablut s) {
+	private String checkNeighbourRight(int riga, int colonna, StateTablut s) {
 		if(colonna!=8) {
 			if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
 				return "O"; //c'è una cella libera
@@ -981,7 +982,7 @@ public class IntelligenzaBianca implements IA {
 	 * 1 se il re si trova esattamente nella riga 5 della scacchiera;
 	 * 2 se il re si trova nella metà inferiore della scacchiera
 	 */
-	public int kingInTop(StateTablut s) {
+	private int kingInTop(StateTablut s) {
 		for(int i=1; i<3; i++) {
 			for(int j=1; j<8; j++) {
 				if(s.getPawn(i, j).equalsPawn("K")){
@@ -1008,7 +1009,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero stato che si vuole valutare
 	 * @return Numero di vie di fuga disponibili per il re. Essendo 4 le mosse che il re può fare, questa funzione restituisce un numero compreso tra [0, 4]
 	 */
-	public int checkVieDiFugaRe(int rigaRe, int colonnaRe, StateTablut s)
+	private int checkVieDiFugaRe(int rigaRe, int colonnaRe, StateTablut s)
 	{
 		int vieDiFuga=4;
 		
@@ -1028,7 +1029,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero stato che si vuole valutare
 	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
-	public int getViaDiFugaFromBottom(int rigaRe, int colonnaRe, StateTablut s) {
+	private int getViaDiFugaFromBottom(int rigaRe, int colonnaRe, StateTablut s) {
 		for (int i=rigaRe+1; i<9; i++) {
 			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
@@ -1047,7 +1048,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero stato che si vuole valutare
 	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
-	public int getViaDiFugaFromTop(int rigaRe, int colonnaRe, StateTablut s) {
+	private int getViaDiFugaFromTop(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=rigaRe-1; i>=0; i--)
 		{
 			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
@@ -1066,7 +1067,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero stato che si vuole valutare
 	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
-	public int getViaDiFugaFromRight(int rigaRe, int colonnaRe, StateTablut s) {
+	private int getViaDiFugaFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i<9; i++)
 		{
 			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
@@ -1086,7 +1087,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero stato che si vuole valutare
 	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
-	public int getViaDiFugaFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
+	private int getViaDiFugaFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i>=0; i--)
 		{
 			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
@@ -1104,11 +1105,11 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina del colore opposto può arrivare, false in caso contrario
 	 */
-	public boolean checkPawnCanArrive(int riga, int colonna, String pedina, StateTablut s)
+	private boolean checkPawnCanArrive(int riga, int colonna, String pedina, StateTablut s)
 	{
-		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) || 
-				checkBlackCanArriveFromTop(riga, colonna, pedina, s) || 
-				checkBlackCanArriveFromRight(riga, colonna, pedina, s) || 
+		return checkBlackCanArriveFromBottom(riga, colonna, pedina, s) && 
+				checkBlackCanArriveFromTop(riga, colonna, pedina, s) && 
+				checkBlackCanArriveFromRight(riga, colonna, pedina, s) && 
 				checkBlackCanArriveFromLeft(riga, colonna, pedina, s);
 	}
 	
@@ -1116,7 +1117,7 @@ public class IntelligenzaBianca implements IA {
 	 * Controlla se esiste un nero che possa arrivare, dal basso, nella casella adiacente a quella passata 
 	 */
 	//TODO:verificare se il secondo if e' utile oppure no
-	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, String pedina, StateTablut s) {
+	private boolean checkBlackCanArriveFromBottom(int riga, int colonna, String pedina, StateTablut s) {
 		if(pedina.equals("W")) {
 			for(int i=riga+1; i<9;i++)
 			{
@@ -1149,7 +1150,7 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, dall'alto, adiacente alla pedina passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, String pedina, StateTablut s) {
+	private boolean checkBlackCanArriveFromTop(int riga, int  colonna, String pedina, StateTablut s) {
 		if(pedina.equals("W")) {
 			for(int i=riga-1; i>=0;i--) {
 				if(s.getPawn(i, colonna).equalsPawn("B"))
@@ -1180,7 +1181,7 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da destra, adiacente alla pedina passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromRight(int riga, int colonna, String pedina, StateTablut s) {
+	private boolean checkBlackCanArriveFromRight(int riga, int colonna, String pedina, StateTablut s) {
 		if(pedina.equals("W")) {
 			for(int i=colonna+1; i<9;i++)
 			{
@@ -1213,7 +1214,7 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * Controlla se esiste un nero che possa arrivare, da sinistra, adiacente alla pedina passata come parametro
 	 */
-	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, String pedina, StateTablut s) {
+	private boolean checkBlackCanArriveFromLeft(int riga, int colonna, String pedina, StateTablut s) {
 		if(pedina.equals("W")) {	
 			for(int i=colonna-1; i>=0;i--)
 			{
@@ -1251,18 +1252,13 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se una pedina nera o un accampamento è accando, sulla destra, alla pedina bianca passata come parametro, false in caso contrario
 	 */
-	public boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
+	private boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
-		if(colonna!=8) {
-			if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
+		if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -1273,18 +1269,13 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se una pedina nera o un accampamento è accando, sulla sinistra, alla pedina bianca passata come parametro, false in caso contrario
 	 */
-	public boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
+	private boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
-		if(colonna!=0) {
-			if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}				
+		if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -1295,18 +1286,13 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se una pedina nera o un accampamento è sopra alla pedina bianca passata come parametro, false in caso contrario
 	 */
-	public boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
+	private boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
 	{
-		if(riga!=0) {
-			if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
+		if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -1317,18 +1303,13 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se una pedina nera o un accampamento è sotto alla pedina bianca passata come parametro, false in caso contrario
 	 */
-	public boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
+	private boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
 	{
-		if(riga!=8) {
-			if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
+		if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -1339,7 +1320,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi orizzontalmente da sinistra a destra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
-	public boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
+	private boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i==6;i++)
 		{
 			if(s.getPawn(rigaRe, i).equalsPawn("B") || s.getPawn(rigaRe, i).equalsPawn("W") || s.getPawn(rigaRe, i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe,  i))){
@@ -1372,7 +1353,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi orizzontalmente da destra a sinistra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
-	public boolean checkFreeColComingFromRight(int rigaRe, int colonnaRe, StateTablut s) {
+	private boolean checkFreeColComingFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i==2;i--)
 		{
 			if(s.getPawn(rigaRe, colonnaRe-i).equalsPawn("B") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("W") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe, colonnaRe-i))){
@@ -1405,7 +1386,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi verticalmente dall'alto al basso, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
 	 */
-	public boolean checkFreeRowComingFromTop(int rigaRe, int colonnaRe, StateTablut s){
+	private boolean checkFreeRowComingFromTop(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe+1; i==6;i++)
 		{
 			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W") || s.getPawn(i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonnaRe)))
@@ -1438,7 +1419,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi verticalmente dal basso all' alto, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
 	 */
-	public boolean checkFreeRowComingFromBottom(int rigaRe, int colonnaRe, StateTablut s){
+	private boolean checkFreeRowComingFromBottom(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe-1; i==2; i++){
 			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe-i, colonnaRe))) {
 				return false;
@@ -1469,7 +1450,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi alla destra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeRowRight(int riga, int colonna, StateTablut s) {
+	private boolean checkFreeRowRight(int riga, int colonna, StateTablut s) {
 		for(int i=colonna+1; i<9; i++){
 			if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i))) {
 				return false;
@@ -1487,7 +1468,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi alla sinistra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeRowLeft(int riga, int colonna, StateTablut s) {
+	private boolean checkFreeRowLeft(int riga, int colonna, StateTablut s) {
 		for(int i=colonna-1; i>=0; i--) {
 			if(s.getPawn(riga, colonna-i).equalsPawn("B") || s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i))) {
 				return false;
@@ -1504,7 +1485,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi sopra la cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeColTop(int rigaRe, int colonnaRe, StateTablut s) {
+	private boolean checkFreeColTop(int rigaRe, int colonnaRe, StateTablut s) {
 		
 		for(int i=rigaRe-1; i>=0; i--) {
 			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W")) {
@@ -1524,7 +1505,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi sotto la cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
+	private boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=rigaRe+1; i<9; i++) {
 			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W")) {
 				return false;
