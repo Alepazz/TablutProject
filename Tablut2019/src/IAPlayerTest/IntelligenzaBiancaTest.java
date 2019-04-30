@@ -9,11 +9,12 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import IAPlayer.CommonHeuristicFunction;
 import IAPlayer.IntelligenzaBianca;
 
 class IntelligenzaBiancaTest {
 
-	private IntelligenzaBianca b = new IntelligenzaBianca();
+	private CommonHeuristicFunction c = new CommonHeuristicFunction();
 	private StateTablut s = new StateTablut();
 	private Pawn[][] board =   {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
@@ -53,15 +54,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isColumnFree(0, s));
-		Assert.assertFalse(b.isColumnFree(1, s));
-		Assert.assertTrue(b.isColumnFree(2, s));
-		Assert.assertFalse(b.isColumnFree(3, s));
-		Assert.assertFalse(b.isColumnFree(4, s));
-		Assert.assertFalse(b.isColumnFree(5, s));
-		Assert.assertTrue(b.isColumnFree(6, s));
-		Assert.assertFalse(b.isColumnFree(7, s));
-		Assert.assertFalse(b.isColumnFree(8, s));			
+		Assert.assertFalse(c.isColumnFree(0, s));
+		Assert.assertFalse(c.isColumnFree(1, s));
+		Assert.assertTrue(c.isColumnFree(2, s));
+		Assert.assertFalse(c.isColumnFree(3, s));
+		Assert.assertFalse(c.isColumnFree(4, s));
+		Assert.assertFalse(c.isColumnFree(5, s));
+		Assert.assertTrue(c.isColumnFree(6, s));
+		Assert.assertFalse(c.isColumnFree(7, s));
+		Assert.assertFalse(c.isColumnFree(8, s));			
 	}
 	
 	@Test
@@ -92,15 +93,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isColumnFree(0, s));
-		Assert.assertFalse(b.isColumnFree(1, s));
-		Assert.assertFalse(b.isColumnFree(2, s));
-		Assert.assertFalse(b.isColumnFree(3, s));
-		Assert.assertFalse(b.isColumnFree(4, s));
-		Assert.assertFalse(b.isColumnFree(5, s));
-		Assert.assertFalse(b.isColumnFree(6, s));
-		Assert.assertFalse(b.isColumnFree(7, s));
-		Assert.assertFalse(b.isColumnFree(8, s));			
+		Assert.assertFalse(c.isColumnFree(0, s));
+		Assert.assertFalse(c.isColumnFree(1, s));
+		Assert.assertFalse(c.isColumnFree(2, s));
+		Assert.assertFalse(c.isColumnFree(3, s));
+		Assert.assertFalse(c.isColumnFree(4, s));
+		Assert.assertFalse(c.isColumnFree(5, s));
+		Assert.assertFalse(c.isColumnFree(6, s));
+		Assert.assertFalse(c.isColumnFree(7, s));
+		Assert.assertFalse(c.isColumnFree(8, s));			
 	}
 	
 	@Test
@@ -130,15 +131,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isRowFree(0, s));
-		Assert.assertFalse(b.isRowFree(1, s));
-		Assert.assertTrue(b.isRowFree(2, s));
-		Assert.assertFalse(b.isRowFree(3, s));
-		Assert.assertFalse(b.isRowFree(4, s));
-		Assert.assertFalse(b.isRowFree(5, s));
-		Assert.assertTrue(b.isRowFree(6, s));
-		Assert.assertFalse(b.isRowFree(7, s));
-		Assert.assertFalse(b.isRowFree(8, s));			
+		Assert.assertFalse(c.isRowFree(0, s));
+		Assert.assertFalse(c.isRowFree(1, s));
+		Assert.assertTrue(c.isRowFree(2, s));
+		Assert.assertFalse(c.isRowFree(3, s));
+		Assert.assertFalse(c.isRowFree(4, s));
+		Assert.assertFalse(c.isRowFree(5, s));
+		Assert.assertTrue(c.isRowFree(6, s));
+		Assert.assertFalse(c.isRowFree(7, s));
+		Assert.assertFalse(c.isRowFree(8, s));			
 	}
 	
 	@Test
@@ -168,15 +169,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isRowFree(0, s));
-		Assert.assertFalse(b.isRowFree(1, s));
-		Assert.assertFalse(b.isRowFree(2, s));
-		Assert.assertFalse(b.isRowFree(3, s));
-		Assert.assertFalse(b.isRowFree(4, s));
-		Assert.assertFalse(b.isRowFree(5, s));
-		Assert.assertFalse(b.isRowFree(6, s));
-		Assert.assertFalse(b.isRowFree(7, s));
-		Assert.assertFalse(b.isRowFree(8, s));			
+		Assert.assertFalse(c.isRowFree(0, s));
+		Assert.assertFalse(c.isRowFree(1, s));
+		Assert.assertFalse(c.isRowFree(2, s));
+		Assert.assertFalse(c.isRowFree(3, s));
+		Assert.assertFalse(c.isRowFree(4, s));
+		Assert.assertFalse(c.isRowFree(5, s));
+		Assert.assertFalse(c.isRowFree(6, s));
+		Assert.assertFalse(c.isRowFree(7, s));
+		Assert.assertFalse(c.isRowFree(8, s));			
 	}
 	
 	@Test
@@ -206,8 +207,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.isSemicolumnFree(1, s));
-		Assert.assertTrue(b.isSemicolumnFree(7, s));
+		Assert.assertTrue(c.isSemicolumnFree(1, s));
+		Assert.assertTrue(c.isSemicolumnFree(7, s));
 	}
 	
 	@Test
@@ -239,8 +240,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isSemirowFree(1, s));
-		Assert.assertFalse(b.isSemirowFree(7, s));
+		Assert.assertFalse(c.isSemirowFree(1, s));
+		Assert.assertFalse(c.isSemirowFree(7, s));
 	}
 	
 	@Test
@@ -270,8 +271,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.isSemicolumnFree(1, s));
-		Assert.assertTrue(b.isSemicolumnFree(7, s));
+		Assert.assertTrue(c.isSemicolumnFree(1, s));
+		Assert.assertTrue(c.isSemicolumnFree(7, s));
 	}
 	
 	@Test
@@ -303,8 +304,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isSemirowFree(1, s));
-		Assert.assertFalse(b.isSemirowFree(7, s));
+		Assert.assertFalse(c.isSemirowFree(1, s));
+		Assert.assertFalse(c.isSemirowFree(7, s));
 	}
 		
 	@Test
@@ -334,7 +335,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertFalse(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -367,7 +368,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -400,7 +401,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -433,7 +434,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -466,7 +467,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -500,7 +501,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		System.out.println("qui");
 		//Esecuzione Test
-		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertFalse(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -531,7 +532,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheTop(2, 2, s));
+		Assert.assertTrue(c.enemyOnTheTop(2, 2, s));
 			
 	}
 	
@@ -563,7 +564,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.enemyOnTheTop(2, 2, s));
+		Assert.assertFalse(c.enemyOnTheTop(2, 2, s));
 			
 	}
 	
@@ -594,7 +595,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheTop(2, 4, s));
+		Assert.assertTrue(c.enemyOnTheTop(2, 4, s));
 			
 	}
 	
@@ -626,7 +627,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheRight(2, 2, s));
+		Assert.assertTrue(c.enemyOnTheRight(2, 2, s));
 			
 	}
 	
@@ -658,7 +659,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.enemyOnTheRight(2, 2, s));
+		Assert.assertFalse(c.enemyOnTheRight(2, 2, s));
 			
 	}
 	
@@ -689,7 +690,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheRight(1, 3, s));
+		Assert.assertTrue(c.enemyOnTheRight(1, 3, s));
 			
 	}
 	
@@ -721,7 +722,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheBottom(2, 2, s));
+		Assert.assertTrue(c.enemyOnTheBottom(2, 2, s));
 			
 	}
 	
@@ -753,7 +754,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.enemyOnTheBottom(2, 2, s));
+		Assert.assertFalse(c.enemyOnTheBottom(2, 2, s));
 			
 	}
 	
@@ -784,7 +785,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheBottom(6, 4, s));
+		Assert.assertTrue(c.enemyOnTheBottom(6, 4, s));
 			
 	}
 	
@@ -816,7 +817,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheLeft(2, 2, s));
+		Assert.assertTrue(c.enemyOnTheLeft(2, 2, s));
 			
 	}
 	
@@ -848,7 +849,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.enemyOnTheLeft(2, 2, s));
+		Assert.assertFalse(c.enemyOnTheLeft(2, 2, s));
 			
 	}
 	
@@ -879,7 +880,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.enemyOnTheLeft(1, 5, s));
+		Assert.assertTrue(c.enemyOnTheLeft(1, 5, s));
 			
 	}
 	
@@ -910,7 +911,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		//Assert.assertTrue(b.checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s));
+		//Assert.assertTrue(c.checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s));
 			
 	}
 
