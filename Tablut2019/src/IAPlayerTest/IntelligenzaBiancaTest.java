@@ -882,6 +882,37 @@ class IntelligenzaBiancaTest {
 		Assert.assertTrue(b.enemyOnTheLeft(1, 5, s));
 			
 	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		//Assert.assertTrue(b.checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s));
+			
+	}
 
 }
 
