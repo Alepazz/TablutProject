@@ -885,21 +885,21 @@ class IntelligenzaBiancaTest {
 	}
 	
 	@Test
-	void checkBlackCanArriveFromBottomTest_1() {	
+	void checkBlackCanArriveFromTopTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
-		board[2][3] = Pawn.WHITE;
+		board[0][3] = Pawn.BLACK;
 		
 		
 		/* Rappresentazione tavola
 		 * 
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOWOOOOOO
+		 * OOOBOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
-		 * OOBOOOOOO
+		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * 
@@ -908,10 +908,475 @@ class IntelligenzaBiancaTest {
 		
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
-		s.setTurn(Turn.WHITE);
+		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		//Assert.assertTrue(c.checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s));
+		Assert.assertTrue(c.checkBlackCanArriveFromTop(4, 3, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromTopTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][3] = Pawn.BLACK;
+		board[1][3] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOBOOOOO
+		 * OOOWOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromTop(4, 3, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromTopTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][4] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOXOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromTop(5, 4, s));
+			
+	}
+		
+	@Test
+	void checkBlackCanArriveFromTopTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][4] = Pawn.BLACK;
+		board[4][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOXOOOO
+		 * BOOOOOOOO     <-----  X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * XOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromTop(3, 4, s));
+		Assert.assertTrue(c.checkBlackCanArriveFromTop(7, 0, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromRightTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][6] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOXOOOBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromRight(2, 2, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromRightTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][6] = Pawn.BLACK;
+		board[2][5] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOXOOWBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromRight(2, 2, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromRightTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][5] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOBOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromRight(4, 3, s));
+			
+	}
+
+	@Test
+	void checkBlackCanArriveFromRightTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][4] = Pawn.BLACK;
+		board[4][8] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OXOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOXOB     <-----  X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromRight(0, 1, s));
+		Assert.assertTrue(c.checkBlackCanArriveFromRight(4, 6, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][2] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOXOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromLeft(2, 6, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][2] = Pawn.BLACK;
+		board[2][3] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBWOOXOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromLeft(2, 6, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOXOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromLeft(4, 5, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][4] = Pawn.BLACK;
+		board[4][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOBOOXO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOXOOOOOO     <-----  X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromLeft(0, 7, s));
+		Assert.assertTrue(c.checkBlackCanArriveFromLeft(4, 2, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[8][3] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromBottom(4, 3, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[8][3] = Pawn.BLACK;
+		board[7][3] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOWOOOOO
+		 * OOOBOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromBottom(4, 3, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[7][4] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOXOOOO
+		 * OOOOOOOOO     <----- X = casella passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromBottom(3, 4, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[8][4] = Pawn.BLACK;
+		board[4][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * XOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO     <-----  X = casella passata alla funzione
+		 * OOOOXOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromBottom(5, 4, s));
+		Assert.assertTrue(c.checkBlackCanArriveFromBottom(1, 0, s));
 			
 	}
 

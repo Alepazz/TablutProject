@@ -48,7 +48,7 @@ public class CommonHeuristicFunction {
 			{
 				for(i=rigaRe+1; i<9; i++)
 				{
-					if(this.checkPawnCanArrive(i, colonnaRe, "W", s))
+					if(this.checkBlackCanArrive(i, colonnaRe, s))
 					{
 						return false;
 					}
@@ -67,7 +67,7 @@ public class CommonHeuristicFunction {
 			{
 				for(i=rigaRe-1; i>=0; i--)
 				{
-					if(this.checkPawnCanArrive(i, colonnaRe, "W", s))
+					if(this.checkBlackCanArrive(i, colonnaRe, s))
 					{
 						return false;
 					}
@@ -86,7 +86,7 @@ public class CommonHeuristicFunction {
 			{
 				for(i=colonnaRe+1; i<9; i++)
 				{
-					if(this.checkPawnCanArrive(rigaRe, i, "W", s))
+					if(this.checkBlackCanArrive(rigaRe, i, s))
 					{
 						return false;
 					}
@@ -105,7 +105,7 @@ public class CommonHeuristicFunction {
 			{
 				for(i=colonnaRe-1; i>=0; i--)
 				{
-					if(this.checkPawnCanArrive(rigaRe, i, "W", s))
+					if(this.checkBlackCanArrive(rigaRe, i, s))
 					{
 						return false;
 					}
@@ -330,7 +330,7 @@ public class CommonHeuristicFunction {
 				//bloccato sopra, destra e sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkPawnCanArrive(5, 4, "W", s))
+					if(this.checkBlackCanArrive(5, 4, s))
 					{
 						return true;
 					}
@@ -338,7 +338,7 @@ public class CommonHeuristicFunction {
 				//bloccato sotto, destra, sinistra
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkPawnCanArrive(3, 4, "W", s))
+					if(this.checkBlackCanArrive(3, 4, s))
 					{
 						return true;
 					}
@@ -346,7 +346,7 @@ public class CommonHeuristicFunction {
 				//bloccato sopra, sotto, destra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(this.checkPawnCanArrive(4, 3, "W", s))
+					if(this.checkBlackCanArrive(4, 3, s))
 					{
 						return true;
 					}
@@ -354,7 +354,7 @@ public class CommonHeuristicFunction {
 				//bloccato sopra, sotto, sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkPawnCanArrive(4, 5, "W", s))
+					if(this.checkBlackCanArrive(4, 5, s))
 					{
 						return true;
 					}
@@ -368,7 +368,7 @@ public class CommonHeuristicFunction {
 					//bloccato sopra e a destra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(3, 3, "W", s))
+						if(this.checkBlackCanArrive(3, 3, s))
 						{
 							return true;
 						}
@@ -376,7 +376,7 @@ public class CommonHeuristicFunction {
 					//bloccato sinistra e destra
 					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(2, 4, "W", s))
+						if(this.checkBlackCanArrive(2, 4, s))
 						{
 							return true;
 						}
@@ -384,7 +384,7 @@ public class CommonHeuristicFunction {
 					//bloccato sopra e a sinistra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(3, 5, "W", s))
+						if(this.checkBlackCanArrive(3, 5, s))
 						{
 							return true;
 						}
@@ -396,7 +396,7 @@ public class CommonHeuristicFunction {
 					//bloccato destra e sinistra
 					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(6, 4, "W", s))
+						if(this.checkBlackCanArrive(6, 4, s))
 						{
 							return true;
 						}
@@ -404,7 +404,7 @@ public class CommonHeuristicFunction {
 					//bloccato sotto e a destra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(5, 3, "W", s))
+						if(this.checkBlackCanArrive(5, 3, s))
 						{
 							return true;
 						}
@@ -412,7 +412,7 @@ public class CommonHeuristicFunction {
 					//bloccato sotto e a sinistra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(5, 5, "W", s))
+						if(this.checkBlackCanArrive(5, 5, s))
 						{
 							return true;
 						}
@@ -424,7 +424,7 @@ public class CommonHeuristicFunction {
 					//bloccato sotto e a destra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(3, 5, "W", s))
+						if(this.checkBlackCanArrive(3, 5, s))
 						{
 							return true;
 						}
@@ -432,7 +432,7 @@ public class CommonHeuristicFunction {
 					//bloccato sopra e a destra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(5, 5, "W", s))
+						if(this.checkBlackCanArrive(5, 5, s))
 						{
 							return true;
 						}
@@ -440,7 +440,7 @@ public class CommonHeuristicFunction {
 					//bloccato sopra e sotto
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(4, 6, "W", s))
+						if(this.checkBlackCanArrive(4, 6, s))
 						{
 							return true;
 						}
@@ -452,7 +452,7 @@ public class CommonHeuristicFunction {
 					//bloccato sopra e sotto
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(4, 2, "W", s))
+						if(this.checkBlackCanArrive(4, 2, s))
 						{
 							return true;
 						}
@@ -460,14 +460,14 @@ public class CommonHeuristicFunction {
 					//bloccato sotto e a sinistra
 					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(3, 3, "W", s))
+						if(this.checkBlackCanArrive(3, 3, s))
 						{
 							return true;
 						}
 					}//bloccato sopra e a sinistra
 					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 					{
-						if(this.checkPawnCanArrive(5, 3, "W", s))
+						if(this.checkBlackCanArrive(5, 3, s))
 						{
 							return true;
 						}
@@ -478,28 +478,28 @@ public class CommonHeuristicFunction {
 			{
 				if(this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(checkPawnCanArrive(rigaRe, colonnaRe-1, "W", s))
+					if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(checkPawnCanArrive(rigaRe, colonnaRe+1, "W", s))
+					if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s))
 				{
-					if(checkPawnCanArrive(rigaRe+1, colonnaRe, "W", s))
+					if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 				{
-					if(checkPawnCanArrive(rigaRe-1, colonnaRe, "W", s))
+					if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
 					{
 						return true;
 					}
@@ -535,25 +535,25 @@ public class CommonHeuristicFunction {
 		}
 		
 		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+			if(this.checkWhiteCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+			if(this.checkWhiteCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+			if(this.checkWhiteCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "B", s)) {
+			if(this.checkWhiteCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
@@ -594,25 +594,25 @@ public class CommonHeuristicFunction {
 		}
 		
 		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("B") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+			if(this.checkBlackCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+			if(this.checkBlackCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+			if(this.checkBlackCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
 		
 		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
-			if(this.checkPawnCanArrive(riga, colonna, "W", s)) {
+			if(this.checkBlackCanArrive(riga, colonna, s)) {
 				return true;
 			}
 		}
@@ -924,145 +924,267 @@ public class CommonHeuristicFunction {
 		}
 		return 0;
 	}
+	
 	/**
-	 * Controlla se una pedina del colore opposto pu� giungere adiacente, in uno qualunque dei lati, alla pedina passata come parametro
+	 * Controlla se una pedina nera puo' giungere adiacente, in uno qualunque dei lati, alla pedina passata come parametro
 	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
 	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
-	 * @param pedina Accetta solo due parametri: W se la pedina che vogliamo controllare � una bianca, B se una nera
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
-	 * @return True se una pedina del colore opposto pu� arrivare, false in caso contrario
+	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
 	 */
-	public boolean checkPawnCanArrive(int riga, int colonna, String turno, StateTablut s)
+	public boolean checkBlackCanArrive(int riga, int colonna, StateTablut s)
 	{
-		if(checkBlackCanArriveFromBottom(riga, colonna, turno, s) || 
-				checkBlackCanArriveFromTop(riga, colonna, turno, s) || 
-				checkBlackCanArriveFromRight(riga, colonna, turno, s) || 
-				checkBlackCanArriveFromLeft(riga, colonna, turno, s))
+		if(checkBlackCanArriveFromBottom(riga, colonna, s) || 
+				checkBlackCanArriveFromTop(riga, colonna, s) || 
+				checkBlackCanArriveFromRight(riga, colonna, s) || 
+				checkBlackCanArriveFromLeft(riga, colonna, s))
 			return true;
 		return false;
 	}
 	
-	/*
-	 * Controlla se esiste un nero che possa arrivare, dal basso, sulla casella (riga, colonna) passata come parametro
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
 	 */
-	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s) {
-		if(turno.equals("W")) {
-			for(int i=riga; i<9;i++)
-			{
+	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
+		if(riga!=0) {
+			for(int i=riga-1; i>=0;i--) {
+				//Se trova la pedina nera ritorna risposta positiva
 				if(s.getPawn(i, colonna).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
+				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+				if(!s.getPawn(i, colonna).equalsPawn("O"))
 				{
 					return false;
-				}			
-			}
-		} else if(turno.equals("B")){
-			for(int i=riga; i<9;i++)
-			{
-				if(s.getPawn(i, colonna).equalsPawn("W"))
-				{
-					return true;
 				}
-				if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
+				//Se trova una cittadella ritorna risposta negativa
+				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+				if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a6") 
+						&& !this.citadels.contains("e2") && !this.citadels.contains("i6"))
 				{
 					return false;
-				}			
+				}
 			}
 		}
-		
 		return false;
 	}
 	
-	/*
-	 * Controlla se esiste un nero che possa arrivare, dall'alto, sulla casella (riga, colonna) passata come parametro
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
 	 */
-	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, String turno, StateTablut s) {
-		if(turno.equals("W")) {
-			for(int i=riga; i>=0;i--) {
+	public boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
+		if(colonna!=9) {
+			for(int i=colonna+1; i<9;i++)
+			{
+				//Se trova la pedina nera ritorna risposta positiva
+				if(s.getPawn(riga, i).equalsPawn("B"))
+				{
+					return true;
+				}
+				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+				if(!s.getPawn(riga, i).equalsPawn("O"))
+				{
+					return false;
+				}
+				//Se trova una cittadella ritorna risposta negativa
+				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+				if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("d1") 
+						&& !this.citadels.contains("d9") && !this.citadels.contains("h5"))
+				{
+					return false;
+				}			
+			}		
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
+		if(riga!=9) {
+			for(int i=riga+1; i<9;i++)
+			{
+				//Se trova la pedina nera ritorna risposta positiva
 				if(s.getPawn(i, colonna).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
+				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+				if(!s.getPawn(i, colonna).equalsPawn("O"))
+				{
+					return false;
+				}
+				//Se trova una cittadella ritorna risposta negativa
+				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+				if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a4") 
+						&& !this.citadels.contains("i4") && !this.citadels.contains("e8"))
 				{
 					return false;
 				}			
 			}
-		} else if(turno.equals("B")) {
-			for(int i=riga; i>=0;i--) {
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
+		if(colonna!=0) {
+			for(int i=colonna-1; i>=0;i--)
+			{
+				//Se trova la pedina nera ritorna risposta positiva
+				if(s.getPawn(riga, i).equalsPawn("B"))
+				{
+					return true;
+				}
+				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+				if(!s.getPawn(riga, i).equalsPawn("O"))
+				{
+					return false;
+				}
+				//Se trova una cittadella ritorna risposta negativa
+				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+				if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("b5") 
+						&& !this.citadels.contains("f1") && !this.citadels.contains("f9"))
+				{
+					return false;
+				}			
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, in uno qualunque dei lati, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArrive(int riga, int colonna, StateTablut s)
+	{
+		if(checkWhiteCanArriveFromBottom(riga, colonna, s) || 
+				checkWhiteCanArriveFromTop(riga, colonna, s) || 
+				checkWhiteCanArriveFromRight(riga, colonna, s) || 
+				checkWhiteCanArriveFromLeft(riga, colonna, s))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveFromTop(int riga, int  colonna, StateTablut s) {
+		if(riga!=0) {
+			for(int i=riga-1; i>=0;i--) {
+				//Se trova la pedina nera ritorna risposta positiva
 				if(s.getPawn(i, colonna).equalsPawn("W"))
 				{
 					return true;
 				}
-				if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonna)))
+				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+				if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
+				{
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveFromRight(int riga, int colonna, StateTablut s) {
+		if(colonna!=9) {
+			for(int i=colonna+1; i<9;i++)
+			{
+				//Se trova la pedina bianca ritorna risposta positiva
+				if(s.getPawn(riga, i).equalsPawn("W"))
+				{
+					return true;
+				}
+				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+				if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
+				{
+					return false;
+				}			
+			}		
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveFromBottom(int riga, int colonna, StateTablut s) {
+		if(riga!=9) {
+			for(int i=riga+1; i<9;i++)
+			{
+				//Se trova la pedina bianca ritorna risposta positiva
+				if(s.getPawn(i, colonna).equalsPawn("W"))
+				{
+					return true;
+				}
+				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+				if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
 				{
 					return false;
 				}			
 			}
 		}
-		
 		return false;
 	}
 	
-	/*
-	 * Controlla se esiste un nero che possa arrivare, da destra, sulla casella (riga, colonna) passata come parametro
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
-	public boolean checkBlackCanArriveFromRight(int riga, int colonna, String turno, StateTablut s) {
-		if(turno.equals("W")) {
-			for(int i=colonna; i<9;i++)
+	public boolean checkWhiteCanArriveFromLeft(int riga, int colonna, StateTablut s) {
+		if(colonna!=0) {
+			for(int i=colonna-1; i>=0;i--)
 			{
+				//Se trova la pedina bianca ritorna risposta positiva
 				if(s.getPawn(riga, i).equalsPawn("B"))
 				{
 					return true;
 				}
-				if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
-				{
-					return false;
-				}			
-			}
-		} else if(turno.equals("B")) {
-			for(int i=colonna; i<9;i++)
-			{
-				if(s.getPawn(riga, i).equalsPawn("W"))
-				{
-					return true;
-				}
-				if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
-				{
-					return false;
-				}			
-			}
-		}
-		
-		return false;
-	}
-	
-	/*
-	 * Controlla se esiste un nero che possa arrivare, da sinistra, sulla casella (riga, colonna) passata come parametro
-	 */
-	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, String turno, StateTablut s) {
-		if(turno.equals("W")) {	
-			for(int i=colonna; i>=0;i--)
-			{
-				if(s.getPawn(riga, i).equalsPawn("B"))
-				{
-					return true;
-				}
-				if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
-				{
-					return false;
-				}			
-			}
-		}else if(turno.equals("B")) {
-			for(int i=colonna; i>=0;i--)
-			{
-				if(s.getPawn(riga, i).equalsPawn("W"))
-				{
-					return true;
-				}
-				if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i)))
+				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+				if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
 				{
 					return false;
 				}			
@@ -1186,9 +1308,9 @@ public class CommonHeuristicFunction {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, "W", s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, "W", s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, "W", s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
+				!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
 		//checkBlack deve essere falso per far ritornare true il return
 	}
 	
@@ -1219,9 +1341,9 @@ public class CommonHeuristicFunction {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, "W", s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, "W", s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
-				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, "W", s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
+				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
 		//checkBlack deve essere falso per far ritornare true il return;
 	}
 	
@@ -1253,9 +1375,9 @@ public class CommonHeuristicFunction {
 		
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) &&
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, "W", s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
-				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, "W", s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
-				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, "W", s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
+				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
+				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
+				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
 	}
 	
 	/**
@@ -1284,9 +1406,9 @@ public class CommonHeuristicFunction {
 	
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) && 
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe, "W", s) && 
-				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, "W", s) &&
-				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, "W", s);
+				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe, s) && 
+				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, s) &&
+				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, s);
 	}
 	
 	/**

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class IntelligenzaBianca implements IA {
 
-	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
