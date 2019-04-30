@@ -9,11 +9,12 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import IAPlayer.CommonHeuristicFunction;
 import IAPlayer.IntelligenzaBianca;
 
 class IntelligenzaBiancaTest {
 
-	private IntelligenzaBianca b = new IntelligenzaBianca();
+	private CommonHeuristicFunction c = new CommonHeuristicFunction();
 	private StateTablut s = new StateTablut();
 	private Pawn[][] board =   {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
@@ -53,15 +54,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isColumnFree(0, s));
-		Assert.assertFalse(b.isColumnFree(1, s));
-		Assert.assertTrue(b.isColumnFree(2, s));
-		Assert.assertFalse(b.isColumnFree(3, s));
-		Assert.assertFalse(b.isColumnFree(4, s));
-		Assert.assertFalse(b.isColumnFree(5, s));
-		Assert.assertTrue(b.isColumnFree(6, s));
-		Assert.assertFalse(b.isColumnFree(7, s));
-		Assert.assertFalse(b.isColumnFree(8, s));			
+		Assert.assertFalse(c.isColumnFree(0, s));
+		Assert.assertFalse(c.isColumnFree(1, s));
+		Assert.assertTrue(c.isColumnFree(2, s));
+		Assert.assertFalse(c.isColumnFree(3, s));
+		Assert.assertFalse(c.isColumnFree(4, s));
+		Assert.assertFalse(c.isColumnFree(5, s));
+		Assert.assertTrue(c.isColumnFree(6, s));
+		Assert.assertFalse(c.isColumnFree(7, s));
+		Assert.assertFalse(c.isColumnFree(8, s));			
 	}
 	
 	@Test
@@ -92,15 +93,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isColumnFree(0, s));
-		Assert.assertFalse(b.isColumnFree(1, s));
-		Assert.assertFalse(b.isColumnFree(2, s));
-		Assert.assertFalse(b.isColumnFree(3, s));
-		Assert.assertFalse(b.isColumnFree(4, s));
-		Assert.assertFalse(b.isColumnFree(5, s));
-		Assert.assertFalse(b.isColumnFree(6, s));
-		Assert.assertFalse(b.isColumnFree(7, s));
-		Assert.assertFalse(b.isColumnFree(8, s));			
+		Assert.assertFalse(c.isColumnFree(0, s));
+		Assert.assertFalse(c.isColumnFree(1, s));
+		Assert.assertFalse(c.isColumnFree(2, s));
+		Assert.assertFalse(c.isColumnFree(3, s));
+		Assert.assertFalse(c.isColumnFree(4, s));
+		Assert.assertFalse(c.isColumnFree(5, s));
+		Assert.assertFalse(c.isColumnFree(6, s));
+		Assert.assertFalse(c.isColumnFree(7, s));
+		Assert.assertFalse(c.isColumnFree(8, s));			
 	}
 	
 	@Test
@@ -130,15 +131,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isRowFree(0, s));
-		Assert.assertFalse(b.isRowFree(1, s));
-		Assert.assertTrue(b.isRowFree(2, s));
-		Assert.assertFalse(b.isRowFree(3, s));
-		Assert.assertFalse(b.isRowFree(4, s));
-		Assert.assertFalse(b.isRowFree(5, s));
-		Assert.assertTrue(b.isRowFree(6, s));
-		Assert.assertFalse(b.isRowFree(7, s));
-		Assert.assertFalse(b.isRowFree(8, s));			
+		Assert.assertFalse(c.isRowFree(0, s));
+		Assert.assertFalse(c.isRowFree(1, s));
+		Assert.assertTrue(c.isRowFree(2, s));
+		Assert.assertFalse(c.isRowFree(3, s));
+		Assert.assertFalse(c.isRowFree(4, s));
+		Assert.assertFalse(c.isRowFree(5, s));
+		Assert.assertTrue(c.isRowFree(6, s));
+		Assert.assertFalse(c.isRowFree(7, s));
+		Assert.assertFalse(c.isRowFree(8, s));			
 	}
 	
 	@Test
@@ -168,15 +169,15 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isRowFree(0, s));
-		Assert.assertFalse(b.isRowFree(1, s));
-		Assert.assertFalse(b.isRowFree(2, s));
-		Assert.assertFalse(b.isRowFree(3, s));
-		Assert.assertFalse(b.isRowFree(4, s));
-		Assert.assertFalse(b.isRowFree(5, s));
-		Assert.assertFalse(b.isRowFree(6, s));
-		Assert.assertFalse(b.isRowFree(7, s));
-		Assert.assertFalse(b.isRowFree(8, s));			
+		Assert.assertFalse(c.isRowFree(0, s));
+		Assert.assertFalse(c.isRowFree(1, s));
+		Assert.assertFalse(c.isRowFree(2, s));
+		Assert.assertFalse(c.isRowFree(3, s));
+		Assert.assertFalse(c.isRowFree(4, s));
+		Assert.assertFalse(c.isRowFree(5, s));
+		Assert.assertFalse(c.isRowFree(6, s));
+		Assert.assertFalse(c.isRowFree(7, s));
+		Assert.assertFalse(c.isRowFree(8, s));			
 	}
 	
 	@Test
@@ -206,8 +207,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.isSemicolumnFree(1, s));
-		Assert.assertTrue(b.isSemicolumnFree(7, s));
+		Assert.assertTrue(c.isSemicolumnFree(1, s));
+		Assert.assertTrue(c.isSemicolumnFree(7, s));
 	}
 	
 	@Test
@@ -239,8 +240,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isSemirowFree(1, s));
-		Assert.assertFalse(b.isSemirowFree(7, s));
+		Assert.assertFalse(c.isSemirowFree(1, s));
+		Assert.assertFalse(c.isSemirowFree(7, s));
 	}
 	
 	@Test
@@ -270,8 +271,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.isSemicolumnFree(1, s));
-		Assert.assertTrue(b.isSemicolumnFree(7, s));
+		Assert.assertTrue(c.isSemicolumnFree(1, s));
+		Assert.assertTrue(c.isSemicolumnFree(7, s));
 	}
 	
 	@Test
@@ -303,8 +304,8 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.isSemirowFree(1, s));
-		Assert.assertFalse(b.isSemirowFree(7, s));
+		Assert.assertFalse(c.isSemirowFree(1, s));
+		Assert.assertFalse(c.isSemirowFree(7, s));
 	}
 		
 	@Test
@@ -334,7 +335,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertFalse(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -367,7 +368,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -400,7 +401,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -433,7 +434,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -466,7 +467,7 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
@@ -500,7 +501,418 @@ class IntelligenzaBiancaTest {
 		s.setTurn(Turn.BLACK);
 		System.out.println("qui");
 		//Esecuzione Test
-		Assert.assertFalse(b.kingCanBeCaptured(4, 4, s));
+		Assert.assertFalse(c.kingCanBeCaptured(4, 4, s));
+	}
+	
+	@Test
+	void enemyOnTheTopTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.BLACK;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheTop(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheTopTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheTop(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheTopTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][4] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheTop(2, 4, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheRightTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.BLACK;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheRight(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheRightTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWWOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheRight(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheRightTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][3] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOWOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheRight(1, 3, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheBottomTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheBottom(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheBottomTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheBottom(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheBottomTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[6][4] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheBottom(6, 4, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheLeftTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][1] = Pawn.BLACK;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OBWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheLeft(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheLeftTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][1] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OWWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheLeft(2, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheLeftTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOWOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheLeft(1, 5, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		//Assert.assertTrue(c.checkBlackCanArriveFromBottom(int riga, int colonna, String turno, StateTablut s));
+			
 	}
 
 }
