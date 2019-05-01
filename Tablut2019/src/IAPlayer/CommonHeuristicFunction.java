@@ -930,6 +930,87 @@ public class CommonHeuristicFunction {
 	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
 	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveAdjacent(int riga, int colonna, StateTablut s)
+	{
+		if(checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s) || 
+				checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s) || 
+				checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s) || 
+				checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveAdjacentInTopPosition(int riga, int  colonna, StateTablut s) {
+		if(riga!=0) {
+			if(checkBlackCanArriveFromTop(riga-1, colonna, s) || checkBlackCanArriveFromRight(riga-1, colonna, s) || checkBlackCanArriveFromLeft(riga-1, colonna, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
+		if(colonna!=8) {
+			if(checkBlackCanArriveFromTop(riga, colonna+1, s) || checkBlackCanArriveFromRight(riga, colonna+1, s) || checkBlackCanArriveFromLeft(riga, colonna+1, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
+		if(riga!=8) {
+			if(checkBlackCanArriveFromTop(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkBlackCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
+		if(colonna!=0) {
+			if(checkBlackCanArriveFromTop(riga, colonna-1, s) || checkBlackCanArriveFromRight(riga, colonna-1, s) || checkBlackCanArriveFromLeft(riga, colonna-1, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina nera puo' giungere da qualsiasi lato alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina nera 
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina nera
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArrive(int riga, int colonna, StateTablut s)
@@ -943,132 +1024,148 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una pedina nera puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina nera puo' giungere da sopra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina nera 
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina nera
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
-	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		if(riga!=0) {
-			for(int i=riga-1; i>=0;i--) {
-				//Se trova la pedina nera ritorna risposta positiva
-				if(s.getPawn(i, colonna).equalsPawn("B"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
-				if(!s.getPawn(i, colonna).equalsPawn("O"))
-				{
-					return false;
-				}
-				//Se trova una cittadella ritorna risposta negativa
-				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-				if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a6") 
-						&& !this.citadels.contains("e2") && !this.citadels.contains("i6"))
-				{
-					return false;
-				}
+		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=riga; i>=0;i--) {
+			//Se trova la pedina nera ritorna risposta positiva
+			if(s.getPawn(i, colonna).equalsPawn("B"))
+			{
+				return true;
+			}
+			//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+			if(!s.getPawn(i, colonna).equalsPawn("O"))
+			{
+				return false;
+			}
+			//Se trova una cittadella ritorna risposta negativa
+			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+			if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a6") 
+					&& !this.citadels.contains("e2") && !this.citadels.contains("i6"))
+			{
+				return false;
 			}
 		}
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina nera puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina nera puo' giungere da destra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina nera 
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina nera
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
-	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		if(colonna!=9) {
-			for(int i=colonna+1; i<9;i++)
-			{
-				//Se trova la pedina nera ritorna risposta positiva
-				if(s.getPawn(riga, i).equalsPawn("B"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
-				if(!s.getPawn(riga, i).equalsPawn("O"))
-				{
-					return false;
-				}
-				//Se trova una cittadella ritorna risposta negativa
-				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-				if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("d1") 
-						&& !this.citadels.contains("d9") && !this.citadels.contains("h5"))
-				{
-					return false;
-				}			
-			}		
+		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return false;
 		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=colonna; i<9;i++)
+		{
+			//Se trova la pedina nera ritorna risposta positiva
+			if(s.getPawn(riga, i).equalsPawn("B"))
+			{
+				return true;
+			}
+			//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+			if(!s.getPawn(riga, i).equalsPawn("O"))
+			{
+				return false;
+			}
+			//Se trova una cittadella ritorna risposta negativa
+			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+			if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("d1") 
+					&& !this.citadels.contains("d9") && !this.citadels.contains("h5"))
+			{
+				return false;
+			}			
+		}		
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina nera puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina nera puo' giungere dal basso alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina nera 
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina nera
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
-	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		if(riga!=9) {
-			for(int i=riga+1; i<9;i++)
+		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=riga; i<9;i++)
+		{
+			//Se trova la pedina nera ritorna risposta positiva
+			if(s.getPawn(i, colonna).equalsPawn("B"))
 			{
-				//Se trova la pedina nera ritorna risposta positiva
-				if(s.getPawn(i, colonna).equalsPawn("B"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
-				if(!s.getPawn(i, colonna).equalsPawn("O"))
-				{
-					return false;
-				}
-				//Se trova una cittadella ritorna risposta negativa
-				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-				if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a4") 
-						&& !this.citadels.contains("i4") && !this.citadels.contains("e8"))
-				{
-					return false;
-				}			
+				return true;
 			}
+			//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+			if(!s.getPawn(i, colonna).equalsPawn("O"))
+			{
+				return false;
+			}
+			//Se trova una cittadella ritorna risposta negativa
+			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+			if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a4") 
+					&& !this.citadels.contains("i4") && !this.citadels.contains("e8"))
+			{
+				return false;
+			}			
 		}
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina nera puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina nera puo' giungere da sinistra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina nera 
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina nera
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
-	 * @return True se una pedina del nera puo' arrivare, false in caso contrario
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		if(colonna!=0) {
-			for(int i=colonna-1; i>=0;i--)
+		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=colonna; i>=0;i--)
+		{
+			//Se trova la pedina nera ritorna risposta positiva
+			if(s.getPawn(riga, i).equalsPawn("B"))
 			{
-				//Se trova la pedina nera ritorna risposta positiva
-				if(s.getPawn(riga, i).equalsPawn("B"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
-				if(!s.getPawn(riga, i).equalsPawn("O"))
-				{
-					return false;
-				}
-				//Se trova una cittadella ritorna risposta negativa
-				//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-				if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("b5") 
-						&& !this.citadels.contains("f1") && !this.citadels.contains("f9"))
-				{
-					return false;
-				}			
+				return true;
 			}
+			//Se trova un ostacolo(pedina bianca o trono) ritorna risposta negativa
+			if(!s.getPawn(riga, i).equalsPawn("O"))
+			{
+				return false;
+			}
+			//Se trova una cittadella ritorna risposta negativa
+			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
+			if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("b5") 
+					&& !this.citadels.contains("f1") && !this.citadels.contains("f9"))
+			{
+				return false;
+			}			
 		}
 		return false;
 	}
@@ -1077,6 +1174,87 @@ public class CommonHeuristicFunction {
 	 * Controlla se una pedina bianca puo' giungere adiacente, in uno qualunque dei lati, alla pedina passata come parametro
 	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
 	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveAdjacent(int riga, int colonna, StateTablut s)
+	{
+		if(checkWhiteCanArriveAdjacentInBottomPosition(riga, colonna, s) || 
+				checkWhiteCanArriveAdjacentInTopPosition(riga, colonna, s) || 
+				checkWhiteCanArriveAdjacentInRightPosition(riga, colonna, s) || 
+				checkWhiteCanArriveAdjacentInLeftPosition(riga, colonna, s))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveAdjacentInTopPosition(int riga, int  colonna, StateTablut s) {
+		if(riga!=0) {
+			if(checkWhiteCanArriveFromTop(riga-1, colonna, s) || checkWhiteCanArriveFromRight(riga-1, colonna, s) || checkWhiteCanArriveFromLeft(riga-1, colonna, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
+		if(colonna!=8) {
+			if(checkWhiteCanArriveFromTop(riga, colonna+1, s) || checkWhiteCanArriveFromRight(riga, colonna+1, s) || checkWhiteCanArriveFromLeft(riga, colonna+1, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
+		if(riga!=8) {
+			if(checkWhiteCanArriveFromTop(riga+1, colonna, s) || checkWhiteCanArriveFromRight(riga+1, colonna, s) || checkWhiteCanArriveFromLeft(riga+1, colonna, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
+	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
+	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se una pedina nera puo' arrivare, false in caso contrario
+	 */
+	public boolean checkWhiteCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
+		if(colonna!=0) {
+			if(checkWhiteCanArriveFromTop(riga, colonna-1, s) || checkWhiteCanArriveFromRight(riga, colonna-1, s) || checkWhiteCanArriveFromLeft(riga, colonna-1, s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca puo' giungere da qualsiasi lato alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
@@ -1091,104 +1269,120 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato alto, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina bianca puo' giungere da sopra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		if(riga!=0) {
-			for(int i=riga-1; i>=0;i--) {
-				//Se trova la pedina nera ritorna risposta positiva
-				if(s.getPawn(i, colonna).equalsPawn("W"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
-				if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
-				{
-					return false;
-				}
+		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=riga; i>=0;i--) {
+			//Se trova la pedina nera ritorna risposta positiva
+			if(s.getPawn(i, colonna).equalsPawn("W"))
+			{
+				return true;
+			}
+			//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+			if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
+			{
+				return false;
 			}
 		}
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato destro, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina bianca puo' giungere da destra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		if(colonna!=9) {
-			for(int i=colonna+1; i<9;i++)
-			{
-				//Se trova la pedina bianca ritorna risposta positiva
-				if(s.getPawn(riga, i).equalsPawn("W"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
-				if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
-				{
-					return false;
-				}			
-			}		
+		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return false;
 		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=colonna; i<9;i++)
+		{
+			//Se trova la pedina bianca ritorna risposta positiva
+			if(s.getPawn(riga, i).equalsPawn("W"))
+			{
+				return true;
+			}
+			//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+			if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
+			{
+				return false;
+			}			
+		}		
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato basso, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina bianca puo' giungere da sotto alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		if(riga!=9) {
-			for(int i=riga+1; i<9;i++)
+		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=riga; i<9;i++)
+		{
+			//Se trova la pedina bianca ritorna risposta positiva
+			if(s.getPawn(i, colonna).equalsPawn("W"))
 			{
-				//Se trova la pedina bianca ritorna risposta positiva
-				if(s.getPawn(i, colonna).equalsPawn("W"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
-				if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
-				{
-					return false;
-				}			
+				return true;
 			}
+			//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+			if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna)))
+			{
+				return false;
+			}			
 		}
 		return false;
 	}
 	
 	/**
-	 * Controlla se una pedina bianca puo' giungere adiacente, nel lato sinistro, alla pedina passata come parametro
-	 * @param riga Riga in cui si trova la pedina che vogliamo controllare
-	 * @param colonna Colonna in cui si trova la pedina che vogliamo controllare
+	 * Controlla se una pedina bianca puo' giungere da sinistra alla posizione passata come parametro
+	 * @param riga Riga della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
+	 * @param colonna Colonna della posizione dove vogliamo controllare se puo' arrivare una pedina bianca
 	 * @param s StateTablut ovvero lo stato che si vuole valutare
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		if(colonna!=0) {
-			for(int i=colonna-1; i>=0;i--)
+		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
+		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return false;
+		}
+		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
+		for(int i=colonna-1; i>=0;i--)
+		{
+			//Se trova la pedina bianca ritorna risposta positiva
+			if(s.getPawn(riga, i).equalsPawn("W"))
 			{
-				//Se trova la pedina bianca ritorna risposta positiva
-				if(s.getPawn(riga, i).equalsPawn("B"))
-				{
-					return true;
-				}
-				//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
-				if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
-				{
-					return false;
-				}			
+				return true;
 			}
+			//Se trova un ostacolo(pedina nera, trono, cittadella) ritorna risposta negativa
+			if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i)))
+			{
+				return false;
+			}			
 		}
 		return false;
 	}
