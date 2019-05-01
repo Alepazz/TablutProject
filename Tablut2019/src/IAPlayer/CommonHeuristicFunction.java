@@ -509,7 +509,6 @@ public class CommonHeuristicFunction {
 		return false;
 	}
 	
-	//TODO: da rivedere per via del cambiamento delle funzioni interne a checkPawnCanArrive
 	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno bianco
