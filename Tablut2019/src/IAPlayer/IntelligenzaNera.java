@@ -41,7 +41,7 @@ public class IntelligenzaNera implements IA {
 		
 		int value =0;
 		
-		//numero pedine
+		///numero pedine
 		int nBianchi=0;
 		int nNeri=0;
 		int rigaRe=-1;
