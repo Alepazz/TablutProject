@@ -6,8 +6,10 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class IntelligenzaNera implements IA {
 	
+	private static List<Livello> albero;
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
@@ -17,6 +19,7 @@ public class IntelligenzaNera implements IA {
 	private CommonHeuristicFunction common;
 	
 	public IntelligenzaNera() {
+		this.albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
 		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
@@ -201,20 +204,62 @@ public class IntelligenzaNera implements IA {
 		return null;
 	}
 
+	
+	private class TreeGenerator implements Runnable {
+		private Nodo nodoAttuale;
+		private Simulator simulatore;
+
+		public TreeGenerator(Nodo n, Simulator s) {
+			this.nodoAttuale = n;
+			this.simulatore = s;
+		}
+
+
+		public void run() {
+			try {
+				Livello liv = new Livello();
+				liv.add(this.nodoAttuale);
+				albero.add(liv);
+				Livello livEspanso = null;
+				for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
+				{
+					livEspanso = new Livello();
+					albero.add(livEspanso);
+					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+					{
+						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
+					}
+				}
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	@SuppressWarnings("static-access")
 	@Override
-	public Action getBetterMove(StateTablut s) {
-		int i = 0;
+	public synchronized Action getBetterMove(StateTablut s) {
 		Action a = null;
 		long t1 = System.currentTimeMillis();
-		float betterValue=-100000;
+
 		try {
+			for(Livello l: this.albero)
+			{
+				l.getNodi().clear();
+			}
+			this.albero.clear();
 			Nodo node = new Nodo(s);
-			Livello liv0 = new Livello();
-			Livello liv1 = new Livello();
-			Livello liv2 = new Livello();
-			Livello liv3 = new Livello();
+			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
+			Thread t = new Thread(treeGenerator);
+			t.start();
+			this.wait(33000);
+			System.out.println("Lancio l'interruzione");
+			t.interrupt();
+			t.stop();
 			
-			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			/*liv0.add(this.simulatore.mossePossibiliComplete(node));
 			System.out.println("Livello 0 espanso");
 			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
 			
@@ -228,76 +273,27 @@ public class IntelligenzaNera implements IA {
 			{
 				liv2.add(this.simulatore.mossePossibiliComplete(n));
 			}
-			System.out.println("Livello 2 espanso");
-			
+			System.out.println("Livello 2 espanso");*/
+
 			/*for(Nodo n : liv2.getNodi())
 			{
 				liv3.add(this.simulatore.mossePossibiliComplete(n));
 				System.out.println(liv3.getNodi().size());
 			}*/
 			//System.out.println("Livello 3 espanso");
-			
-			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
-			System.out.println("Nodi espansi: "+ i);
-			//ciclo tutto il livello 4 (turno nero, becco il min)
-			/*for(Nodo n : liv3.getNodi())
+
+			for(int x=0; x<albero.size(); x++)
 			{
-				float heu =this.getHeuristicValueOfState(n.getStato());
-				//System.out.println(n.getStato().toString()+ " " + heu);
-				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
-				{
-					n.getPadre().setValue(heu);
-				}
-			}*/
-			
-			//ciclo tutti il livello 3 (turno bianco, becco il max)
-			for(Nodo n : liv2.getNodi())
-			{
-				float heu =this.getHeuristicValue(n.getStato());
-				System.out.println(n.getStato().toString()+ " " + heu);
-				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
-				{
-					n.getPadre().setValue(heu);
-				}
-				/*float b = n.getValue();
-				if(betterValue<=b)
-				{
-					betterValue = b;
-					n.getPadre().setValue(betterValue);
-				}*/
+				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
-			
-			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
-			betterValue=10000;
-			for(Nodo n : liv1.getNodi())
-			{
-				float b = n.getValue();
-				if(betterValue>=b)
-				{
-					betterValue = b;
-					n.getPadre().setValue(betterValue);
-				}
-			}
-			
-			betterValue=-100000;
-			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
-			for(Nodo n : liv0.getNodi())
-			{
-				float b = n.getValue();
-				if(betterValue<=b)
-				{
-					betterValue = b;
-					a = n.getAzione();
-				}
-			}
-		
+			this.wait(40000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-	    
+		
 		return a;
 	}
 

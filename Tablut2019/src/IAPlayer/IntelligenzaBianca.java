@@ -258,7 +258,7 @@ public class IntelligenzaBianca implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(32000);
+			this.wait(33000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
