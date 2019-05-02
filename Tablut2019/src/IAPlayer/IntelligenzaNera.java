@@ -259,48 +259,8 @@ public class IntelligenzaNera implements IA {
 				l.getNodi().clear();
 			}
 			this.albero.clear();
-			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
-			Thread t = new Thread(treeGenerator);
-			t.start();
-			this.wait(33000);
-			System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			t.stop();
-			
-			/*liv0.add(this.simulatore.mossePossibiliComplete(node));
-			System.out.println("Livello 0 espanso");
-			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-			
-			for(Nodo n : liv0.getNodi())
-			{
-				liv1.add(this.simulatore.mossePossibiliComplete(n));
-			}
-			System.out.println("Livello 1 espanso");
-			
-			for(Nodo n : liv1.getNodi())
-			{
-				liv2.add(this.simulatore.mossePossibiliComplete(n));
-			}
-			System.out.println("Livello 2 espanso");*/
-
-			/*for(Nodo n : liv2.getNodi())
-			{
-				liv3.add(this.simulatore.mossePossibiliComplete(n));
-				System.out.println(liv3.getNodi().size());
-			}*/
-			//System.out.println("Livello 3 espanso");
-
-			for(int x=0; x<albero.size(); x++)
-			{
-				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-			}
-			
-			this.wait(40000);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return a;
+		
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
