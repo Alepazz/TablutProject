@@ -10,7 +10,7 @@ import java.util.List;
 
 public class IntelligenzaBianca implements IA {
 
-	private List<Livello> albero;
+	private static List<Livello> albero;
 	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
@@ -224,14 +224,15 @@ public class IntelligenzaBianca implements IA {
 				Livello liv = new Livello();
 				liv.add(this.nodoAttuale);
 				albero.add(liv);
-				for(int livelloDaEspandere=0; ;livelloDaEspandere++)
+				Livello livEspanso = null;
+				for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
 				{
-					Livello livEspanso = new Livello();
+					livEspanso = new Livello();
+					albero.add(livEspanso);
 					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
 					{
 						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
 					}
-					albero.add(livEspanso);
 				}
 			} catch (Exception e)
 			{
@@ -248,14 +249,20 @@ public class IntelligenzaBianca implements IA {
 		long t1 = System.currentTimeMillis();
 
 		try {
+			for(Livello l: this.albero)
+			{
+				l.getNodi().clear();
+			}
+			this.albero.clear();
 			Nodo node = new Nodo(s);
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(40000);
+			this.wait(33000);
 			System.out.println("Lancio l'interruzione");
-			t.interrupted();
-
+			t.interrupt();
+			t.stop();
+			
 			/*liv0.add(this.simulatore.mossePossibiliComplete(node));
 			System.out.println("Livello 0 espanso");
 			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
@@ -283,13 +290,14 @@ public class IntelligenzaBianca implements IA {
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
+			this.wait(40000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-
+		
 		return a;
 	}
 
