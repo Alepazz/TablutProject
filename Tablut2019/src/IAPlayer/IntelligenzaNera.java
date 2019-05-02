@@ -205,96 +205,142 @@ public class IntelligenzaNera implements IA {
 	}
 
 	
-	private class TreeGenerator implements Runnable {
-		private Nodo nodoAttuale;
-		private Simulator simulatore;
-
-		public TreeGenerator(Nodo n, Simulator s) {
-			this.nodoAttuale = n;
-			this.simulatore = s;
-		}
-
-
-		public void run() {
-			try {
-				Livello liv = new Livello();
-				liv.add(this.nodoAttuale);
-				albero.add(liv);
-				Livello livEspanso = null;
-				for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
+	//valuta gli ultimi rami dell'albero
+		//da implementare i tagli ecc...
+		private class HeuristicValuator implements Runnable {
+			private IntelligenzaNera ia;
+			
+			public HeuristicValuator(IntelligenzaNera ia){
+				this.ia = ia;
+			}
+			
+			public void run() {
+				//ciclo sull'ultimo livello
+				for(Nodo n : albero.get(albero.size()-1).getNodi())
 				{
-					livEspanso = new Livello();
-					albero.add(livEspanso);
-					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+					float heu = ia.getHeuristicValue(n.getStato());
+					//siccome evolviamo per 5 livelli saranno stati dell'avversario 
+					if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
 					{
-						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
+						n.getPadre().setValue(heu);
+					}				
+				}
+				//ciclo il penultimo livello
+				for(Nodo n : albero.get(albero.size()-2).getNodi())
+				{
+					if(Float.isNaN(n.getValue()))
+					{
+						//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+						float heu = ia.getHeuristicValue(n.getStato());
+						n.setValue(heu);
+					}				
+				}
+			}
+			
+		}
+		
+		//thread che crea l'albero di gioco
+		private class TreeGenerator implements Runnable {
+			private Nodo nodoAttuale;
+			private Simulator simulatore;
+
+			public TreeGenerator(Nodo n, Simulator s) {
+				this.nodoAttuale = n;
+				this.simulatore = s;
+			}
+
+
+			public void run() {
+				try {
+					Livello liv = new Livello();
+					liv.add(this.nodoAttuale);
+					albero.add(liv);
+					Livello livEspanso = null;
+					for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
+					{
+						livEspanso = new Livello();
+						albero.add(livEspanso);
+						for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+						{
+							livEspanso.add(this.simulatore.mossePossibiliComplete(n));
+						}
+					}
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+
+		}
+			
+		@SuppressWarnings("static-access")
+		@Override
+		public synchronized Action getBetterMove(StateTablut s) {
+			Action a = null;
+			long t1 = System.currentTimeMillis();
+
+			try {
+				Nodo node = new Nodo(s);
+				TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
+				Thread t = new Thread(treeGenerator);
+				t.start();
+				this.wait(33000);
+				System.out.println("Lancio l'interruzione");
+				t.interrupt();
+				t.stop();
+				
+				for(int x=0; x<albero.size(); x++)
+				{
+					System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
+				}
+				
+				HeuristicValuator heuristicValuator = new HeuristicValuator(this);
+				t = new Thread(heuristicValuator);
+				t.start();
+				this.wait(20000);
+				System.out.println("Lancio l'interruzione");
+				t.interrupt();
+				t.stop();
+				
+
+				for(Nodo n : albero.get(3).getNodi())
+				{
+					if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+					{
+						n.getPadre().setValue(n.getValue());
 					}
 				}
-			} catch (Exception e)
-			{
+				for(Nodo n : albero.get(2).getNodi())
+				{
+					if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+					{
+						n.getPadre().setValue(n.getValue());
+					}
+				}
+				for(Nodo n : albero.get(1).getNodi())
+				{
+					if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+					{
+						n.getPadre().setValue(n.getValue());
+						a=n.getAzione();
+					}
+				}
+				//System.out.println("Livello 3 espanso");
+
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-
-	}
-	
-	@SuppressWarnings("static-access")
-	@Override
-	public synchronized Action getBetterMove(StateTablut s) {
-		Action a = null;
-		long t1 = System.currentTimeMillis();
-
-		try {
+			long t2 = System.currentTimeMillis();
+			System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
 			for(Livello l: this.albero)
 			{
 				l.getNodi().clear();
 			}
 			this.albero.clear();
-			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
-			Thread t = new Thread(treeGenerator);
-			t.start();
-			this.wait(33000);
-			System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			t.stop();
-			
-			/*liv0.add(this.simulatore.mossePossibiliComplete(node));
-			System.out.println("Livello 0 espanso");
-			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-			
-			for(Nodo n : liv0.getNodi())
-			{
-				liv1.add(this.simulatore.mossePossibiliComplete(n));
-			}
-			System.out.println("Livello 1 espanso");
-			
-			for(Nodo n : liv1.getNodi())
-			{
-				liv2.add(this.simulatore.mossePossibiliComplete(n));
-			}
-			System.out.println("Livello 2 espanso");*/
-
-			/*for(Nodo n : liv2.getNodi())
-			{
-				liv3.add(this.simulatore.mossePossibiliComplete(n));
-				System.out.println(liv3.getNodi().size());
-			}*/
-			//System.out.println("Livello 3 espanso");
-
-			for(int x=0; x<albero.size(); x++)
-			{
-				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-			}
-			this.wait(40000);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return a;
 		}
-		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		
-		return a;
-	}
 
 }
