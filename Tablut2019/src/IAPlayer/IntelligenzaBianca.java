@@ -287,7 +287,7 @@ public class IntelligenzaBianca implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(33000);
+			this.wait(3300);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -300,7 +300,7 @@ public class IntelligenzaBianca implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(20000);
+			this.wait(2000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
