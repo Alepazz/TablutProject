@@ -1,0 +1,102 @@
+mag 02, 2019 4:09:07 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+mag 02, 2019 4:09:07 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+mag 02, 2019 4:09:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Bianco
+mag 02, 2019 4:09:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player bianco in corso..
+mag 02, 2019 4:09:12 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: White player name:	random
+mag 02, 2019 4:09:13 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Nero
+mag 02, 2019 4:09:13 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player nero in corso..
+mag 02, 2019 4:09:14 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Black player name:	Partecipare_e_importante
+mag 02, 2019 4:09:14 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai giocatori
+mag 02, 2019 4:09:15 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:09:17 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from c5 to c8
+mag 02, 2019 4:09:17 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:09:17 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:10:03 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from d1 to d3
+mag 02, 2019 4:10:03 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:10:03 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:10:05 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from e6 to c6
+mag 02, 2019 4:10:05 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:10:05 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:10:44 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from e1 to d1
+mag 02, 2019 4:10:44 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:10:44 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:10:46 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from c6 to c1
+mag 02, 2019 4:10:46 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:10:46 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:11:33 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from f1 to f2
+mag 02, 2019 4:11:33 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:11:33 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:11:35 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from g5 to g7
+mag 02, 2019 4:11:35 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:11:35 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:12:21 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from d1 to h1
+mag 02, 2019 4:12:21 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:12:21 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:12:23 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from e4 to h4
+mag 02, 2019 4:12:23 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:12:23 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:13:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from h1 to h2
+mag 02, 2019 4:13:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:13:11 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:13:13 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from f5 to f3
+mag 02, 2019 4:13:13 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:13:13 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:13:56 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from e8 to i8
+mag 02, 2019 4:13:56 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:13:56 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 02, 2019 4:13:58 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from c1 to c3
+mag 02, 2019 4:13:58 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 02, 2019 4:13:58 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 02, 2019 4:14:24 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from null to null
+mag 02, 2019 4:14:24 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Chiusura sistema per troppi errori giocatore nero
