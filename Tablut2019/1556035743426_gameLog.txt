@@ -1,2 +1,0 @@
-apr 23, 2019 6:09:03 PM it.unibo.ai.didattica.competition.tablut.domain.GameTablut <init>
-BUONO: Inizio partita
