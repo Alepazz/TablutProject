@@ -23,9 +23,172 @@ public class IntelligenzaNera implements IA {
 	}
 
 
-	private float getHeuristicValue(StateTablut s) {
-		// TODO Auto-generated method stub
-		return 0;
+	private int getHeuristicValue(StateTablut s) {
+		
+		if(s.getTurn().equalsTurn("WW"))
+		{
+			return this.MIN_VALUE;
+		}
+		if(s.getTurn().equalsTurn("BW"))
+		{
+			return this.MAX_VALUE;
+		}
+		if(s.getTurn().equalsTurn("D"))
+		{
+			return 0;
+		}
+		
+		
+		int value =0;
+		
+		//numero pedine
+		int nBianchi=0;
+		int nNeri=0;
+		int rigaRe=-1;
+		int colonnaRe=-1;
+		//faccio una lista di tutti i neri/bianchi e delle loro posizioni
+		String[] neri = new String[16];
+		String[] bianchi = new String[8];
+	
+		int indexNeri=0;
+		int indexBianchi=0;
+		
+		for(int i=0; i<9; i++)
+		{
+			for(int j=0; j<9; j++)
+			{
+				if(s.getBoard()[i][j].equalsPawn("B"))
+				{
+					nNeri++; //volendo il numero delle pedine si può avere cercando lunghezza della lista
+					//aggiungo la posizione ij di ogni nero
+					neri[indexNeri]= ""+i+j;
+					indexNeri++;
+				}
+				if(s.getBoard()[i][j].equalsPawn("W"))
+				{
+					nBianchi++;
+					bianchi[indexBianchi]= ""+i+j;
+					indexBianchi++;
+				}
+				if(s.getBoard()[i][j].equalsPawn("K"))
+				{
+					rigaRe=i;
+					colonnaRe=j;
+				}
+			}
+		}
+		/* Per ogni pezzo trovato viene aggiunto il suo valore al valore totale dello stato
+		 * Valori definiti per adesso: <--- SI POSSONO CAMBIARE
+		 * Pedina Nera: 100
+		 * Pedina Mangiabile: 50
+		 * Pedina Bianca: 200
+		 * Pedina Bianca Mangiabile: 100
+		 * 
+		 * Il peso della pedina bianca e' il doppio di quella nera 
+		 */
+		
+		for(int i=0; i<9; i++)
+		{
+			for(int j=0; j<9; j++)
+			{
+				if(s.getBoard()[i][j].equalsPawn("B"))
+				{
+					nNeri++;
+					value=- VALUE_BLACK_PAWN;
+					if(common.checkBlackCanBeCaptured(i, j, s))
+					{
+						value=+ VALUE_BLACK_PAWN/2;
+					}
+				}
+				if(s.getBoard()[i][j].equalsPawn("W"))
+				{
+					nBianchi++;
+					value=+ VALUE_WHITE_PAWN;
+					if(common.checkWhiteCanBeCaptured(i, j, s))
+					{
+						value=- VALUE_WHITE_PAWN/2;
+					}
+				}
+				if(s.getBoard()[i][j].equalsPawn("K"))
+				{
+					rigaRe=i;
+					colonnaRe=j;
+				}
+			}
+		}
+		
+		//Controllo se il re viene mangiato in qualsiasi posizione sia
+		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
+		{
+			return this.MAX_VALUE+1;
+		}
+		
+		//controllo vie di fuga re
+		int viedifuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
+				
+		//controllo se nella mossa del nero mi mangia il re
+		if(viedifuga>1)
+		{
+			return this.MIN_VALUE+viedifuga;			
+		}
+		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
+		{
+			return this.MIN_VALUE+1;
+		}
+		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
+		{
+			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
+			{
+				return this.MIN_VALUE+1;
+			}
+		}		
+		/*
+		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
+		 */
+		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
+			return this.MIN_VALUE;
+		}
+		
+		/*
+		 * Funzione che controlla se, eseguita una mossa del re in verticale, esso ha liberato un'intera riga (2 oppure 6), in cui vincere (al 100%) il turno successivo
+		 */
+		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
+			return this.MIN_VALUE;
+		}
+			
+		else {
+			for(int i=0; i<indexNeri; i++ ) {
+				
+				int posizione= Integer.parseInt(neri[i]);
+				//le unità sono le colonne mentre le decine sono le righe
+				int riga = posizione/10;
+				int colonna= posizione % 10;
+				
+				//controllo che ci siano delle pedine in diagonale
+				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
+					value++;
+				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
+					value++;
+				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
+					value++;
+				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
+					value++;
+				//controllo pedine vicine sugli assi (è preferibile che siano in diagonale)
+				
+				//controllo che ci siano pedine nere isolate (che non va bene)
+				if(common.blackIsIsolated(riga, colonna, s))
+					value--;
+				
+				
+				//controllo che ci siano bianchi mangiabili
+			}
+		}
+		
+		
+		
+		
+		
+		return value;
 	}
 
 	private List<Action> getMossePossibili(StateTablut s) {
@@ -40,8 +203,102 @@ public class IntelligenzaNera implements IA {
 
 	@Override
 	public Action getBetterMove(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
+		int i = 0;
+		Action a = null;
+		long t1 = System.currentTimeMillis();
+		float betterValue=-100000;
+		try {
+			Nodo node = new Nodo(s);
+			Livello liv0 = new Livello();
+			Livello liv1 = new Livello();
+			Livello liv2 = new Livello();
+			Livello liv3 = new Livello();
+			
+			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			System.out.println("Livello 0 espanso");
+			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
+			
+			for(Nodo n : liv0.getNodi())
+			{
+				liv1.add(this.simulatore.mossePossibiliComplete(n));
+			}
+			System.out.println("Livello 1 espanso");
+			
+			for(Nodo n : liv1.getNodi())
+			{
+				liv2.add(this.simulatore.mossePossibiliComplete(n));
+			}
+			System.out.println("Livello 2 espanso");
+			
+			/*for(Nodo n : liv2.getNodi())
+			{
+				liv3.add(this.simulatore.mossePossibiliComplete(n));
+				System.out.println(liv3.getNodi().size());
+			}*/
+			//System.out.println("Livello 3 espanso");
+			
+			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
+			System.out.println("Nodi espansi: "+ i);
+			//ciclo tutto il livello 4 (turno nero, becco il min)
+			/*for(Nodo n : liv3.getNodi())
+			{
+				float heu =this.getHeuristicValueOfState(n.getStato());
+				//System.out.println(n.getStato().toString()+ " " + heu);
+				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
+				{
+					n.getPadre().setValue(heu);
+				}
+			}*/
+			
+			//ciclo tutti il livello 3 (turno bianco, becco il max)
+			for(Nodo n : liv2.getNodi())
+			{
+				float heu =this.getHeuristicValue(n.getStato());
+				System.out.println(n.getStato().toString()+ " " + heu);
+				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
+				{
+					n.getPadre().setValue(heu);
+				}
+				/*float b = n.getValue();
+				if(betterValue<=b)
+				{
+					betterValue = b;
+					n.getPadre().setValue(betterValue);
+				}*/
+			}
+			
+			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
+			betterValue=10000;
+			for(Nodo n : liv1.getNodi())
+			{
+				float b = n.getValue();
+				if(betterValue>=b)
+				{
+					betterValue = b;
+					n.getPadre().setValue(betterValue);
+				}
+			}
+			
+			betterValue=-100000;
+			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
+			for(Nodo n : liv0.getNodi())
+			{
+				float b = n.getValue();
+				if(betterValue<=b)
+				{
+					betterValue = b;
+					a = n.getAzione();
+				}
+			}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long t2 = System.currentTimeMillis();
+		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
+	    
+		return a;
 	}
 
 }

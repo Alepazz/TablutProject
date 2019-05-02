@@ -123,13 +123,13 @@ public class CommonHeuristicFunction {
 	 * @param s StateTablut rappresenta lo stato da valutare
 	 * @return numero di pedine bianche, comprensive del re, presenti sulla scacchiera
 	 */
-	public int getNumberWhite(StateTablut s) {
+	public int getNumberOfColor(String color,StateTablut s) {
 		
 		int result = 0;
 		
 		for(int i=0; i<9; i++) {
 			for(int j=0; j<9; j++) {
-				if(s.getPawn(i, j).equalsPawn("W")) {
+				if(s.getPawn(i, j).equalsPawn(color)) {
 					result++;
 				}
 			}
@@ -308,6 +308,8 @@ public class CommonHeuristicFunction {
 		return result;
 	}
 	
+	
+
 	/**
 	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
 	 * Dopo aver controllato che sia il turno del nero la funzione distingue i tre casi di cattura:
@@ -792,6 +794,129 @@ public class CommonHeuristicFunction {
 				}
 				
 				if(s.getPawn(riga, colonna+1).equalsPawn("T")) {
+					return "T"; //c'� il trono
+				}
+			}
+			
+			return "C"; //c'� la cittadella
+		} else {
+			return "X";
+		}		
+	}
+	
+	/**
+	 * Controlla la vicinanza delle pedine in alto a sinistra
+	 *  */
+	public String checkNeighbourTopLeft(int riga, int colonna, StateTablut s) {
+		if(colonna!=0 && riga !=0 ) {
+			if(s.getPawn(riga-1, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'� una cella libera
+			} else {
+				if(s.getPawn(riga-1, colonna-1).equalsPawn("K")) {
+					return "K"; //c'� il re
+				}
+				
+				if(s.getPawn(riga-1, colonna-1).equalsPawn("B")) {
+					return "B"; //c'� un nero
+				}
+				
+				if(s.getPawn(riga-1, colonna-1).equalsPawn("W")) {
+					return "W"; //c'� un bianco
+				}
+				
+				if(s.getPawn(riga-1, colonna-1).equalsPawn("T")) {
+					return "T"; //c'� il trono
+				}
+			}
+			
+			return "C"; //c'� la cittadella
+		} else {
+			return "X";
+		}		
+	}
+	/**
+	 * Controlla la vicinanza delle pedine in alto a destra
+	 *  */
+	public String checkNeighbourTopRight(int riga, int colonna, StateTablut s) {
+		if(colonna!=8 && riga !=0) {
+			if(s.getPawn(riga-1, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'� una cella libera
+			} else {
+				if(s.getPawn(riga-1, colonna+1).equalsPawn("K")) {
+					return "K"; //c'� il re
+				}
+				
+				if(s.getPawn(riga-1, colonna+1).equalsPawn("B")) {
+					return "B"; //c'� un nero
+				}
+				
+				if(s.getPawn(riga-1, colonna+1).equalsPawn("W")) {
+					return "W"; //c'� un bianco
+				}
+				
+				if(s.getPawn(riga-1, colonna+1).equalsPawn("T")) {
+					return "T"; //c'� il trono
+				}
+			}
+			
+			return "C"; //c'� la cittadella
+		} else {
+			return "X";
+		}		
+	}
+	
+	/**
+	 * Controlla la vicinanza delle pedine in basso a sinistra
+	 *  */
+	public String checkNeighbourBottomLeft(int riga, int colonna, StateTablut s) {
+		if(colonna!=0 && riga !=8) {
+			if(s.getPawn(riga+1, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'� una cella libera
+			} else {
+				if(s.getPawn(riga+1, colonna-1).equalsPawn("K")) {
+					return "K"; //c'� il re
+				}
+				
+				if(s.getPawn(riga+1, colonna-1).equalsPawn("B")) {
+					return "B"; //c'� un nero
+				}
+				
+				if(s.getPawn(riga+1, colonna-1).equalsPawn("W")) {
+					return "W"; //c'� un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna-1).equalsPawn("T")) {
+					return "T"; //c'� il trono
+				}
+			}
+			
+			return "C"; //c'� la cittadella
+		} else {
+			return "X";
+		}		
+	}
+	
+	/**
+	 * Controlla la vicinanza delle pedine in basso a destra
+	 *  */
+	public String checkNeighbourBottomRight(int riga, int colonna, StateTablut s) {
+		if(colonna!=8 && riga !=8) {
+			if(s.getPawn(riga+1, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+				return "O"; //c'� una cella libera
+			} else {
+				if(s.getPawn(riga+1, colonna+1).equalsPawn("K")) {
+					return "K"; //c'� il re
+				}
+				
+				if(s.getPawn(riga+1, colonna+1).equalsPawn("B")) {
+					return "B"; //c'� un nero
+				}
+				
+				if(s.getPawn(riga+1, colonna+1).equalsPawn("W")) {
+					return "W"; //c'� un bianco
+				}
+				
+				if(s.getPawn(riga+1, colonna+1).equalsPawn("T")) {
 					return "T"; //c'� il trono
 				}
 			}
@@ -1678,4 +1803,17 @@ public class CommonHeuristicFunction {
 		return true;
 	}
 
+	/**
+	 * Controlla se una pedina è isolata vedendo se c'è almeno un nero nelle vicinanze della pedina passata come valore
+	 */
+	
+	public boolean blackIsIsolated(int riga, int colonna, StateTablut s) {
+		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottomLeft(riga, colonna, s).equals("B") ||
+				this.checkNeighbourBottomRight(riga, colonna, s).equals("B") || this.checkNeighbourTop(riga, colonna, s).equals("B") ||
+				this.checkNeighbourTopLeft(riga, colonna, s).equals("B") || this.checkNeighbourTopRight(riga, colonna, s).equals("B") || 
+				this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("B"))
+			return false;
+		return true;
+	}
+	
 }
