@@ -10,6 +10,7 @@ import java.util.List;
 
 public class IntelligenzaBianca implements IA {
 
+	private List<Livello> albero;
 	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
@@ -20,6 +21,7 @@ public class IntelligenzaBianca implements IA {
 	private CommonHeuristicFunction common;
 	
 	public IntelligenzaBianca() {
+		this.albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
 		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
@@ -204,21 +206,57 @@ public class IntelligenzaBianca implements IA {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	private class TreeGenerator implements Runnable {
+		private Nodo nodoAttuale;
+		private Simulator simulatore;
 
+		public TreeGenerator(Nodo n, Simulator s) {
+			this.nodoAttuale = n;
+			this.simulatore = s;
+		}
+
+
+		public void run() {
+			try {
+				Livello liv = new Livello();
+				liv.add(this.nodoAttuale);
+				albero.add(liv);
+				for(int livelloDaEspandere=0; ;livelloDaEspandere++)
+				{
+					Livello livEspanso = new Livello();
+					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+					{
+						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
+					}
+					albero.add(livEspanso);
+				}
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+	}
+		
+	@SuppressWarnings("static-access")
 	@Override
-	public Action getBetterMove(StateTablut s) {
-		int i = 0;
+	public synchronized Action getBetterMove(StateTablut s) {
 		Action a = null;
 		long t1 = System.currentTimeMillis();
-		float betterValue=-100000;
+
 		try {
 			Nodo node = new Nodo(s);
-			Livello liv0 = new Livello();
-			Livello liv1 = new Livello();
-			Livello liv2 = new Livello();
-			Livello liv3 = new Livello();
-			
-			liv0.add(this.simulatore.mossePossibiliComplete(node));
+			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
+			Thread t = new Thread(treeGenerator);
+			t.start();
+			this.wait(40000);
+			System.out.println("Lancio l'interruzione");
+			t.interrupted();
+
+			/*liv0.add(this.simulatore.mossePossibiliComplete(node));
 			System.out.println("Livello 0 espanso");
 			//System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
 			
@@ -232,76 +270,26 @@ public class IntelligenzaBianca implements IA {
 			{
 				liv2.add(this.simulatore.mossePossibiliComplete(n));
 			}
-			System.out.println("Livello 2 espanso");
-			
+			System.out.println("Livello 2 espanso");*/
+
 			/*for(Nodo n : liv2.getNodi())
 			{
 				liv3.add(this.simulatore.mossePossibiliComplete(n));
 				System.out.println(liv3.getNodi().size());
 			}*/
 			//System.out.println("Livello 3 espanso");
-			
-			i = liv0.getNodi().size() + liv1.getNodi().size() + liv2.getNodi().size() + liv3.getNodi().size();
-			System.out.println("Nodi espansi: "+ i);
-			//ciclo tutto il livello 4 (turno nero, becco il min)
-			/*for(Nodo n : liv3.getNodi())
+
+			for(int x=0; x<albero.size(); x++)
 			{
-				float heu =this.getHeuristicValueOfState(n.getStato());
-				//System.out.println(n.getStato().toString()+ " " + heu);
-				if(heu < n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
-				{
-					n.getPadre().setValue(heu);
-				}
-			}*/
-			
-			//ciclo tutti il livello 3 (turno bianco, becco il max)
-			for(Nodo n : liv2.getNodi())
-			{
-				float heu =this.getHeuristicValueOfState(n.getStato());
-				System.out.println(n.getStato().toString()+ " " + heu);
-				if(heu > n.getPadre().getValue() || Float.isNaN(n.getPadre().getValue()))
-				{
-					n.getPadre().setValue(heu);
-				}
-				/*float b = n.getValue();
-				if(betterValue<=b)
-				{
-					betterValue = b;
-					n.getPadre().setValue(betterValue);
-				}*/
+				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
-			
-			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
-			betterValue=10000;
-			for(Nodo n : liv1.getNodi())
-			{
-				float b = n.getValue();
-				if(betterValue>=b)
-				{
-					betterValue = b;
-					n.getPadre().setValue(betterValue);
-				}
-			}
-			
-			betterValue=-100000;
-			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
-			for(Nodo n : liv0.getNodi())
-			{
-				float b = n.getValue();
-				if(betterValue<=b)
-				{
-					betterValue = b;
-					a = n.getAzione();
-				}
-			}
-		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-	    
+
 		return a;
 	}
 
