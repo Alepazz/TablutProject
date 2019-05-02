@@ -579,46 +579,17 @@ public class CommonHeuristicFunction {
 			return false; //se la pedina non ha vicini, non pu� essere catturata
 		}
 		
-		if((this.checkNeighbourTop(riga, colonna, s).equals("W")|| this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
-			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non pu� essere catturata
+		if((this.checkNeighbourTop(riga, colonna, s).equals("B")|| this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("X") || this.checkNeighbourTop(riga, colonna, s).equals("T")) 
+				&& (this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("X") || this.checkNeighbourBottom(riga, colonna, s).equals("T"))) {
+			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
 		}
 		
-		if((this.checkNeighbourTop(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
-			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non pu� essere catturata
+		if((this.checkNeighbourLeft(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("K") || this.checkNeighbourLeft(riga, colonna, s).equals("X") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) 
+				&& (this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourRight(riga, colonna, s).equals("K") || this.checkNeighbourRight(riga, colonna, s).equals("X") || this.checkNeighbourRight(riga, colonna, s).equals("T"))) {
+			return true; // se la pedina ha due pedine nere a destra e sinistra, in due lati opposti, allora non pu� essere catturata
 		}
 		
-		if((this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
-			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if((this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K")) && (this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("K"))) {
-			return false; // se la pedina ha due vicini bianchi, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("B") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
-			if(this.checkBlackCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
-			if(this.checkBlackCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
-			if(this.checkBlackCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
-			if(this.checkBlackCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
+
 		return false;
 	}
 	

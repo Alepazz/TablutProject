@@ -193,14 +193,23 @@ public class IntelligenzaNera implements IA {
 				
 				
 				//controllo che ci siano bianchi mangiabili
+				if( common.checkWhiteCanBeCaptured(riga, colonna, s))
+					value =+ this.VALUE_BLACK_PAWN*8;
+				
+				//controllo se possono arrivare pedine bianche da dx-sx e up-down
+				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
+					value =- this.VALUE_WHITE_PAWN;
+				if(common.checkWhiteCanArriveFromLeft(riga, colonna, s) && common.checkWhiteCanArriveFromRight(riga, colonna, s))
+					value =- this.VALUE_WHITE_PAWN;
+				
+				//controllo se mi viene mangiato il nero
+				if(common.checkBlackCanBeCaptured(riga, colonna, s))
+					value =- this.VALUE_BLACK_PAWN*7;
+
+				
+				}
 			}
-		}
-		
-		
-		
-		
-		
-		return value;
+				return value;
 	}
 
 	private List<Action> getMossePossibili(StateTablut s) {
@@ -261,6 +270,9 @@ public class IntelligenzaNera implements IA {
 			this.albero.clear();
 			return a;
 		
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
