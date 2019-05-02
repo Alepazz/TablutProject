@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import IAPlayer.CommonHeuristicFunction;
 import IAPlayer.IntelligenzaBianca;
 
-class IntelligenzaBiancaTest {
+class CommonHeuristicFunctionTest {
 
 	private CommonHeuristicFunction c = new CommonHeuristicFunction();
 	private StateTablut s = new StateTablut();
@@ -505,6 +505,137 @@ class IntelligenzaBiancaTest {
 	}
 	
 	@Test
+	void checkNeighbourTopLeftAndRight_1() {
+//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.BLACK;
+		board[0][1] = Pawn.BLACK;
+		board[0][3] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OBOBOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertSame("B", c.checkNeighbourTopLeft(1, 2, s));
+		Assert.assertSame("B", c.checkNeighbourTopRight(1, 2, s));
+		
+	}
+	
+	
+	@Test
+	void checkNeighbourTopLeftandRight_2() {
+//Varianti del particolare caso in osservazione
+		board[0][2] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertSame("X", c.checkNeighbourTopLeft(0, 2, s));
+		Assert.assertSame("X", c.checkNeighbourTopRight(0, 2, s));
+		
+	}
+	
+	@Test
+	void checkNeighbourBottomLeftAndRight_1() {
+//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.BLACK;
+		board[2][1] = Pawn.BLACK;
+		board[2][3] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OBOBOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertSame("B", c.checkNeighbourBottomLeft(1, 2, s));
+		Assert.assertSame("B", c.checkNeighbourBottomRight(1, 2, s));
+		
+	}
+	
+	
+	@Test
+	void checkNeighbourBottomLeftandRight_2() {
+//Varianti del particolare caso in osservazione
+		board[8][2] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertSame("X", c.checkNeighbourBottomLeft(8, 2, s));
+		Assert.assertSame("X", c.checkNeighbourBottomRight(8, 2, s));
+		
+	}
+	
+	
+	@Test
 	void enemyOnTheTopTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -884,6 +1015,124 @@ class IntelligenzaBiancaTest {
 			
 	}
 	
+	@Test
+	void checkWhiteCanBeCapturedTest_1() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[0][5] = Pawn.BLACK;
+		board[2][5] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOBOOO
+		 * OOOOOWOOO
+		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
+	
+	@Test
+	void checkWhiteCanBeCapturedTest_2() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[0][5] = Pawn.BLACK;
+		board[1][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOBOOO
+		 * OOOOBWOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
+	@Test
+	void checkWhiteCanBeCapturedTest_3() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[1][6] = Pawn.BLACK;
+		board[1][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOBWBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
+	
+	@Test
+	void checkWhiteCanBeCapturedTest_4() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[1][6] = Pawn.BLACK;
+		board[1][3] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOBOOWBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
 	@Test
 	void checkBlackCanArriveAdjacentInTopPositionTest_1() {	
 		
@@ -1778,6 +2027,8 @@ class IntelligenzaBiancaTest {
 			
 	}
 	
+	 
+	
 	@Test
 	void checkWhiteCanArriveFromLeftTest_1() {	
 		
@@ -1899,6 +2150,8 @@ class IntelligenzaBiancaTest {
 		Assert.assertFalse(c.checkWhiteCanArriveFromLeft(1, 7, s));
 			
 	}
+	
+	
 
 	@Test
 	void checkWhiteCanArriveAdjacentInTopPositionTest_1() {	
@@ -1930,4 +2183,64 @@ class IntelligenzaBiancaTest {
 		Assert.assertTrue(c.checkWhiteCanArriveAdjacentInTopPosition(4, 3, s));
 			
 	}
+	
+	@Test
+	void blackIsIsolatedTest_1() {
+	
+	
+		board[1][1] = Pawn.BLACK;
+			
+			/* Rappresentazione tavola
+			 * 
+			 * OOOOOOOOO
+			 * OBOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO    
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * 
+			 * */
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.blackIsIsolated(1, 1, s));
+					
+		
+	}
+	
+	@Test
+	void blackIsIsolatedTest_2() {
+	
+	
+		board[1][1] = Pawn.BLACK;
+		board[2][1] = Pawn.BLACK;
+			
+			/* Rappresentazione tavola
+			 * 
+			 * OOOOOOOOO
+			 * OBOOOOOOO
+			 * OBOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO    
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * OOOOOOOOO
+			 * 
+			 * */
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.blackIsIsolated(1, 1, s));
+					
+		
+	}
+	
 }

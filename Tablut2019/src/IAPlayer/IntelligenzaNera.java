@@ -166,21 +166,42 @@ public class IntelligenzaNera implements IA {
 				
 				//controllo che ci siano delle pedine in diagonale
 				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
-					value++;
+					value =+ VALUE_BLACK_PAWN*2;
 				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
-					value++;
+					value =+ VALUE_BLACK_PAWN*2;
 				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
-					value++;
+					value =+ VALUE_BLACK_PAWN*2;
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
-					value++;
+					value =+ VALUE_BLACK_PAWN*2;
+				
 				//controllo pedine vicine sugli assi (è preferibile che siano in diagonale)
+				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
+					value =+ this.VALUE_BLACK_PAWN/2;
+				if( common.checkNeighbourTop(riga, colonna, s).equals("B"))
+					value =+ this.VALUE_BLACK_PAWN/2;
+				if( common.checkNeighbourLeft(riga, colonna, s).equals("B"))
+					value =+ this.VALUE_BLACK_PAWN/2;
+				if( common.checkNeighbourRight(riga, colonna, s).equals("B"))
+					value =+ this.VALUE_BLACK_PAWN/2;
 				
 				//controllo che ci siano pedine nere isolate (che non va bene)
 				if(common.blackIsIsolated(riga, colonna, s))
-					value--;
+					value =- this.VALUE_BLACK_PAWN*5;
 				
 				
 				//controllo che ci siano bianchi mangiabili
+				if( common.checkWhiteCanBeCaptured(riga, colonna, s))
+					value =+ this.VALUE_BLACK_PAWN*8;
+				
+				//controllo se possono arrivare pedine bianche da dx-sx e up-down
+				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
+					value =- this.VALUE_WHITE_PAWN;
+				if(common.checkWhiteCanArriveFromLeft(riga, colonna, s) && common.checkWhiteCanArriveFromRight(riga, colonna, s))
+					value =- this.VALUE_WHITE_PAWN;
+				
+				//controllo se mi viene mangiato il nero
+				if(common.checkBlackCanBeCaptured(riga, colonna, s))
+					value =- this.VALUE_BLACK_PAWN*7;
 			}
 		}
 		
@@ -268,23 +289,23 @@ public class IntelligenzaNera implements IA {
 			}
 			
 			//ciclo tutto il livello 2 (turno nero, quindi becco il min)
-			betterValue=10000;
+			betterValue=-10000;
 			for(Nodo n : liv1.getNodi())
 			{
 				float b = n.getValue();
-				if(betterValue>=b)
+				if(betterValue<=b)
 				{
 					betterValue = b;
 					n.getPadre().setValue(betterValue);
 				}
 			}
 			
-			betterValue=-100000;
+			betterValue=100000;
 			//ciclo tutto il livello 1 (turno bianco, quindi becco il max)
 			for(Nodo n : liv0.getNodi())
 			{
 				float b = n.getValue();
-				if(betterValue<=b)
+				if(betterValue>=b)
 				{
 					betterValue = b;
 					a = n.getAzione();
