@@ -64,7 +64,7 @@ public class IntelligenzaNera implements IA {
 			{
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
-					nNeri++; //volendo il numero delle pedine si può avere cercando lunghezza della lista
+					nNeri++; //volendo il numero delle pedine si puï¿½ avere cercando lunghezza della lista
 					//aggiungo la posizione ij di ogni nero
 					neri[indexNeri]= ""+i+j;
 					indexNeri++;
@@ -165,7 +165,7 @@ public class IntelligenzaNera implements IA {
 			for(int i=0; i<indexNeri; i++ ) {
 				
 				int posizione= Integer.parseInt(neri[i]);
-				//le unità sono le colonne mentre le decine sono le righe
+				//le unitï¿½ sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
 				int colonna= posizione % 10;
 				
@@ -179,7 +179,7 @@ public class IntelligenzaNera implements IA {
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
 					value =+ VALUE_BLACK_PAWN*3;
 				
-				//controllo pedine vicine sugli assi (è preferibile che siano in diagonale)
+				//controllo pedine vicine sugli assi (ï¿½ preferibile che siano in diagonale)
 				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
 					value =+ this.VALUE_BLACK_PAWN/2;
 				if( common.checkNeighbourTop(riga, colonna, s).equals("B"))
@@ -212,16 +212,6 @@ public class IntelligenzaNera implements IA {
 				}
 			}
 				return value;
-	}
-
-	private List<Action> getMossePossibili(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private StateTablut getNewState(StateTablut s, Action a) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	
@@ -356,7 +346,7 @@ public class IntelligenzaNera implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(2000);
+			this.wait(30000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -369,7 +359,7 @@ public class IntelligenzaNera implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(20000);
+			this.wait(25000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -383,11 +373,11 @@ public class IntelligenzaNera implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		for(Livello l: this.albero)
+		for(Livello l: IntelligenzaNera.albero)
 		{
 			l.getNodi().clear();
 		}
-		this.albero.clear();
+		IntelligenzaNera.albero.clear();
 		return a;
 	}
 }
