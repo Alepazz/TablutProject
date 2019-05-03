@@ -2243,4 +2243,102 @@ class CommonHeuristicFunctionTest {
 		
 	}
 	
+	@Test
+	void checkDraw() {
+		
+		IntelligenzaBianca ia = new IntelligenzaBianca();
+		
+		ia.setState(s);
+		
+		Pawn[][] board1 = {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.THRONE,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
+	};
+				
+		board1[0][3] = Pawn.BLACK;
+		board1[0][4] = Pawn.BLACK;
+		board1[0][5] = Pawn.BLACK;
+		board1[1][4] = Pawn.BLACK;
+		board1[3][0] = Pawn.BLACK;
+		board1[3][8] = Pawn.BLACK;
+		board1[4][0] = Pawn.BLACK;
+		board1[4][1] = Pawn.BLACK;
+		board1[4][7] = Pawn.BLACK;
+		board1[4][8] = Pawn.BLACK;
+		board1[5][0] = Pawn.BLACK;
+		board1[5][8] = Pawn.BLACK;
+		board1[7][4] = Pawn.BLACK;
+		board1[8][3] = Pawn.BLACK;
+		board1[8][4] = Pawn.BLACK;
+		board1[8][5] = Pawn.BLACK;
+		board1[2][4] = Pawn.WHITE;
+		board1[3][4] = Pawn.WHITE;
+		board1[4][2] = Pawn.WHITE;
+		board1[4][5] = Pawn.WHITE;
+		board1[4][6] = Pawn.WHITE;
+		board1[5][4] = Pawn.WHITE;
+		board1[6][4] = Pawn.WHITE;
+		board1[3][3] = Pawn.WHITE;
+		board1[4][3] = Pawn.EMPTY;
+		board1[4][4] = Pawn.KING;
+		
+		
+		StateTablut nuovoStato = new StateTablut();
+		nuovoStato.setBoard(board1);
+		System.out.println(nuovoStato.toString());
+		
+		ia.setState(nuovoStato);
+		
+		Pawn[][] board2 = {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.THRONE,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
+	};
+		
+		board2[0][3] = Pawn.BLACK;
+		board2[0][4] = Pawn.BLACK;
+		board2[0][5] = Pawn.BLACK;
+		board2[1][4] = Pawn.BLACK;
+		board2[3][0] = Pawn.BLACK;
+		board2[3][8] = Pawn.BLACK;
+		board2[4][0] = Pawn.BLACK;
+		board2[4][1] = Pawn.BLACK;
+		board2[4][7] = Pawn.BLACK;
+		board2[4][8] = Pawn.BLACK;
+		board2[5][0] = Pawn.BLACK;
+		board2[5][8] = Pawn.BLACK;
+		board2[7][4] = Pawn.BLACK;
+		board2[8][3] = Pawn.BLACK;
+		board2[8][4] = Pawn.BLACK;
+		board2[8][5] = Pawn.BLACK;
+		board2[2][4] = Pawn.WHITE;
+		board2[3][4] = Pawn.WHITE;
+		board2[4][2] = Pawn.WHITE;
+		board2[4][3] = Pawn.WHITE;
+		//board2[3][3] = Pawn.EMPTY;
+		board2[4][5] = Pawn.WHITE;
+		board2[4][6] = Pawn.WHITE;
+		board2[5][4] = Pawn.WHITE;
+		board2[6][4] = Pawn.WHITE;
+		board2[4][4] = Pawn.KING; //commentare una di queste righe per ottenere false
+		
+		nuovoStato = new StateTablut();
+		nuovoStato.setBoard(board2);
+		System.out.println(nuovoStato.toString());
+						
+		Assert.assertTrue(ia.checkDraw(nuovoStato));
+				
+	}
+	
 }

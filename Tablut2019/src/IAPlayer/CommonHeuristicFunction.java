@@ -308,8 +308,6 @@ public class CommonHeuristicFunction {
 		return result;
 	}
 	
-	
-
 	/**
 	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
 	 * Dopo aver controllato che sia il turno del nero la funzione distingue i tre casi di cattura:
@@ -511,7 +509,6 @@ public class CommonHeuristicFunction {
 		return false;
 	}
 	
-	//TODO: da rivedere per via del cambiamento delle funzioni interne a checkPawnCanArrive
 	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno bianco
@@ -562,7 +559,6 @@ public class CommonHeuristicFunction {
 		
 		return false;
 	}
-	
 	
 	/**
 	 * Controlla se una pedina passata come parametro pu� essere catturata
@@ -1787,4 +1783,20 @@ public class CommonHeuristicFunction {
 		return true;
 	}
 	
+	/**
+	 * Ritorna il numero di pedine presenti sulla scacchiera
+	 * @param s StateTablut ovvero lo stato che deve essere valutato
+	 * @return numero di pedine (bianche e nere) presenti nella scacchiera
+	 */
+	public int getNumberPawns(StateTablut s) {
+		int result = 0;
+		for(int i=0; i<9; i++) {
+			for(int j=0; j<9; j++) {
+				if(s.getPawn(i, j).equalsPawn("W") || s.getPawn(i, j).equalsPawn("B") || s.getPawn(i, j).equalsPawn("K")) {
+					result ++;
+				}
+			}
+		}
+		return result;
+	}
 }

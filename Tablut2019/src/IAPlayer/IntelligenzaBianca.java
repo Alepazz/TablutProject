@@ -19,12 +19,22 @@ public class IntelligenzaBianca implements IA {
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
+	private List<StateTablut> listState; 
 	
 	public IntelligenzaBianca() {
 		this.albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
 		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
+		this.listState = new ArrayList<StateTablut>();
+	}
+	
+	public void setState(StateTablut s) {
+		listState.add(s);
+	}
+	
+	public int getDimState() {
+		return listState.size();
 	}
 	
 	/**
@@ -140,9 +150,6 @@ public class IntelligenzaBianca implements IA {
 		return value;	
 	}
 	
-	
-	
-	
 	/*
 	 * Funzione di euristica, di prova <-- da modificare BRAVO ALE, HAI CAPITO COSA INTENDO
 	 */
@@ -194,9 +201,6 @@ public class IntelligenzaBianca implements IA {
 		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
-	
-
-	
 	private List<Action> getMossePossibili(StateTablut s) {
 		// TODO Auto-generated method stub
 		return null;
@@ -207,8 +211,10 @@ public class IntelligenzaBianca implements IA {
 		return null;
 	}
 	
-	//valuta gli ultimi rami dell'albero
-	//da implementare i tagli ecc...
+	/*
+	 * valuta gli ultimi rami dell'albero
+	 * da implementare i tagli ecc...
+	 */
 	private class HeuristicValuator implements Runnable {
 		private IntelligenzaBianca ia;
 		
@@ -242,7 +248,9 @@ public class IntelligenzaBianca implements IA {
 		
 	}
 	
-	//thread che crea l'albero di gioco
+	/*
+	 * thread che crea l'albero di gioco
+	 */
 	private class TreeGenerator implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
@@ -275,10 +283,38 @@ public class IntelligenzaBianca implements IA {
 		}
 
 	}
-		
+	
+	/**
+	 * Controlla lo stato genera una situazione di pareggio
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se lo stato è già presente nella lista degli stati visitati, false in caso contrario
+	 */
+	public boolean checkDraw(StateTablut s) {
+		if(listState.isEmpty()) {
+			listState.add(s);
+			return false;
+		} else { //se il numero di pedine sulla scacchiera è cambiato vuol dire che una pedina è stata mangiata, quindi svuoto l'elenco degli stati
+			if(common.getNumberPawns(s) != common.getNumberPawns(listState.get(listState.size()-1))) {
+				listState.clear();
+				listState.add(s);
+				return false;
+			} else { //controllo se lo stato esiste già
+				for(int i=0; i<listState.size()-1; i++) {
+					if(listState.get(i).equals(s)) {
+						//System.out.println("Lo stato esisteva già\n1.\n" + listState.get(i).toString() + "\n2.\n" + s.toString());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	@SuppressWarnings("static-access")
 	@Override
+	
 	public synchronized Action getBetterMove(StateTablut s) {
+
 		Action a = null;
 		long t1 = System.currentTimeMillis();
 
@@ -344,5 +380,5 @@ public class IntelligenzaBianca implements IA {
 		this.albero.clear();
 		return a;
 	}
-
+	
 }
