@@ -25,10 +25,18 @@ public class IntelligenzaBianca implements IA {
 		this.listState = new ArrayList<StateTablut>();
 	}
 	
+	/**
+	 * Aggiunge un nuovo stato all'elenco degli static che sono stati visitati fin'ora
+	 * @param s StateTablut ovvero lo stato che si vuole aggiungere alla lista
+	 */
 	public void setState(StateTablut s) {
 		listState.add(s);
 	}
 	
+	/**
+	 * Ritorna il numero di stati differenti che si sono presentati fino a questo momento
+	 * @return
+	 */
 	public int getDimState() {
 		return listState.size();
 	}
@@ -146,8 +154,10 @@ public class IntelligenzaBianca implements IA {
 		return value;	
 	}
 	
-	/*
-	 * Funzione di euristica, di prova <-- da modificare BRAVO ALE, HAI CAPITO COSA INTENDO
+	/**
+	 * Funzione euristica: calcola l'euristica
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna un intero che indica il valore che è stato assegnato allo stato passato come parametro
 	 */
 	private int getHeuristicValueOfState(StateTablut s) {
 		if(s.getTurn().equalsTurn("WW"))
@@ -162,7 +172,6 @@ public class IntelligenzaBianca implements IA {
 		{
 			return 0;
 		}
-		int value =0;
 		
 		//numero pedine
 		int nBianchi=0;
@@ -197,16 +206,7 @@ public class IntelligenzaBianca implements IA {
 		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
-	private List<Action> getMossePossibili(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	private StateTablut getNewState(StateTablut s, Action a) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	/*
 	 * valuta gli ultimi rami dell'albero
 	 * da implementare i tagli ecc...
@@ -368,7 +368,6 @@ public class IntelligenzaBianca implements IA {
 	
 	@SuppressWarnings("static-access")
 	@Override
-	
 	public synchronized Action getBetterMove(StateTablut s) {
 
 		long t1 = System.currentTimeMillis();

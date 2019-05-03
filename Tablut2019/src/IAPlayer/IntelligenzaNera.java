@@ -12,7 +12,7 @@ public class IntelligenzaNera implements IA {
 	
 	private static Action a = null;
 	private static List<Livello> albero;
-	private List<Nodo> nodiEsistenti;
+	//private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
@@ -21,9 +21,9 @@ public class IntelligenzaNera implements IA {
 	private CommonHeuristicFunction common;
 	
 	public IntelligenzaNera() {
-		this.albero = new ArrayList<Livello>();
+		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
-		this.nodiEsistenti = new ArrayList<Nodo>();
+		//this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
 	}
 
@@ -46,7 +46,7 @@ public class IntelligenzaNera implements IA {
 		
 		int value =0;
 		
-		///numero pedine
+		//numero pedine
 		int nBianchi=0;
 		int nNeri=0;
 		int rigaRe=-1;
