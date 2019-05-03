@@ -1,10 +1,8 @@
 package IAPlayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
-import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +10,6 @@ public class IntelligenzaBianca implements IA {
 
 	private static List<Livello> albero;
 	private static Action a = null;
-	private List<String> citadels;
-	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
@@ -23,9 +19,8 @@ public class IntelligenzaBianca implements IA {
 	private List<StateTablut> listState; 
 	
 	public IntelligenzaBianca() {
-		this.albero = new ArrayList<Livello>();
+		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
-		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
 		this.listState = new ArrayList<StateTablut>();
 	}
@@ -293,13 +288,18 @@ public class IntelligenzaBianca implements IA {
 			}
 			for(Nodo n : albero.get(1).getNodi())
 			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 					a=n.getAzione();
 				}
 			}
 			System.out.println(x + " calcoli fatti");
+			for(Livello l: albero)
+			{
+				l.getNodi().clear();
+			}
+			albero.clear();
 		}
 		
 	}
@@ -407,11 +407,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		for(Livello l: this.albero)
-		{
-			l.getNodi().clear();
-		}
-		this.albero.clear();
+		
 		return a;
 	}
 	

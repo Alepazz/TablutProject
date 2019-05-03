@@ -287,7 +287,7 @@ public class IntelligenzaNera implements IA {
 			}*/
 			for(Nodo n : albero.get(2).getNodi())
 			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 				}
@@ -302,6 +302,11 @@ public class IntelligenzaNera implements IA {
 			}
 			System.out.println(x + " calcoli fatti");
 			System.out.println(a.toString());
+			for(Livello l: albero)
+			{
+				l.getNodi().clear();
+			}
+			albero.clear();
 		}
 		
 	}
@@ -346,7 +351,7 @@ public class IntelligenzaNera implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(30000);
+			this.wait(20000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -359,7 +364,7 @@ public class IntelligenzaNera implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(25000);
+			this.wait(30000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -373,11 +378,8 @@ public class IntelligenzaNera implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		for(Livello l: IntelligenzaNera.albero)
-		{
-			l.getNodi().clear();
-		}
-		IntelligenzaNera.albero.clear();
+
+	
 		return a;
 	}
 }
