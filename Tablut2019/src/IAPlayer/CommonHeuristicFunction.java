@@ -1484,25 +1484,102 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se esiste un nemico o un accampamento alla destra di una pedina bianca posizionata in @riga e @colonna
+	 * Controlla se esiste un nemico o un accampamento in alto rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
 	 * 
 	 * @param riga Riga in cui si trova la pedina
 	 * @param colonna Colonna in cui si trova la pedina
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � accando, sulla destra, alla pedina bianca passata come parametro, false in caso contrario
+	 * @return true se una pedina avversaria o un accampamento è sopra alla pedina passata come parametro, false in caso contrario
+	 */
+	public boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
+	{
+		if(riga!=0) {
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in alto
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se in alto c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga-1, colonna).equalsPawn("B") || s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in alto
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se in alto c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga-1, colonna).equalsPawn("W") || s.getPawn(riga-1, colonna).equalsPawn("K")
+						|| s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se esiste un nemico o un accampamento a destra rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina avversaria o un accampamento è accanto, sulla destra, alla pedina passata come parametro, false in caso contrario
 	 */
 	public boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
 		if(colonna!=8) {
-			if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
-			{
-				return true;
-			} else {
-				return false;
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga, colonna+1).equalsPawn("B") || s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga, colonna+1).equalsPawn("W") || s.getPawn(riga, colonna+1).equalsPawn("K")
+						|| s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+					return true;
+				}
 			}
-		} else {
-			return false;
-		}	
+		}
+		return false;	
+	}
+	
+	/**
+	 * Controlla se esiste un nemico o un accampamento in basso rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina avversaria o un accampamento è sotto alla pedina passata come parametro, false in caso contrario
+	 */
+	public boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
+	{
+		if(riga!=8) {
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in basso
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se in basso c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga+1, colonna).equalsPawn("B") || s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in basso
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se in basso c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga+1, colonna).equalsPawn("W") || s.getPawn(riga+1, colonna).equalsPawn("K")
+						|| s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -1516,59 +1593,26 @@ public class CommonHeuristicFunction {
 	public boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
 		if(colonna!=0) {
-			if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
-			{
-				return true;
-			} else {
-				return false;
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga, colonna-1).equalsPawn("B") || s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga, colonna-1).equalsPawn("W") || s.getPawn(riga, colonna-1).equalsPawn("K")
+						|| s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+					return true;
+				}
 			}
-		} else {
-			return false;
-		}				
-	}
-	
-	/**
-	 * Controlla se esiste un nemico o un accampamento in alto rispetto alla pedina bianca posizionata in @riga e @colonna
-	 * 
-	 * @param riga Riga in cui si trova la pedina
-	 * @param colonna Colonna in cui si trova la pedina
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � sopra alla pedina bianca passata come parametro, false in caso contrario
-	 */
-	public boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
-	{
-		if(riga!=0) {
-			if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
-	}
-	
-	/**
-	 * Controlla se esiste un nemico o un accampamento in basso (sotto) rispetto alla pedina bianca posizionata in @riga e @colonna
-	 * 
-	 * @param riga Riga in cui si trova la pedina
-	 * @param colonna Colonna in cui si trova la pedina
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � sotto alla pedina bianca passata come parametro, false in caso contrario
-	 */
-	public boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
-	{
-		if(riga!=8) {
-			if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
+		}
+		return false;			
 	}
 	
 	/**
