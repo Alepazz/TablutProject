@@ -7,7 +7,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import IAPlayer.CommonHeuristicFunction;
 import IAPlayer.IntelligenzaBianca;

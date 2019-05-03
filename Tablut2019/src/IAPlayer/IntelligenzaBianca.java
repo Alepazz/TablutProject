@@ -11,6 +11,7 @@ import java.util.List;
 public class IntelligenzaBianca implements IA {
 
 	private static List<Livello> albero;
+	private static Action a = null;
 	private List<String> citadels;
 	private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
@@ -217,27 +218,82 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		public void run() {
+			int x =0;
 			//ciclo sull'ultimo livello
 			for(Nodo n : albero.get(albero.size()-1).getNodi())
 			{
-				//non so se sia il giusto metodo, al massimo da cambiare con l'altro
-				float heu = ia.getHeuristicValue(n.getStato());
-				//siccome evolviamo per 5 livelli saranno stati dell'avversario 
-				if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
+				{}
+				else
 				{
-					n.getPadre().setValue(heu);
-				}				
+					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+					float heu = ia.getHeuristicValue(n.getStato());
+					x++;
+					//siccome evolviamo per 5 livelli saranno stati dell'avversario 
+					if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
+					{
+						n.getPadre().setValue(heu);
+						if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()>n.getPadre().getPadre().getValue())
+						{
+							n.getPadre().getPadre().setValue(heu);
+						}
+					}	
+				}
+				
+							
 			}
 			//ciclo il penultimo livello
 			for(Nodo n : albero.get(albero.size()-2).getNodi())
 			{
-				if(Float.isNaN(n.getValue()))
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
+				{}
+				else
 				{
-					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
-					float heu = ia.getHeuristicValue(n.getStato());
-					n.setValue(heu);
-				}				
+					if(Float.isNaN(n.getValue()))
+					{
+						//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+						float heu = ia.getHeuristicValue(n.getStato());
+						x++;
+						if(Float.isNaN(n.getPadre().getValue()) || heu>n.getPadre().getValue())
+						{
+							n.getPadre().setValue(heu);
+							if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()<n.getPadre().getPadre().getValue())
+							{
+								n.getPadre().getPadre().setValue(heu);
+							}
+						}	
+					}	
+				}
+							
 			}
+			
+			/*for(Nodo n : albero.get(3).getNodi())
+			{
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+				}
+			}*/
+			for(Nodo n : albero.get(2).getNodi())
+			{
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+				}
+			}
+			for(Nodo n : albero.get(1).getNodi())
+			{
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+					a=n.getAzione();
+				}
+			}
+			System.out.println(x + " calcoli fatti");
 		}
 		
 	}
@@ -279,7 +335,7 @@ public class IntelligenzaBianca implements IA {
 	@SuppressWarnings("static-access")
 	@Override
 	public synchronized Action getBetterMove(StateTablut s) {
-		Action a = null;
+		
 		long t1 = System.currentTimeMillis();
 
 		try {
@@ -287,7 +343,7 @@ public class IntelligenzaBianca implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(3300);
+			this.wait(2000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -300,34 +356,13 @@ public class IntelligenzaBianca implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(2000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
 			
 
-			for(Nodo n : albero.get(3).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-				}
-			}
-			for(Nodo n : albero.get(2).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-				}
-			}
-			for(Nodo n : albero.get(1).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-					a=n.getAzione();
-				}
-			}
+			
 			//System.out.println("Livello 3 espanso");
 
 			
