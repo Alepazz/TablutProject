@@ -1382,7 +1382,123 @@ class CommonHeuristicFunctionTest {
 		Assert.assertTrue(c.enemyOnTheLeft(4, 5, s));
 			
 	}
-
+	@Test
+	void checkBlackCanBeCapturedTest_1() {
+		//Varianti del particolare caso in osservazione
+		board[3][4] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		board[2][3] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWBOOOOO
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(2, 3, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_2() {
+		//Varianti del particolare caso in osservazione
+		board[3][1] = Pawn.WHITE;
+		board[2][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(2, 4, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_3() {
+		//Varianti del particolare caso in osservazione
+		board[2][2] = Pawn.WHITE;
+		board[1][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanBeCaptured(1, 4, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_4() {
+		//Varianti del particolare caso in osservazione
+		board[2][6] = Pawn.WHITE;
+		board[4][5] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOWOO
+		 * OOOOOOOOO
+		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(4, 5, s));
+	}
+	
 	@Test
 	void checkWhiteCanBeCapturedTest_1() {
 		//Varianti del particolare caso in osservazione
@@ -1404,7 +1520,7 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		
+		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova già in mezzo a due neri
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.WHITE);
@@ -1442,6 +1558,7 @@ class CommonHeuristicFunctionTest {
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
+	
 	@Test
 	void checkWhiteCanBeCapturedTest_3() {
 		//Varianti del particolare caso in osservazione
@@ -1501,6 +1618,7 @@ class CommonHeuristicFunctionTest {
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
+	
 	@Test
 	void checkBlackCanArriveAdjacentInTopPositionTest_1() {	
 		
