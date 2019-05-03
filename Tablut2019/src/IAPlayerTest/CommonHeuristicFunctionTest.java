@@ -1520,7 +1520,7 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova già in mezzo a due neri
+		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova giï¿½ in mezzo a due neri
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.WHITE);
@@ -2728,7 +2728,6 @@ class CommonHeuristicFunctionTest {
 					
 		
 	}
-<<<<<<< HEAD
 	
 	@Test
 	void checkDraw() {
@@ -2827,8 +2826,5 @@ class CommonHeuristicFunctionTest {
 		Assert.assertTrue(ia.checkDraw(nuovoStato));
 				
 	}
-	
-=======
-		
->>>>>>> branch 'master' of https://github.com/Alepazz/TablutProject
+
 }

@@ -509,8 +509,6 @@ public class CommonHeuristicFunction {
 		return false;
 	}
 	
-<<<<<<< HEAD
-=======
 	/**
 	 * Controlla se una pedina nera passata come parametro pu� essere catturata
 	 * @param riga Riga in cui si trova la pedina
@@ -518,7 +516,6 @@ public class CommonHeuristicFunction {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina pu� essere catturata, false in caso contrario
 	 */
->>>>>>> branch 'master' of https://github.com/Alepazz/TablutProject
 	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno bianco		
