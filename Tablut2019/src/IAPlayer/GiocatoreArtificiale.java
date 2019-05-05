@@ -79,6 +79,7 @@ public class GiocatoreArtificiale extends TablutClient {
 				try 
 				{
 					this.write(betterAction);
+					System.gc();
 				}
 				catch (Exception e1) 
 				{

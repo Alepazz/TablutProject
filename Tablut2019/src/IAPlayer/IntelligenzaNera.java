@@ -302,11 +302,12 @@ public class IntelligenzaNera implements IA {
 			}
 			System.out.println(x + " calcoli fatti");
 			System.out.println(a.toString());
-			for(Livello l: albero)
+			/*for(Livello l: albero)
 			{
 				l.getNodi().clear();
-			}
+			}*/
 			albero.clear();
+			
 		}
 		
 	}
@@ -378,7 +379,25 @@ public class IntelligenzaNera implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
+		
+		int mb = 1024*1024;
+		Runtime runtime = Runtime.getRuntime();
 
+		System.out.println("##### Heap utilization statistics [MB] #####");
+
+		//Print used memory
+		System.out.println("Used Memory:"
+			+ (runtime.totalMemory() - runtime.freeMemory()) / mb);
+
+		//Print free memory
+		System.out.println("Free Memory:"
+			+ runtime.freeMemory() / mb);
+
+		//Print total available memory
+		System.out.println("Total Memory:" + runtime.totalMemory() / mb);
+
+		//Print Maximum available memory
+		System.out.println("Max Memory:" + runtime.maxMemory() / mb);
 	
 		return a;
 	}

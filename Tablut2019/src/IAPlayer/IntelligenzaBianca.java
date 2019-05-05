@@ -295,10 +295,10 @@ public class IntelligenzaBianca implements IA {
 				}
 			}
 			System.out.println(x + " calcoli fatti");
-			for(Livello l: albero)
+			/*for(Livello l: albero)
 			{
 				l.getNodi().clear();
-			}
+			}*/
 			albero.clear();
 		}
 		
