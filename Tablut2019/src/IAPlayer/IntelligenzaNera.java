@@ -344,7 +344,10 @@ public class IntelligenzaNera implements IA {
 					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
 					{
 						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
+						long x1 = System.currentTimeMillis();
 						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
+						long x2 = System.currentTimeMillis();
+						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
 						for(int y=0; y<mosse.size() && isRunning; y++)
 						{
 							Nodo nodo = mosse.get(y);
