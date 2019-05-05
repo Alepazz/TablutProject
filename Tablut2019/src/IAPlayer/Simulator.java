@@ -89,6 +89,7 @@ public class Simulator {
 	
 	//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
 	public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
+		
 		List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 		boolean simmV = this.statoSimmetricoVerticalmente(node.getStato());
 		boolean simmO = this.statoSimmetricoOrizontalmente(node.getStato());

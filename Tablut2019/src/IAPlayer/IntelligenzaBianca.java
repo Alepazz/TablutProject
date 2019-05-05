@@ -221,22 +221,23 @@ public class IntelligenzaBianca implements IA {
 		public void run() {
 			int x =0;
 			//ciclo sull'ultimo livello
-			for(Nodo n : albero.get(albero.size()-1).getNodi())
+			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(albero.size()-1).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
 						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
-						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
+						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
 				{}
 				else
 				{
 					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
 					float heu = ia.getHeuristicValue(n.getStato());
 					x++;
-					//siccome evolviamo per 5 livelli saranno stati dell'avversario 
-					if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
+					//siccome evolviamo per 4 livelli saranno stati nostri 
+					if(Float.isNaN(n.getPadre().getValue()) || heu>n.getPadre().getValue())
 					{
 						n.getPadre().setValue(heu);
-						if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()>n.getPadre().getPadre().getValue())
+						if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()<n.getPadre().getPadre().getValue())
 						{
 							n.getPadre().getPadre().setValue(heu);
 						}
@@ -246,11 +247,12 @@ public class IntelligenzaBianca implements IA {
 							
 			}
 			//ciclo il penultimo livello
-			for(Nodo n : albero.get(albero.size()-2).getNodi())
+			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(albero.size()-2).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
 						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
-						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
+						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
 				{}
 				else
 				{
@@ -259,10 +261,10 @@ public class IntelligenzaBianca implements IA {
 						//non so se sia il giusto metodo, al massimo da cambiare con l'altro
 						float heu = ia.getHeuristicValue(n.getStato());
 						x++;
-						if(Float.isNaN(n.getPadre().getValue()) || heu>n.getPadre().getValue())
+						if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
 						{
 							n.getPadre().setValue(heu);
-							if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()<n.getPadre().getPadre().getValue())
+							if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()>n.getPadre().getPadre().getValue())
 							{
 								n.getPadre().getPadre().setValue(heu);
 							}
@@ -279,27 +281,31 @@ public class IntelligenzaBianca implements IA {
 					n.getPadre().setValue(n.getValue());
 				}
 			}*/
-			for(Nodo n : albero.get(2).getNodi())
+			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.interrupted(); i++)
 			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				Nodo n = albero.get(2).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 				}
 			}
-			for(Nodo n : albero.get(1).getNodi())
+			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.interrupted(); i++)
 			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				Nodo n = albero.get(1).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 					a=n.getAzione();
 				}
 			}
 			System.out.println(x + " calcoli fatti");
+			System.out.println(a.toString());
 			/*for(Livello l: albero)
 			{
 				l.getNodi().clear();
 			}*/
 			albero.clear();
+			System.out.println("Albero ripulito" + albero.size());
 		}
 		
 	}
@@ -310,12 +316,18 @@ public class IntelligenzaBianca implements IA {
 	private class TreeGenerator implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
+		private boolean isRunning;
 
 		public TreeGenerator(Nodo n, Simulator s) {
 			this.nodoAttuale = n;
 			this.simulatore = s;
+			this.isRunning=true;
 		}
 
+		public void stopThread()
+		{
+			this.isRunning=false;
+		}
 
 		public void run() {
 			try {
@@ -323,15 +335,17 @@ public class IntelligenzaBianca implements IA {
 				liv.add(this.nodoAttuale);
 				albero.add(liv);
 				Livello livEspanso = null;
-				for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
+				for(int livelloDaEspandere=0; isRunning ;livelloDaEspandere++)
 				{
 					livEspanso = new Livello();
 					albero.add(livEspanso);
-					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
 					{
+						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
 						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
 					}
 				}
+				System.out.println("Thread treeGenerator interrotto");
 			} catch (Exception e)
 			{
 				e.printStackTrace();
@@ -371,6 +385,7 @@ public class IntelligenzaBianca implements IA {
 	public synchronized Action getBetterMove(StateTablut s) {
 
 		long t1 = System.currentTimeMillis();
+		long t3 = 0;
 
 		try {
 			Nodo node = new Nodo(s);
@@ -379,18 +394,20 @@ public class IntelligenzaBianca implements IA {
 			t.start();
 			this.wait(30000);
 			System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			t.stop();
+			treeGenerator.stopThread();
+			//t.stop();
 			
 			for(int x=0; x<albero.size(); x++)
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
+			t3 = System.currentTimeMillis();
+			System.out.println("Tempo trascorso: "+(t3-t1)+" millisecondi");
 			
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(20000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
@@ -405,8 +422,9 @@ public class IntelligenzaBianca implements IA {
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		
+		System.out.println("Tempo trascorso: "+(t2-t3)+" millisecondi");
+		System.out.println("");
+		System.out.println("");
 		return a;
 	}
 	

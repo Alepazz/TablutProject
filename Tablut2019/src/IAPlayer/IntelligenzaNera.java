@@ -6,8 +6,6 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class IntelligenzaNera implements IA {
 	
 	private static Action a = null;
@@ -211,7 +209,7 @@ public class IntelligenzaNera implements IA {
 				
 				}
 			}
-				return value;
+		return value;
 	}
 
 	
@@ -227,8 +225,9 @@ public class IntelligenzaNera implements IA {
 		public void run() {
 			int x =0;
 			//ciclo sull'ultimo livello
-			for(Nodo n : albero.get(albero.size()-1).getNodi())
+			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(albero.size()-1).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
 						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
 						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
@@ -252,8 +251,9 @@ public class IntelligenzaNera implements IA {
 							
 			}
 			//ciclo il penultimo livello
-			for(Nodo n : albero.get(albero.size()-2).getNodi())
+			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(albero.size()-2).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
 						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
 						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
@@ -285,15 +285,17 @@ public class IntelligenzaNera implements IA {
 					n.getPadre().setValue(n.getValue());
 				}
 			}*/
-			for(Nodo n : albero.get(2).getNodi())
+			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(2).getNodi().get(i);
 				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 				}
 			}
-			for(Nodo n : albero.get(1).getNodi())
+			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.interrupted(); i++)
 			{
+				Nodo n = albero.get(1).getNodi().get(i);
 				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
@@ -307,98 +309,104 @@ public class IntelligenzaNera implements IA {
 				l.getNodi().clear();
 			}*/
 			albero.clear();
-			
+			System.out.println("Albero ripulito" + albero.size());
 		}
 		
 	}
 			
 		//thread che crea l'albero di gioco
 	private class TreeGenerator implements Runnable {
-			private Nodo nodoAttuale;
-			private Simulator simulatore;
-				public TreeGenerator(Nodo n, Simulator s) {
-				this.nodoAttuale = n;
-				this.simulatore = s;
-			}
+		private Nodo nodoAttuale;
+		private Simulator simulatore;
+		private boolean isRunning;
 
-			public void run() {
-				
-				try {
-					Livello liv = new Livello();
-					liv.add(this.nodoAttuale);
-					albero.add(liv);
-					Livello livEspanso = null;
-					for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
-					{
-						livEspanso = new Livello();
-						albero.add(livEspanso);
-						for(Nodo n : albero.get(livelloDaEspandere).getNodi())
-						{
-							livEspanso.add(this.simulatore.mossePossibiliComplete(n));
-						}
-					}
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-				}
-			}
-			
-	public synchronized Action getBetterMove(StateTablut s) {
-		
-		long t1 = System.currentTimeMillis();
+		public TreeGenerator(Nodo n, Simulator s) {
+			this.nodoAttuale = n;
+			this.simulatore = s;
+			this.isRunning=true;
+		}
+
+		public void stopThread()
+		{
+			this.isRunning=false;
+		}
+
+		public void run() {
 			try {
+				Livello liv = new Livello();
+				liv.add(this.nodoAttuale);
+				albero.add(liv);
+				Livello livEspanso = null;
+				for(int livelloDaEspandere=0; isRunning ;livelloDaEspandere++)
+				{
+					livEspanso = new Livello();
+					albero.add(livEspanso);
+					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
+					{
+						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
+						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
+						for(int y=0; y<mosse.size() && isRunning; y++)
+						{
+							Nodo nodo = mosse.get(y);
+							livEspanso.add(nodo);
+						}
+						
+					}
+				}
+				System.out.println("Thread treeGenerator interrotto");
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+	}
+			
+	@SuppressWarnings("static-access")
+	@Override
+	public synchronized Action getBetterMove(StateTablut s) {
+
+		long t1 = System.currentTimeMillis();
+		long t3 = 0;
+
+		try {
 			Nodo node = new Nodo(s);
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(20000);
+			this.wait(30000);
 			System.out.println("Lancio l'interruzione");
-			t.interrupt();
+			treeGenerator.stopThread();
 			t.stop();
 			
 			for(int x=0; x<albero.size(); x++)
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
+			t3 = System.currentTimeMillis();
+			System.out.println("Tempo trascorso: "+(t3-t1)+" millisecondi");
 			
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(30000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
 			
-				
+
+			
 			//System.out.println("Livello 3 espanso");
-				
+
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		
-		int mb = 1024*1024;
-		Runtime runtime = Runtime.getRuntime();
-
-		System.out.println("##### Heap utilization statistics [MB] #####");
-
-		//Print used memory
-		System.out.println("Used Memory:"
-			+ (runtime.totalMemory() - runtime.freeMemory()) / mb);
-
-		//Print free memory
-		System.out.println("Free Memory:"
-			+ runtime.freeMemory() / mb);
-
-		//Print total available memory
-		System.out.println("Total Memory:" + runtime.totalMemory() / mb);
-
-		//Print Maximum available memory
-		System.out.println("Max Memory:" + runtime.maxMemory() / mb);
-	
+		System.out.println("Tempo trascorso: "+(t2-t3)+" millisecondi");
+		System.out.println("");
+		System.out.println("");
 		return a;
 	}
 }
