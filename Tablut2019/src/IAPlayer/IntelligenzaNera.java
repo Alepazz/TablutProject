@@ -374,7 +374,7 @@ public class IntelligenzaNera implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(30000);
+			this.wait(20000);
 			System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			t.stop();
@@ -389,7 +389,7 @@ public class IntelligenzaNera implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(10000);
+			this.wait(20000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
