@@ -6,11 +6,11 @@ import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class IntelligenzaNera implements IA {
 	
+	private static Action a = null;
 	private static List<Livello> albero;
-	private List<Nodo> nodiEsistenti;
+	//private List<Nodo> nodiEsistenti;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
@@ -19,9 +19,9 @@ public class IntelligenzaNera implements IA {
 	private CommonHeuristicFunction common;
 	
 	public IntelligenzaNera() {
-		this.albero = new ArrayList<Livello>();
+		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
-		this.nodiEsistenti = new ArrayList<Nodo>();
+		//this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
 	}
 
@@ -44,7 +44,7 @@ public class IntelligenzaNera implements IA {
 		
 		int value =0;
 		
-		///numero pedine
+		//numero pedine
 		int nBianchi=0;
 		int nNeri=0;
 		int rigaRe=-1;
@@ -62,7 +62,7 @@ public class IntelligenzaNera implements IA {
 			{
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
-					nNeri++; //volendo il numero delle pedine si può avere cercando lunghezza della lista
+					nNeri++; //volendo il numero delle pedine si puï¿½ avere cercando lunghezza della lista
 					//aggiungo la posizione ij di ogni nero
 					neri[indexNeri]= ""+i+j;
 					indexNeri++;
@@ -163,7 +163,7 @@ public class IntelligenzaNera implements IA {
 			for(int i=0; i<indexNeri; i++ ) {
 				
 				int posizione= Integer.parseInt(neri[i]);
-				//le unità sono le colonne mentre le decine sono le righe
+				//le unitï¿½ sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
 				int colonna= posizione % 10;
 				
@@ -177,7 +177,7 @@ public class IntelligenzaNera implements IA {
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
 					value =+ VALUE_BLACK_PAWN*3;
 				
-				//controllo pedine vicine sugli assi (è preferibile che siano in diagonale)
+				//controllo pedine vicine sugli assi (ï¿½ preferibile che siano in diagonale)
 				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
 					value =+ this.VALUE_BLACK_PAWN/2;
 				if( common.checkNeighbourTop(riga, colonna, s).equals("B"))
@@ -223,156 +223,207 @@ public class IntelligenzaNera implements IA {
 				
 				}
 			}
-				return value;
-	}
-
-	private List<Action> getMossePossibili(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private StateTablut getNewState(StateTablut s, Action a) {
-		// TODO Auto-generated method stub
-		return null;
+		return value;
 	}
 
 	
 	//valuta gli ultimi rami dell'albero
-			//da implementare i tagli ecc...
-			private class HeuristicValuator implements Runnable {
-				private IntelligenzaNera ia;
-				
-				public HeuristicValuator(IntelligenzaNera ia){
-					this.ia = ia;
+	//da implementare i tagli ecc...
+	private class HeuristicValuator implements Runnable {
+		private IntelligenzaNera ia;
+		
+		public HeuristicValuator(IntelligenzaNera ia){
+			this.ia = ia;
+		}
+		
+		public void run() {
+			int x =0;
+			//ciclo sull'ultimo livello
+			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(albero.size()-1).getNodi().get(i);
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
+				{}
+				else
+				{
+					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+					float heu = ia.getHeuristicValue(n.getStato());
+					x++;
+					//siccome evolviamo per 4 livelli saranno stati nostri 
+					if(Float.isNaN(n.getPadre().getValue()) || heu>n.getPadre().getValue())
+					{
+						n.getPadre().setValue(heu);
+						if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()<n.getPadre().getPadre().getValue())
+						{
+							n.getPadre().getPadre().setValue(heu);
+						}
+					}	
 				}
 				
-				public void run() {
-					//ciclo sull'ultimo livello
-					for(Nodo n : albero.get(albero.size()-1).getNodi())
+							
+			}
+			//ciclo il penultimo livello
+			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(albero.size()-2).getNodi().get(i);
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
+				{}
+				else
+				{
+					if(Float.isNaN(n.getValue()))
 					{
 						//non so se sia il giusto metodo, al massimo da cambiare con l'altro
 						float heu = ia.getHeuristicValue(n.getStato());
-						//siccome evolviamo per 5 livelli saranno stati dell'avversario 
+						x++;
 						if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
 						{
 							n.getPadre().setValue(heu);
-						}				
-					}
-					//ciclo il penultimo livello
-					for(Nodo n : albero.get(albero.size()-2).getNodi())
-					{
-						if(Float.isNaN(n.getValue()))
-						{
-							//non so se sia il giusto metodo, al massimo da cambiare con l'altro
-							float heu = ia.getHeuristicValue(n.getStato());
-							n.setValue(heu);
-						}				
-					}
+							if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()>n.getPadre().getPadre().getValue())
+							{
+								n.getPadre().getPadre().setValue(heu);
+							}
+						}	
+					}	
 				}
-				
+							
 			}
 			
-			//thread che crea l'albero di gioco
-			private class TreeGenerator implements Runnable {
-				private Nodo nodoAttuale;
-				private Simulator simulatore;
-
-				public TreeGenerator(Nodo n, Simulator s) {
-					this.nodoAttuale = n;
-					this.simulatore = s;
-				}
-
-
-				public void run() {
-					try {
-						Livello liv = new Livello();
-						liv.add(this.nodoAttuale);
-						albero.add(liv);
-						Livello livEspanso = null;
-						for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
-						{
-							livEspanso = new Livello();
-							albero.add(livEspanso);
-							for(Nodo n : albero.get(livelloDaEspandere).getNodi())
-							{
-								livEspanso.add(this.simulatore.mossePossibiliComplete(n));
-							}
-						}
-					} catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-
-			}
-				
-			@SuppressWarnings("static-access")
-			@Override
-			public synchronized Action getBetterMove(StateTablut s) {
-				Action a = null;
-				long t1 = System.currentTimeMillis();
-
-				try {
-					Nodo node = new Nodo(s);
-					TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
-					Thread t = new Thread(treeGenerator);
-					t.start();
-					this.wait(33000);
-					System.out.println("Lancio l'interruzione");
-					t.interrupt();
-					t.stop();
-					
-					for(int x=0; x<albero.size(); x++)
-					{
-						System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-					}
-					
-					HeuristicValuator heuristicValuator = new HeuristicValuator(this);
-					t = new Thread(heuristicValuator);
-					t.start();
-					this.wait(20000);
-					System.out.println("Lancio l'interruzione");
-					t.interrupt();
-					t.stop();
-					
-
-					for(Nodo n : albero.get(3).getNodi())
-					{
-						if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
-						{
-							n.getPadre().setValue(n.getValue());
-						}
-					}
-					for(Nodo n : albero.get(2).getNodi())
-					{
-						if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-						{
-							n.getPadre().setValue(n.getValue());
-						}
-					}
-					for(Nodo n : albero.get(1).getNodi())
-					{
-						if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-						{
-							n.getPadre().setValue(n.getValue());
-							a=n.getAzione();
-						}
-					}
-					//System.out.println("Livello 3 espanso");
-
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				long t2 = System.currentTimeMillis();
-				System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-				for(Livello l: this.albero)
+			/*for(Nodo n : albero.get(3).getNodi())
+			{
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
-					l.getNodi().clear();
+					n.getPadre().setValue(n.getValue());
 				}
-				this.albero.clear();
-				return a;
+			}*/
+			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(2).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+				}
 			}
+			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(1).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+					a=n.getAzione();
+				}
+			}
+			System.out.println(x + " calcoli fatti");
+			System.out.println(a.toString());
+			/*for(Livello l: albero)
+			{
+				l.getNodi().clear();
+			}*/
+			albero.clear();
+			System.out.println("Albero ripulito" + albero.size());
+		}
+		
+	}
+			
+		//thread che crea l'albero di gioco
+	private class TreeGenerator implements Runnable {
+		private Nodo nodoAttuale;
+		private Simulator simulatore;
+		private boolean isRunning;
 
+		public TreeGenerator(Nodo n, Simulator s) {
+			this.nodoAttuale = n;
+			this.simulatore = s;
+			this.isRunning=true;
+		}
+
+		public void stopThread()
+		{
+			this.isRunning=false;
+		}
+
+		public void run() {
+			try {
+				Livello liv = new Livello();
+				liv.add(this.nodoAttuale);
+				albero.add(liv);
+				Livello livEspanso = null;
+				for(int livelloDaEspandere=0; isRunning ;livelloDaEspandere++)
+				{
+					livEspanso = new Livello();
+					albero.add(livEspanso);
+					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
+					{
+						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
+						long x1 = System.currentTimeMillis();
+						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
+						long x2 = System.currentTimeMillis();
+						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						for(int y=0; y<mosse.size() && isRunning; y++)
+						{
+							Nodo nodo = mosse.get(y);
+							livEspanso.add(nodo);
+						}
+						
+					}
+				}
+				System.out.println("Thread treeGenerator interrotto");
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+	}
+			
+	@SuppressWarnings("static-access")
+	@Override
+	public synchronized Action getBetterMove(StateTablut s) {
+
+		long t1 = System.currentTimeMillis();
+		long t3 = 0;
+
+		try {
+			Nodo node = new Nodo(s);
+			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
+			Thread t = new Thread(treeGenerator);
+			t.start();
+			this.wait(20000);
+			System.out.println("Lancio l'interruzione");
+			treeGenerator.stopThread();
+			t.stop();
+			
+			for(int x=0; x<albero.size(); x++)
+			{
+				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
+			}
+			t3 = System.currentTimeMillis();
+			System.out.println("Tempo trascorso: "+(t3-t1)+" millisecondi");
+			
+			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
+			t = new Thread(heuristicValuator);
+			t.start();
+			this.wait(20000);
+			System.out.println("Lancio l'interruzione");
+			t.interrupt();
+			t.stop();
+			
+
+			
+			//System.out.println("Livello 3 espanso");
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long t2 = System.currentTimeMillis();
+		System.out.println("Tempo trascorso: "+(t2-t3)+" millisecondi");
+		System.out.println("");
+		System.out.println("");
+		return a;
+	}
 }

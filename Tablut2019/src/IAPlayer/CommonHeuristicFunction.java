@@ -32,6 +32,7 @@ public class CommonHeuristicFunction {
 		this.citadels.add("e8");
 	}
 	
+	//TODO: Commentare cosa fa questa funzione
 	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 			
 			int i;
@@ -114,12 +115,12 @@ public class CommonHeuristicFunction {
 			
 			return true;
 		}
-	
-	
-	//QUESTA MI PIACE POCO PERCHE NON RIUSCIAMO A CAPIRE DA UNA SINGOLA PASSATA QUANTE PEDINE CI SONO SUL TABELLONE E DOVE STA IL RE
+		
 	/**
-	 * Restituisce il numero di pedine bianche presenti sul tabellone, dato lo stato s
-	 * Nel conteggio � compreso anche il re
+	 * Restituisce il numero di pedine bianche/nere presenti sul tabellone, dato lo stato s
+	 *
+	 * Nel conteggio è compreso anche il re solo nel caso in cui color = "W"
+	 * @param color Colore indicante la fazione di cui si vuole sapere il numero di pedine ("W" = bianche, "B" = nere)
 	 * @param s StateTablut rappresenta lo stato da valutare
 	 * @return numero di pedine bianche, comprensive del re, presenti sulla scacchiera
 	 */
@@ -135,38 +136,37 @@ public class CommonHeuristicFunction {
 			}
 		}
 		
-		return result += 1; //aggiungo il re
+		if(color.equals("W")) {
+			result +=1; //aggiungo il re
+		}
+		
+		return result; 
 	}
 	
-	//COME SOPRA
 	/**
-	 * Restituisce il numero di pedine nere presenti sul tabellone
-	 * @param s StateTablut rappresenta lo stato da valutare
-	 * @return numero di pedine nere, presenti sulla scacchiera
+	 * Ritorna il numero di pedine totali presenti sulla scacchiera
+	 * @param s StateTablut ovvero lo stato che deve essere valutato
+	 * @return numero di pedine (bianche e nere) presenti nella scacchiera
 	 */
-	public int getNumberBlack(StateTablut s) {
-		
+	public int getNumberPawns(StateTablut s) {
 		int result = 0;
-		
 		for(int i=0; i<9; i++) {
 			for(int j=0; j<9; j++) {
-				if(s.getPawn(i, j).equalsPawn("B")) {
-					result++;
+				if(s.getPawn(i, j).equalsPawn("W") || s.getPawn(i, j).equalsPawn("B") || s.getPawn(i, j).equalsPawn("K")) {
+					result ++;
 				}
 			}
 		}
-		
 		return result;
 	}
 	
-	
-	//DOMANDA: SE UNA COLONNA � LIBERA ALLORA SI AGGIUNGE 3 PERCHE CONSIDERIAMO ANCHE LE 2 SEMICOLONNE?
 	/**
-	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'� la casella blu che permette al bianco di vincere
+	 * Ritorna il numero di colonne (o semicolonne) e righe (o semirighe) libere, al termine delle quali c'è la casella blu che permette al bianco di vincere
 	 * 
 	 * semicolonna = per semicolonna si intendono le colonne 1 e 7 che sono interrotte da una cittadella
 	 * 
 	 * semiriga = per semiriga si intendono le righe 1 e 7 che sono interrotte da una cittadella
+	 * 
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return numero di colonne/semicolonne e righe/semirighe libere, per permettere ai bianchi di vincere
 	 */
@@ -209,11 +209,11 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data colonna � libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data colonna è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
 	 * Attenzione! Funziona solo se viene passata come parametro la colonna 2 o 6
 	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se la colonna, dalla cella 0 alla 8 � libera, false se invece � presente almeno una pedina bianca/nera, c'� il castello, oppure una o pi� cittadelle
+	 * @return true se la colonna, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
 	public boolean isColumnFree(int numberCol, StateTablut s) {
 		
@@ -229,11 +229,11 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data riga � libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data riga è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
 	 * Attenzione! Funziona solo se viene passata come parametro la riga 2 o 6
 	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se la riga, dalla cella 0 alla 8 � libera, false se invece � presente almeno una pedina bianca/nera, c'� il castello, oppure una o pi� cittadelle
+	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
 	 */
 	public boolean isRowFree(int numberRow, StateTablut s) {
 		
@@ -249,11 +249,11 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data riga, intervallata da una cittadella, � libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data riga, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
 	 * Attenzione! Funziona solo se viene passata come parametro la riga 1 e 7 (quelle intervallate da una cittadella)
 	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece � presente almeno una pedina bianca/nera in tali celle
+	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
 	public boolean isSemirowFree(int numberRow, StateTablut s) {
 		
@@ -279,11 +279,11 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data colonna, intervallata da una cittadella, � libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data colonna, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
 	 * Attenzione! Funziona solo se viene passata come parametro la colonna 1 e 7
 	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece � presente almeno una pedina bianca/nera in tali celle
+	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
 	 */
 	public boolean isSemicolumnFree(int numberColumn, StateTablut s) {
 		
@@ -308,8 +308,6 @@ public class CommonHeuristicFunction {
 		return result;
 	}
 	
-	
-
 	/**
 	 * Controlla la possibile cattura del re da parte dei neri, ritorna true se il re puo' essere catturato o false nel caso contrario
 	 * Dopo aver controllato che sia il turno del nero la funzione distingue i tre casi di cattura:
@@ -319,7 +317,7 @@ public class CommonHeuristicFunction {
 	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
 	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
 	 * @param s StateTablut ovvero lo stato al momento della valutazione
-	 * @return true se il re, in quello stato s, pu� essere catturato, false in caso contrario
+	 * @return true se il re, in quello stato s, puù essere catturato, false in caso contrario
 	 */
 	public boolean kingCanBeCaptured(int rigaRe, int colonnaRe, StateTablut s)
 	{
@@ -511,65 +509,35 @@ public class CommonHeuristicFunction {
 		return false;
 	}
 	
-	//TODO: da rivedere per via del cambiamento delle funzioni interne a checkPawnCanArrive
-	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
-		
-		//sottointeso turno bianco
-		
-		if(this.checkPedinaIsolata(riga, colonna, s)) {
-			return false; //il nero non pu� essere catturato
-		}
-		
-		if(this.checkNeighbourTop(riga, colonna, s).equals("B") && this.checkNeighbourLeft(riga, colonna, s).equals("B")) {
-			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if(this.checkNeighbourTop(riga, colonna, s).equals("B") && this.checkNeighbourRight(riga, colonna, s).equals("B")) {
-			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") && this.checkNeighbourLeft(riga, colonna, s).equals("B")) {
-			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") && this.checkNeighbourRight(riga, colonna, s).equals("B")) {
-			return false; // se la pedina ha due vicini neri, in due lati opposti, allora non pu� essere catturata
-		}
-		
-		if(this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("W") || this.checkNeighbourTop(riga, colonna, s).equals("T")) {
-			if(this.checkWhiteCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("W") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) {
-			if(this.checkWhiteCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("W") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) {
-			if(this.checkWhiteCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		if(this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("W") || this.checkNeighbourRight(riga, colonna, s).equals("T")) {
-			if(this.checkWhiteCanArrive(riga, colonna, s)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	
 	/**
-	 * Controlla se una pedina passata come parametro pu� essere catturata
+	 * Controlla se una pedina nera passata come parametro può essere catturata
 	 * @param riga Riga in cui si trova la pedina
 	 * @param colonna Colonna in cui si trova la pedina
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se la pedina pu� essere catturata, false in caso contrario
+	 * @return true se la pedina puòessere catturata, false in caso contrario
+	 */
+	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
+		
+		//sottointeso turno bianco		
+		if(this.checkPedinaIsolata(riga, colonna, s)) {
+			return false; //il nero non può essere catturato
+		}
+		
+		if((this.enemyOnTheTop(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInBottomPosition(riga, colonna, s))
+				|| (this.enemyOnTheRight(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInLeftPosition(riga, colonna, s))
+				|| (this.enemyOnTheBottom(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInTopPosition(riga, colonna, s))
+				|| (this.enemyOnTheLeft(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInRightPosition(riga, colonna, s))) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se una pedina bianca passata come parametro può essere catturata
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la pedina può essere catturata, false in caso contrario
 	 */
 	public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
@@ -608,7 +576,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla chi � il vicino superiore della pedina passata come parametro
+	 * Controlla chi è il vicino superiore della pedina passata come parametro
 	 * @param riga Riga della pedina
 	 * @param colonna Colonna della pedina
 	 * @param s StateTablut ovvero lo stato da valutare
@@ -650,7 +618,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla chi � il vicino inferiore della pedina passata come parametro
+	 * Controlla chi è il vicino inferiore della pedina passata come parametro
 	 * @param riga Riga della pedina
 	 * @param colonna Colonna della pedina
 	 * @param s StateTablut ovvero lo stato da valutare
@@ -692,7 +660,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla chi � il vicino sinistro della pedina passata come parametro
+	 * Controlla chi è il vicino sinistro della pedina passata come parametro
 	 * @param riga Riga della pedina
 	 * @param colonna Colonna della pedina
 	 * @param s StateTablut ovvero lo stato da valutare
@@ -734,7 +702,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla chi � il vicino destro della pedina passata come parametro
+	 * Controlla chi è il vicino destro della pedina passata come parametro
 	 * @param riga Riga della pedina
 	 * @param colonna Colonna della pedina
 	 * @param s StateTablut ovvero lo stato da valutare
@@ -777,37 +745,49 @@ public class CommonHeuristicFunction {
 	
 	/**
 	 * Controlla la vicinanza delle pedine in alto a sinistra
-	 *  */
+	 * @param riga Riga della pedina che si vuole controllare
+	 * @param colonna Colonna della pedina che si vuole controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna la stringa corrispondende l'elemento che si trova nelle vicinanze della pedina passata come parametro
+	 * Es. "W" se c'è una pedina bianca, "O" se c'è una cella libera
+	 */
 	public String checkNeighbourTopLeft(int riga, int colonna, StateTablut s) {
 		if(colonna!=0 && riga !=0 ) {
 			if(s.getPawn(riga-1, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
-				return "O"; //c'� una cella libera
+				return "O"; //c'è una cella libera
 			} else {
 				if(s.getPawn(riga-1, colonna-1).equalsPawn("K")) {
-					return "K"; //c'� il re
+					return "K"; //c'è il re
 				}
 				
 				if(s.getPawn(riga-1, colonna-1).equalsPawn("B")) {
-					return "B"; //c'� un nero
+					return "B"; //c'è un nero
 				}
 				
 				if(s.getPawn(riga-1, colonna-1).equalsPawn("W")) {
-					return "W"; //c'� un bianco
+					return "W"; //c'è un bianco
 				}
 				
 				if(s.getPawn(riga-1, colonna-1).equalsPawn("T")) {
-					return "T"; //c'� il trono
+					return "T"; //c'è il trono
 				}
 			}
 			
-			return "C"; //c'� la cittadella
+			return "C"; //c'è la cittadella
 		} else {
 			return "X";
 		}		
 	}
+	
 	/**
 	 * Controlla la vicinanza delle pedine in alto a destra
-	 *  */
+	 * 
+	 * @param riga Riga della pedina che si vuole controllare
+	 * @param colonna Colonna della pedina che si vuole controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna la stringa corrispondende l'elemento che si trova nelle vicinanze della pedina passata come parametro
+	 * Es. "W" se c'è una pedina bianca, "O" se c'è una cella libera
+	 */
 	public String checkNeighbourTopRight(int riga, int colonna, StateTablut s) {
 		if(colonna!=8 && riga !=0) {
 			if(s.getPawn(riga-1, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
@@ -838,7 +818,13 @@ public class CommonHeuristicFunction {
 	
 	/**
 	 * Controlla la vicinanza delle pedine in basso a sinistra
-	 *  */
+	 * 
+	 * @param riga Riga della pedina che si vuole controllare
+	 * @param colonna Colonna della pedina che si vuole controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna la stringa corrispondende l'elemento che si trova nelle vicinanze della pedina passata come parametro
+	 * Es. "W" se c'è una pedina bianca, "O" se c'è una cella libera
+	 */
 	public String checkNeighbourBottomLeft(int riga, int colonna, StateTablut s) {
 		if(colonna!=0 && riga !=8) {
 			if(s.getPawn(riga+1, colonna-1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
@@ -869,7 +855,13 @@ public class CommonHeuristicFunction {
 	
 	/**
 	 * Controlla la vicinanza delle pedine in basso a destra
-	 *  */
+	 * 
+	 * @param riga Riga della pedina che si vuole controllare
+	 * @param colonna Colonna della pedina che si vuole controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna la stringa corrispondende l'elemento che si trova nelle vicinanze della pedina passata come parametro
+	 * Es. "W" se c'è una pedina bianca, "O" se c'è una cella libera
+	 */
 	public String checkNeighbourBottomRight(int riga, int colonna, StateTablut s) {
 		if(colonna!=8 && riga !=8) {
 			if(s.getPawn(riga+1, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
@@ -899,11 +891,11 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Verifica dove � posizionato il re (met� superiore, riga centrale, met� inferiore)
+	 * Verifica dove è posizionato il re (metà superiore, riga centrale, metà inferiore)
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return 0 se il re si trova nella met� superiore della scacchiera;
+	 * @return 0 se il re si trova nella metà superiore della scacchiera;
 	 * 1 se il re si trova esattamente nella riga 5 della scacchiera;
-	 * 2 se il re si trova nella met� inferiore della scacchiera
+	 * 2 se il re si trova nella metà inferiore della scacchiera
 	 */
 	public int kingInTop(StateTablut s) {
 		for(int i=1; i<3; i++) {
@@ -930,7 +922,7 @@ public class CommonHeuristicFunction {
 	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
 	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
 	 * @param s StateTablut ovvero stato che si vuole valutare
-	 * @return Numero di vie di fuga disponibili per il re. Essendo 4 le mosse che il re pu� fare, questa funzione restituisce un numero compreso tra [0, 4]
+	 * @return Numero di vie di fuga disponibili per il re. Essendo 4 le mosse che il re può fare, questa funzione restituisce un numero compreso tra [0, 4]
 	 */
 	public int checkVieDiFugaRe(int rigaRe, int colonnaRe, StateTablut s)
 	{
@@ -950,7 +942,7 @@ public class CommonHeuristicFunction {
 	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
 	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
 	 * @param s StateTablut ovvero stato che si vuole valutare
-	 * @return int: -1 se la via di fuga non � disponibile, 0 se invece � disponibile
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	public int getViaDiFugaFromBottom(int rigaRe, int colonnaRe, StateTablut s) {
 		for (int i=rigaRe+1; i<9; i++) {
@@ -988,7 +980,7 @@ public class CommonHeuristicFunction {
 	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
 	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
 	 * @param s StateTablut ovvero stato che si vuole valutare
-	 * @return int: -1 se la via di fuga non � disponibile, 0 se invece � disponibile
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	public int getViaDiFugaFromRight(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe+1; i<9; i++)
@@ -1008,7 +1000,7 @@ public class CommonHeuristicFunction {
 	 * @param rigaRe Riga in cui si trova il re, al momento della valutazione
 	 * @param colonnaRe Colonna in cui si trova il re, al momento della valutazione
 	 * @param s StateTablut ovvero stato che si vuole valutare
-	 * @return int: -1 se la via di fuga non � disponibile, 0 se invece � disponibile
+	 * @return int: -1 se la via di fuga non è disponibile, 0 se invece è disponibile
 	 */
 	public int getViaDiFugaFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
 		for(int i=colonnaRe-1; i>=0; i--)
@@ -1237,8 +1229,6 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
-		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
 		if(s.getPawn(riga, colonna).equalsPawn("B")) {
 			return false;
 		}
@@ -1308,7 +1298,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkWhiteCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
 		if(colonna!=8) {
-			if(checkWhiteCanArriveFromTop(riga, colonna+1, s) || checkWhiteCanArriveFromRight(riga, colonna+1, s) || checkWhiteCanArriveFromLeft(riga, colonna+1, s)) {
+			if(checkWhiteCanArriveFromTop(riga, colonna+1, s) || checkWhiteCanArriveFromBottom(riga, colonna+1, s) || checkWhiteCanArriveFromRight(riga, colonna+1, s)) {
 				return true;
 			}
 		}
@@ -1324,7 +1314,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkWhiteCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
 		if(riga!=8) {
-			if(checkWhiteCanArriveFromTop(riga+1, colonna, s) || checkWhiteCanArriveFromRight(riga+1, colonna, s) || checkWhiteCanArriveFromLeft(riga+1, colonna, s)) {
+			if(checkWhiteCanArriveFromBottom(riga+1, colonna, s) || checkWhiteCanArriveFromRight(riga+1, colonna, s) || checkWhiteCanArriveFromLeft(riga+1, colonna, s)) {
 				return true;
 			}
 		}
@@ -1340,7 +1330,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkWhiteCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
 		if(colonna!=0) {
-			if(checkWhiteCanArriveFromTop(riga, colonna-1, s) || checkWhiteCanArriveFromRight(riga, colonna-1, s) || checkWhiteCanArriveFromLeft(riga, colonna-1, s)) {
+			if(checkWhiteCanArriveFromTop(riga, colonna-1, s) || checkWhiteCanArriveFromBottom(riga, colonna-1, s) || checkWhiteCanArriveFromLeft(riga, colonna-1, s)) {
 				return true;
 			}
 		}
@@ -1372,8 +1362,6 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
-		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
 		if(s.getPawn(riga, colonna).equalsPawn("W")) {
 			return false;
 		}
@@ -1401,8 +1389,6 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
-		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
 		if(s.getPawn(riga, colonna).equalsPawn("W")) {
 			return false;
 		}
@@ -1431,8 +1417,6 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
-		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
 		if(s.getPawn(riga, colonna).equalsPawn("W")) {
 			return false;
 		}
@@ -1461,8 +1445,6 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina bianca in quella posizione ritorna true o false?
-		//Controlla la posizione corrente e se e' gia' presente una pedina bianca ritorna false
 		if(s.getPawn(riga, colonna).equalsPawn("W")) {
 			return false;
 		}
@@ -1484,25 +1466,102 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se esiste un nemico o un accampamento alla destra di una pedina bianca posizionata in @riga e @colonna
+	 * Controlla se esiste un nemico o un accampamento in alto rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
 	 * 
 	 * @param riga Riga in cui si trova la pedina
 	 * @param colonna Colonna in cui si trova la pedina
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � accando, sulla destra, alla pedina bianca passata come parametro, false in caso contrario
+	 * @return true se una pedina avversaria o un accampamento è sopra alla pedina passata come parametro, false in caso contrario
+	 */
+	public boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
+	{
+		if(riga!=0) {
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in alto
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se in alto c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga-1, colonna).equalsPawn("B") || s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in alto
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se in alto c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga-1, colonna).equalsPawn("W") || s.getPawn(riga-1, colonna).equalsPawn("K")
+						|| s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Controlla se esiste un nemico o un accampamento a destra rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina avversaria o un accampamento è accanto, sulla destra, alla pedina passata come parametro, false in caso contrario
 	 */
 	public boolean enemyOnTheRight(int riga, int colonna, StateTablut s)
 	{
 		if(colonna!=8) {
-			if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna+1)))
-			{
-				return true;
-			} else {
-				return false;
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga, colonna+1).equalsPawn("B") || s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga, colonna+1).equalsPawn("W") || s.getPawn(riga, colonna+1).equalsPawn("K")
+						|| s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+					return true;
+				}
 			}
-		} else {
-			return false;
-		}	
+		}
+		return false;	
+	}
+	
+	/**
+	 * Controlla se esiste un nemico o un accampamento in basso rispetto alla pedina(bianca o nera) posizionata in @riga e @colonna
+	 * 
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se una pedina avversaria o un accampamento è sotto alla pedina passata come parametro, false in caso contrario
+	 */
+	public boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
+	{
+		if(riga!=8) {
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in basso
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se in basso c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga+1, colonna).equalsPawn("B") || s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in basso
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se in basso c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga+1, colonna).equalsPawn("W") || s.getPawn(riga+1, colonna).equalsPawn("K")
+						|| s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -1516,63 +1575,30 @@ public class CommonHeuristicFunction {
 	public boolean enemyOnTheLeft(int riga, int colonna, StateTablut s)
 	{
 		if(colonna!=0) {
-			if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.citadels.contains(s.getBox(riga,  colonna-1)))
-			{
-				return true;
-			} else {
-				return false;
+			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
+			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
+				if(s.getPawn(riga, colonna-1).equalsPawn("B") || s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+					return true;
+				}
+			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
+			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
+				if(this.citadels.contains(s.getBox(riga,  colonna))){
+					return false;
+				}
+				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
+				if(s.getPawn(riga, colonna-1).equalsPawn("W") || s.getPawn(riga, colonna-1).equalsPawn("K")
+						|| s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+					return true;
+				}
 			}
-		} else {
-			return false;
-		}				
+		}
+		return false;			
 	}
 	
 	/**
-	 * Controlla se esiste un nemico o un accampamento in alto rispetto alla pedina bianca posizionata in @riga e @colonna
-	 * 
-	 * @param riga Riga in cui si trova la pedina
-	 * @param colonna Colonna in cui si trova la pedina
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � sopra alla pedina bianca passata come parametro, false in caso contrario
-	 */
-	public boolean enemyOnTheTop(int riga, int colonna, StateTablut s)
-	{
-		if(riga!=0) {
-			if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga-1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
-	}
-	
-	/**
-	 * Controlla se esiste un nemico o un accampamento in basso (sotto) rispetto alla pedina bianca posizionata in @riga e @colonna
-	 * 
-	 * @param riga Riga in cui si trova la pedina
-	 * @param colonna Colonna in cui si trova la pedina
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se una pedina nera o un accampamento � sotto alla pedina bianca passata come parametro, false in caso contrario
-	 */
-	public boolean enemyOnTheBottom(int riga, int colonna, StateTablut s)
-	{
-		if(riga!=8) {
-			if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.citadels.contains(s.getBox(riga+1,  colonna)))
-			{
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}	
-	}
-	
-	/**
-	 * Funzione che controlla se il re, muovendosi di una o pi� mosse da sinistra a destra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 * Funzione che controlla se il re, muovendosi di una o più mosse da sinistra a destra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
 	 * 
 	 * @param rigaRe Riga in cui si trova il re
 	 * @param colonnaRe Colonna in cui si trova il re
@@ -1605,7 +1631,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Funzione che controlla se il re, muovendosi di una o pi� mosse da destra a sinistra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
+	 * Funzione che controlla se il re, muovendosi di una o più mosse da destra a sinistra (orizzontale), arriva ad avere un'intera colonna libera, in cui vincere
 	 * 
 	 * @param rigaRe Riga in cui si trova il re
 	 * @param colonnaRe Colonna in cui si trova il re
@@ -1638,7 +1664,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Funzione che controlla se il re, muovendosi di una o pi� mosse dall'alto al basso (verticale), arriva ad avere un'intera riga libera, in cui vincere
+	 * Funzione che controlla se il re, muovendosi di una o più mosse dall'alto al basso (verticale), arriva ad avere un'intera riga libera, in cui vincere
 	 * 
 	 * @param rigaRe Riga in cui si trova il re
 	 * @param colonnaRe Colonna in cui si trova il re
@@ -1671,7 +1697,7 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Funzione che controlla se il re, muovendosi di una o pi� mosse dal basso all' alto (verticale), arriva ad avere un'intera riga libera, in cui vincere
+	 * Funzione che controlla se il re, muovendosi di una o più mosse dal basso all' alto (verticale), arriva ad avere un'intera riga libera, in cui vincere
 	 * 
 	 * @param rigaRe Riga in cui si trova il re
 	 * @param colonnaRe Colonna in cui si trova il re
@@ -1776,8 +1802,12 @@ public class CommonHeuristicFunction {
 
 	/**
 	 * Controlla se una pedina è isolata vedendo se c'è almeno un nero nelle vicinanze della pedina passata come valore
+	 * 
+	 * @param riga Riga inerenente la pedina da controllare
+	 * @param colonna Colonna inerente la pedina da controlare
+	 * @param s StateTablut ovvero lo stato che si vuole valutare
+	 * @return True se la pedina non ha nessun nero nelle 9 celle accanto ad essa
 	 */
-	
 	public boolean blackIsIsolated(int riga, int colonna, StateTablut s) {
 		if(this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottomLeft(riga, colonna, s).equals("B") ||
 				this.checkNeighbourBottomRight(riga, colonna, s).equals("B") || this.checkNeighbourTop(riga, colonna, s).equals("B") ||
@@ -1786,5 +1816,6 @@ public class CommonHeuristicFunction {
 			return false;
 		return true;
 	}
+	
 	
 }

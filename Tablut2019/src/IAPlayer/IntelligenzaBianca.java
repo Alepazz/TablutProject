@@ -1,30 +1,44 @@
 package IAPlayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
-import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IntelligenzaBianca implements IA {
 
 	private static List<Livello> albero;
-	private List<String> citadels;
-	private List<Nodo> nodiEsistenti;
+	private static Action a = null;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
+	private List<StateTablut> listState; 
 	
 	public IntelligenzaBianca() {
-		this.albero = new ArrayList<Livello>();
+		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
-		this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
+		this.listState = new ArrayList<StateTablut>();
+	}
+	
+	/**
+	 * Aggiunge un nuovo stato all'elenco degli static che sono stati visitati fin'ora
+	 * @param s StateTablut ovvero lo stato che si vuole aggiungere alla lista
+	 */
+	public void setState(StateTablut s) {
+		listState.add(s);
+	}
+	
+	/**
+	 * Ritorna il numero di stati differenti che si sono presentati fino a questo momento
+	 * @return
+	 */
+	public int getDimState() {
+		return listState.size();
 	}
 	
 	/**
@@ -140,11 +154,10 @@ public class IntelligenzaBianca implements IA {
 		return value;	
 	}
 	
-	
-	
-	
-	/*
-	 * Funzione di euristica, di prova <-- da modificare BRAVO ALE, HAI CAPITO COSA INTENDO
+	/**
+	 * Funzione euristica: calcola l'euristica
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return Ritorna un intero che indica il valore che è stato assegnato allo stato passato come parametro
 	 */
 	private int getHeuristicValueOfState(StateTablut s) {
 		if(s.getTurn().equalsTurn("WW"))
@@ -159,7 +172,6 @@ public class IntelligenzaBianca implements IA {
 		{
 			return 0;
 		}
-		int value =0;
 		
 		//numero pedine
 		int nBianchi=0;
@@ -194,21 +206,11 @@ public class IntelligenzaBianca implements IA {
 		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
-	
 
-	
-	private List<Action> getMossePossibili(StateTablut s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private StateTablut getNewState(StateTablut s, Action a) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	//valuta gli ultimi rami dell'albero
-	//da implementare i tagli ecc...
+	/*
+	 * valuta gli ultimi rami dell'albero
+	 * da implementare i tagli ecc...
+	 */
 	private class HeuristicValuator implements Runnable {
 		private IntelligenzaBianca ia;
 		
@@ -217,41 +219,115 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		public void run() {
+			int x =0;
 			//ciclo sull'ultimo livello
-			for(Nodo n : albero.get(albero.size()-1).getNodi())
+			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !Thread.interrupted(); i++)
 			{
-				//non so se sia il giusto metodo, al massimo da cambiare con l'altro
-				float heu = ia.getHeuristicValue(n.getStato());
-				//siccome evolviamo per 5 livelli saranno stati dell'avversario 
-				if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
-				{
-					n.getPadre().setValue(heu);
-				}				
-			}
-			//ciclo il penultimo livello
-			for(Nodo n : albero.get(albero.size()-2).getNodi())
-			{
-				if(Float.isNaN(n.getValue()))
+				Nodo n = albero.get(albero.size()-1).getNodi().get(i);
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()<=n.getPadre().getValue())
+				{}
+				else
 				{
 					//non so se sia il giusto metodo, al massimo da cambiare con l'altro
 					float heu = ia.getHeuristicValue(n.getStato());
-					n.setValue(heu);
-				}				
+					x++;
+					//siccome evolviamo per 4 livelli saranno stati nostri 
+					if(Float.isNaN(n.getPadre().getValue()) || heu>n.getPadre().getValue())
+					{
+						n.getPadre().setValue(heu);
+						if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()<n.getPadre().getPadre().getValue())
+						{
+							n.getPadre().getPadre().setValue(heu);
+						}
+					}	
+				}
+				
+							
 			}
+			//ciclo il penultimo livello
+			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(albero.size()-2).getNodi().get(i);
+				if(!Float.isNaN(n.getPadre().getValue()) 
+						&& !Float.isNaN(n.getPadre().getPadre().getValue()) 
+						&& n.getPadre().getPadre().getValue()>=n.getPadre().getValue())
+				{}
+				else
+				{
+					if(Float.isNaN(n.getValue()))
+					{
+						//non so se sia il giusto metodo, al massimo da cambiare con l'altro
+						float heu = ia.getHeuristicValue(n.getStato());
+						x++;
+						if(Float.isNaN(n.getPadre().getValue()) || heu<n.getPadre().getValue())
+						{
+							n.getPadre().setValue(heu);
+							if(Float.isNaN(n.getPadre().getPadre().getValue()) || n.getPadre().getValue()>n.getPadre().getPadre().getValue())
+							{
+								n.getPadre().getPadre().setValue(heu);
+							}
+						}	
+					}	
+				}
+							
+			}
+			
+			/*for(Nodo n : albero.get(3).getNodi())
+			{
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+				}
+			}*/
+			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(2).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+				}
+			}
+			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.interrupted(); i++)
+			{
+				Nodo n = albero.get(1).getNodi().get(i);
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				{
+					n.getPadre().setValue(n.getValue());
+					a=n.getAzione();
+				}
+			}
+			System.out.println(x + " calcoli fatti");
+			System.out.println(a.toString());
+			/*for(Livello l: albero)
+			{
+				l.getNodi().clear();
+			}*/
+			albero.clear();
+			System.out.println("Albero ripulito" + albero.size());
 		}
 		
 	}
 	
-	//thread che crea l'albero di gioco
+	/*
+	 * thread che crea l'albero di gioco
+	 */
 	private class TreeGenerator implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
+		private boolean isRunning;
 
 		public TreeGenerator(Nodo n, Simulator s) {
 			this.nodoAttuale = n;
 			this.simulatore = s;
+			this.isRunning=true;
 		}
 
+		public void stopThread()
+		{
+			this.isRunning=false;
+		}
 
 		public void run() {
 			try {
@@ -259,15 +335,26 @@ public class IntelligenzaBianca implements IA {
 				liv.add(this.nodoAttuale);
 				albero.add(liv);
 				Livello livEspanso = null;
-				for(int livelloDaEspandere=0; !Thread.interrupted() ;livelloDaEspandere++)
+				for(int livelloDaEspandere=0; isRunning ;livelloDaEspandere++)
 				{
 					livEspanso = new Livello();
 					albero.add(livEspanso);
-					for(Nodo n : albero.get(livelloDaEspandere).getNodi())
+					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
 					{
-						livEspanso.add(this.simulatore.mossePossibiliComplete(n));
+						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
+						long x1 = System.currentTimeMillis();
+						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
+						long x2 = System.currentTimeMillis();
+						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						for(int y=0; y<mosse.size() && isRunning; y++)
+						{
+							Nodo nodo = mosse.get(y);
+							livEspanso.add(nodo);
+						}
+						
 					}
 				}
+				System.out.println("Thread treeGenerator interrotto");
 			} catch (Exception e)
 			{
 				e.printStackTrace();
@@ -275,59 +362,67 @@ public class IntelligenzaBianca implements IA {
 		}
 
 	}
-		
+	
+	/**
+	 * Controlla lo stato genera una situazione di pareggio
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se lo stato è già presente nella lista degli stati visitati, false in caso contrario
+	 */
+	public boolean checkDraw(StateTablut s) {
+		if(listState.isEmpty()) {
+			listState.add(s);
+			return false;
+		} else { //se il numero di pedine sulla scacchiera è cambiato vuol dire che una pedina è stata mangiata, quindi svuoto l'elenco degli stati
+			if(common.getNumberPawns(s) != common.getNumberPawns(listState.get(listState.size()-1))) {
+				listState.clear();
+				listState.add(s);
+				return false;
+			} else { //controllo se lo stato esiste già
+				for(int i=0; i<listState.size()-1; i++) {
+					if(listState.get(i).equals(s)) {
+						//System.out.println("Lo stato esisteva già\n1.\n" + listState.get(i).toString() + "\n2.\n" + s.toString());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	@SuppressWarnings("static-access")
 	@Override
 	public synchronized Action getBetterMove(StateTablut s) {
-		Action a = null;
+
 		long t1 = System.currentTimeMillis();
+		long t3 = 0;
 
 		try {
 			Nodo node = new Nodo(s);
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(3300);
+			this.wait(30000);
 			System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			t.stop();
+			treeGenerator.stopThread();
+			//t.stop();
 			
 			for(int x=0; x<albero.size(); x++)
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
+			t3 = System.currentTimeMillis();
+			System.out.println("Tempo trascorso: "+(t3-t1)+" millisecondi");
 			
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(2000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			t.interrupt();
 			t.stop();
 			
 
-			for(Nodo n : albero.get(3).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-				}
-			}
-			for(Nodo n : albero.get(2).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-				}
-			}
-			for(Nodo n : albero.get(1).getNodi())
-			{
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
-				{
-					n.getPadre().setValue(n.getValue());
-					a=n.getAzione();
-				}
-			}
+			
 			//System.out.println("Livello 3 espanso");
 
 			
@@ -336,13 +431,10 @@ public class IntelligenzaBianca implements IA {
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-		for(Livello l: this.albero)
-		{
-			l.getNodi().clear();
-		}
-		this.albero.clear();
+		System.out.println("Tempo trascorso: "+(t2-t3)+" millisecondi");
+		System.out.println("");
+		System.out.println("");
 		return a;
 	}
-
+	
 }

@@ -7,7 +7,7 @@ import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import IAPlayer.CommonHeuristicFunction;
 import IAPlayer.IntelligenzaBianca;
@@ -731,6 +731,98 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void enemyOnTheTopTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheTop(0, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheTopTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][0] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheTop(4, 0, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheTopTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[5][4] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheTop(5, 4, s));
+			
+	}
+
+	@Test
 	void enemyOnTheRightTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -825,6 +917,98 @@ class CommonHeuristicFunctionTest {
 			
 	}
 	
+	@Test
+	void enemyOnTheRightTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][8] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOB
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheRight(1, 8, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheRightTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][0] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheRight(4, 0, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheRightTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOWOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheRight(4, 3, s));
+			
+	}
+
 	@Test
 	void enemyOnTheBottomTest_1() {	
 		
@@ -921,6 +1105,98 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void enemyOnTheBottomTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[8][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheBottom(8, 2, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheBottomTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][0] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheBottom(4, 0, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheBottomTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][4] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOWOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheBottom(3, 4, s));
+			
+	}
+
+	@Test
 	void enemyOnTheLeftTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -1016,6 +1292,214 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void enemyOnTheLeftTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][0] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * BOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheLeft(1, 0, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheLeftTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][8] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOB     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.enemyOnTheLeft(4, 8, s));
+			
+	}
+	
+	@Test
+	void enemyOnTheLeftTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][5] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOWOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.enemyOnTheLeft(4, 5, s));
+			
+	}
+	@Test
+	void checkBlackCanBeCapturedTest_1() {
+		//Varianti del particolare caso in osservazione
+		board[3][4] = Pawn.WHITE;
+		board[2][2] = Pawn.WHITE;
+		board[2][3] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWBOOOOO
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(2, 3, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_2() {
+		//Varianti del particolare caso in osservazione
+		board[3][1] = Pawn.WHITE;
+		board[2][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(2, 4, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_3() {
+		//Varianti del particolare caso in osservazione
+		board[2][2] = Pawn.WHITE;
+		board[1][4] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOBOOOO
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanBeCaptured(1, 4, s));
+	}
+	
+	@Test
+	void checkBlackCanBeCapturedTest_4() {
+		//Varianti del particolare caso in osservazione
+		board[2][6] = Pawn.WHITE;
+		board[4][5] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOWOO
+		 * OOOOOOOOO
+		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(4, 5, s));
+	}
+	
+	@Test
 	void checkWhiteCanBeCapturedTest_1() {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
@@ -1036,7 +1520,7 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		
+		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova gi� in mezzo a due neri
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.WHITE);
@@ -1074,6 +1558,7 @@ class CommonHeuristicFunctionTest {
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
+	
 	@Test
 	void checkWhiteCanBeCapturedTest_3() {
 		//Varianti del particolare caso in osservazione
@@ -1133,6 +1618,7 @@ class CommonHeuristicFunctionTest {
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
+	
 	@Test
 	void checkBlackCanArriveAdjacentInTopPositionTest_1() {	
 		
@@ -2243,4 +2729,102 @@ class CommonHeuristicFunctionTest {
 		
 	}
 	
+	@Test
+	void checkDraw() {
+		
+		IntelligenzaBianca ia = new IntelligenzaBianca();
+		
+		ia.setState(s);
+		
+		Pawn[][] board1 = {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.THRONE,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
+	};
+				
+		board1[0][3] = Pawn.BLACK;
+		board1[0][4] = Pawn.BLACK;
+		board1[0][5] = Pawn.BLACK;
+		board1[1][4] = Pawn.BLACK;
+		board1[3][0] = Pawn.BLACK;
+		board1[3][8] = Pawn.BLACK;
+		board1[4][0] = Pawn.BLACK;
+		board1[4][1] = Pawn.BLACK;
+		board1[4][7] = Pawn.BLACK;
+		board1[4][8] = Pawn.BLACK;
+		board1[5][0] = Pawn.BLACK;
+		board1[5][8] = Pawn.BLACK;
+		board1[7][4] = Pawn.BLACK;
+		board1[8][3] = Pawn.BLACK;
+		board1[8][4] = Pawn.BLACK;
+		board1[8][5] = Pawn.BLACK;
+		board1[2][4] = Pawn.WHITE;
+		board1[3][4] = Pawn.WHITE;
+		board1[4][2] = Pawn.WHITE;
+		board1[4][5] = Pawn.WHITE;
+		board1[4][6] = Pawn.WHITE;
+		board1[5][4] = Pawn.WHITE;
+		board1[6][4] = Pawn.WHITE;
+		board1[3][3] = Pawn.WHITE;
+		board1[4][3] = Pawn.EMPTY;
+		board1[4][4] = Pawn.KING;
+		
+		
+		StateTablut nuovoStato = new StateTablut();
+		nuovoStato.setBoard(board1);
+		System.out.println(nuovoStato.toString());
+		
+		ia.setState(nuovoStato);
+		
+		Pawn[][] board2 = {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.THRONE,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
+				{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
+	};
+		
+		board2[0][3] = Pawn.BLACK;
+		board2[0][4] = Pawn.BLACK;
+		board2[0][5] = Pawn.BLACK;
+		board2[1][4] = Pawn.BLACK;
+		board2[3][0] = Pawn.BLACK;
+		board2[3][8] = Pawn.BLACK;
+		board2[4][0] = Pawn.BLACK;
+		board2[4][1] = Pawn.BLACK;
+		board2[4][7] = Pawn.BLACK;
+		board2[4][8] = Pawn.BLACK;
+		board2[5][0] = Pawn.BLACK;
+		board2[5][8] = Pawn.BLACK;
+		board2[7][4] = Pawn.BLACK;
+		board2[8][3] = Pawn.BLACK;
+		board2[8][4] = Pawn.BLACK;
+		board2[8][5] = Pawn.BLACK;
+		board2[2][4] = Pawn.WHITE;
+		board2[3][4] = Pawn.WHITE;
+		board2[4][2] = Pawn.WHITE;
+		board2[4][3] = Pawn.WHITE;
+		//board2[3][3] = Pawn.EMPTY;
+		board2[4][5] = Pawn.WHITE;
+		board2[4][6] = Pawn.WHITE;
+		board2[5][4] = Pawn.WHITE;
+		board2[6][4] = Pawn.WHITE;
+		board2[4][4] = Pawn.KING; //commentare una di queste righe per ottenere false
+		
+		nuovoStato = new StateTablut();
+		nuovoStato.setBoard(board2);
+		System.out.println(nuovoStato.toString());
+						
+		Assert.assertTrue(ia.checkDraw(nuovoStato));
+				
+	}
+
 }

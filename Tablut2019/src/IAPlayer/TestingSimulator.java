@@ -14,16 +14,16 @@ public class TestingSimulator {
 			
 		
         StateTablut state = new StateTablut();
-		state.setTurn(State.Turn.WHITE);
+		state.setTurn(State.Turn.BLACK);
 		Simulator sim = new Simulator();
 		int cont = 0;
 		int c = 1;
 		long t1 = System.currentTimeMillis();
-		/*state.getBoard()[4][3] = State.Pawn.BLACK;
-		state.getBoard()[4][5] = State.Pawn.BLACK;
-		/*state.getBoard()[5][3] = State.Pawn.BLACK;
-		state.getBoard()[5][5] = State.Pawn.BLACK;*/
-		
+		state.getBoard()[0][3] = State.Pawn.EMPTY;
+		state.getBoard()[1][3] = State.Pawn.BLACK;
+		state.getBoard()[2][4] = State.Pawn.EMPTY;
+		state.getBoard()[3][3] = State.Pawn.WHITE;
+		System.out.println(state.toString());
 		//sim.mossePossibiliComplete(new Nodo(state));
 		/*for(Nodo n : sim.mossePossibiliComplete(new Nodo(state)))
 		{
@@ -37,13 +37,17 @@ public class TestingSimulator {
 		System.out.println("E' simmetrico verticalmente? "+ sim.statoSimmetricoVerticalmente(state));
 		*/
 		
-		IntelligenzaBianca ia = new IntelligenzaBianca();
-		Action a = ia.getBetterMove(state);
-		System.out.println(a.toString());
+		//IntelligenzaBianca ia = new IntelligenzaBianca();
+		for(Nodo n : sim.mossePossibiliComplete(new Nodo(state)))
+		{
+			System.out.println(n.getAzione().toString());
+		}
+		//Action a = ia.getBetterMove(state);
+		/*System.out.println(a.toString());
 		long t2 = System.currentTimeMillis();
         //System.out.println(t2);
-        System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");
-        System.out.println("");
+        System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");*/
+		System.out.println(state.toString());
     
         
         
