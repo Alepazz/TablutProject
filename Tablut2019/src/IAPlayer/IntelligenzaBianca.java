@@ -525,7 +525,7 @@ public class IntelligenzaBianca implements IA {
 				for(int j=0; j<colonneDaControllare && isRunning; j++)
 				{
 					//se è il turno nero conto le mosse delle pedine nere
-					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()))
+					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && isRunning)
 					{
 						if(statiSimm && j==4)
 						{
@@ -575,9 +575,9 @@ public class IntelligenzaBianca implements IA {
 					}
 					
 					//se è il turno bianco conto le mosse delle pedine bianche
-					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString())) 
+					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && isRunning) 
 					{
-						if(node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K"))
+						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && isRunning)
 						{
 							if(statiSimm && j==4)
 							{
@@ -638,14 +638,14 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna))
+			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -653,14 +653,14 @@ public class IntelligenzaBianca implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna))
+			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -673,7 +673,7 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
@@ -693,7 +693,7 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -706,14 +706,14 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna))
+			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -721,7 +721,7 @@ public class IntelligenzaBianca implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -734,21 +734,21 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna))
+			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -1339,13 +1339,12 @@ public class IntelligenzaBianca implements IA {
 						{
 							Nodo nodo = mosse.get(y);
 							livEspanso.add(nodo);
-							if(!isRunning)
-							{
-								long x2 = System.currentTimeMillis();
-								System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
-							}
 						}
-						
+						if(!isRunning)
+						{
+							long x2 = System.currentTimeMillis();
+							System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						}
 					}
 				}
 				System.out.println("Thread treeGenerator interrotto");
@@ -1372,7 +1371,8 @@ public class IntelligenzaBianca implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(10000);
+			//this.wait(30000);
+			Thread.sleep(30000);
 			//System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			//t.interrupt();
@@ -1389,7 +1389,8 @@ public class IntelligenzaBianca implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(10000);
+			//this.wait(10000);
+			Thread.sleep(25000);
 			//System.out.println("Lancio l'interruzione");
 			//t.interrupt();
 			heuristicValuator.stopThread();

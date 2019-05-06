@@ -259,7 +259,7 @@ public class IntelligenzaNera implements IA {
 				
 				}
 			}
-		System.out.println("valore"+value);
+		//System.out.println("valore"+value);
 		return value;
 	}
 
@@ -1289,13 +1289,12 @@ public class IntelligenzaNera implements IA {
 						{
 							Nodo nodo = mosse.get(y);
 							livEspanso.add(nodo);
-							if(!isRunning)
-							{
-								long x2 = System.currentTimeMillis();
-								System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
-							}
 						}
-						
+						if(!isRunning)
+						{
+							long x2 = System.currentTimeMillis();
+							System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						}
 					}
 				}
 				System.out.println("Thread treeGenerator interrotto");
@@ -1322,7 +1321,8 @@ public class IntelligenzaNera implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(10000);
+			//this.wait(30000);
+			Thread.sleep(30000);
 			//System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			//t.interrupt();
@@ -1339,7 +1339,8 @@ public class IntelligenzaNera implements IA {
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
 			t = new Thread(heuristicValuator);
 			t.start();
-			this.wait(10000);
+			//this.wait(25000);
+			Thread.sleep(25000);
 			//System.out.println("Lancio l'interruzione");
 			//t.interrupt();
 			heuristicValuator.stopThread();
