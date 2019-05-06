@@ -1372,7 +1372,7 @@ public class IntelligenzaBianca implements IA {
 			Thread t = new Thread(treeGenerator);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 			//System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			//t.interrupt();
@@ -1390,7 +1390,7 @@ public class IntelligenzaBianca implements IA {
 			t = new Thread(heuristicValuator);
 			t.start();
 			//this.wait(10000);
-			Thread.sleep(25000);
+			Thread.sleep(10000);
 			//System.out.println("Lancio l'interruzione");
 			//t.interrupt();
 			heuristicValuator.stopThread();
