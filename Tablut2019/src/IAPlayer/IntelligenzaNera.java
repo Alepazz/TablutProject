@@ -193,8 +193,21 @@ public class IntelligenzaNera implements IA {
 				
 				
 				//controllo che ci siano bianchi mangiabili
-				if( common.checkWhiteCanBeCaptured(riga, colonna, s))
-					value =+ this.VALUE_BLACK_PAWN*10;
+				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
+				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
+				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
+				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
+					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
+						value =+ this.VALUE_BLACK_PAWN*10;
+				if(common.checkNeighbourTop(riga, colonna, s).equals("W") )
+					if( common.checkWhiteCanBeCaptured(riga-1, colonna, s))
+						value =+ this.VALUE_BLACK_PAWN*10;
+				if(common.checkNeighbourLeft(riga, colonna, s).equals("W") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna-1, s))
+						value =+ this.VALUE_BLACK_PAWN*10;
+				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
+						value =+ this.VALUE_BLACK_PAWN*10;
 				
 				//controllo se possono arrivare pedine bianche da dx-sx e up-down
 				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
@@ -203,6 +216,7 @@ public class IntelligenzaNera implements IA {
 					value =- this.VALUE_WHITE_PAWN;
 				
 				//controllo se mi viene mangiato il nero
+				//DA MODIFICARE NELLA COMMON
 				if(common.checkBlackCanBeCaptured(riga, colonna, s))
 					value =- this.VALUE_BLACK_PAWN*7;
 
