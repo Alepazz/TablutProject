@@ -344,7 +344,7 @@ public class IntelligenzaNera implements IA {
 		
 	}
 			
-		//thread che crea l'albero di gioco
+	//thread che crea l'albero di gioco
 	private class TreeGenerator implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
@@ -374,10 +374,10 @@ public class IntelligenzaNera implements IA {
 					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
 					{
 						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
-						long x1 = System.currentTimeMillis();
+						//long x1 = System.currentTimeMillis();
 						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
-						long x2 = System.currentTimeMillis();
-						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						//long x2 = System.currentTimeMillis();
+						//System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
 						for(int y=0; y<mosse.size() && isRunning; y++)
 						{
 							Nodo nodo = mosse.get(y);
@@ -407,10 +407,10 @@ public class IntelligenzaNera implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(20000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
-			t.stop();
+			//t.stop();
 			
 			for(int x=0; x<albero.size(); x++)
 			{

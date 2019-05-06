@@ -155,6 +155,32 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/**
+	 * Controlla lo stato genera una situazione di pareggio
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se lo stato è già presente nella lista degli stati visitati, false in caso contrario
+	 */
+	public boolean checkDraw(StateTablut s) {
+		if(listState.isEmpty()) {
+			listState.add(s);
+			return false;
+		} else { //se il numero di pedine sulla scacchiera è cambiato vuol dire che una pedina è stata mangiata, quindi svuoto l'elenco degli stati
+			if(common.getNumberPawns(s) != common.getNumberPawns(listState.get(listState.size()-1))) {
+				listState.clear();
+				listState.add(s);
+				return false;
+			} else { //controllo se lo stato esiste già
+				for(int i=0; i<listState.size()-1; i++) {
+					if(listState.get(i).equals(s)) {
+						//System.out.println("Lo stato esisteva già\n1.\n" + listState.get(i).toString() + "\n2.\n" + s.toString());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Funzione euristica: calcola l'euristica
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return Ritorna un intero che indica il valore che è stato assegnato allo stato passato come parametro
@@ -342,10 +368,10 @@ public class IntelligenzaBianca implements IA {
 					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
 					{
 						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
-						long x1 = System.currentTimeMillis();
+						//long x1 = System.currentTimeMillis();
 						List<Nodo> mosse = this.simulatore.mossePossibiliComplete(n);
-						long x2 = System.currentTimeMillis();
-						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						//long x2 = System.currentTimeMillis();
+						//System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
 						for(int y=0; y<mosse.size() && isRunning; y++)
 						{
 							Nodo nodo = mosse.get(y);
@@ -363,31 +389,7 @@ public class IntelligenzaBianca implements IA {
 
 	}
 	
-	/**
-	 * Controlla lo stato genera una situazione di pareggio
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se lo stato è già presente nella lista degli stati visitati, false in caso contrario
-	 */
-	public boolean checkDraw(StateTablut s) {
-		if(listState.isEmpty()) {
-			listState.add(s);
-			return false;
-		} else { //se il numero di pedine sulla scacchiera è cambiato vuol dire che una pedina è stata mangiata, quindi svuoto l'elenco degli stati
-			if(common.getNumberPawns(s) != common.getNumberPawns(listState.get(listState.size()-1))) {
-				listState.clear();
-				listState.add(s);
-				return false;
-			} else { //controllo se lo stato esiste già
-				for(int i=0; i<listState.size()-1; i++) {
-					if(listState.get(i).equals(s)) {
-						//System.out.println("Lo stato esisteva già\n1.\n" + listState.get(i).toString() + "\n2.\n" + s.toString());
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+
 	
 	@SuppressWarnings("static-access")
 	@Override
@@ -401,7 +403,7 @@ public class IntelligenzaBianca implements IA {
 			TreeGenerator treeGenerator = new TreeGenerator(node, this.simulatore);
 			Thread t = new Thread(treeGenerator);
 			t.start();
-			this.wait(30000);
+			this.wait(10000);
 			System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			//t.stop();
@@ -432,7 +434,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso: "+(t2-t3)+" millisecondi");
-		System.out.println("");
+		System.out.println(a.toString());
 		System.out.println("");
 		return a;
 	}
