@@ -18,7 +18,7 @@ import IAPlayer.IntelligenzaBianca;
 class CommonHeuristicFunctionTest {
 
 	private List<String> citadels;
-	private CommonHeuristicFunction c;
+	private CommonHeuristicFunction c = new CommonHeuristicFunction();
 	private StateTablut s = new StateTablut();
 	private Pawn[][] board =   {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
@@ -31,32 +31,11 @@ class CommonHeuristicFunctionTest {
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
 };
 	
-	public CommonHeuristicFunctionTest() {
-		this.citadels = new ArrayList<String>();
-		this.citadels.add("a4");
-		this.citadels.add("a5");
-		this.citadels.add("a6");
-		this.citadels.add("b5");
-		this.citadels.add("d1");
-		this.citadels.add("e1");
-		this.citadels.add("f1");
-		this.citadels.add("e2");
-		this.citadels.add("i4");
-		this.citadels.add("i5");
-		this.citadels.add("i6");
-		this.citadels.add("h5");
-		this.citadels.add("d9");
-		this.citadels.add("e9");
-		this.citadels.add("f9");
-		this.citadels.add("e8");
-		this.c= new CommonHeuristicFunction(this.citadels);
-	}
 	
 	@Test
 	void isColumnFreeTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
-		
 		
 		
 		/* Rappresentazione tavola
