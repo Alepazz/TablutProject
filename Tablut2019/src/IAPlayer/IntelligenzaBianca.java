@@ -191,7 +191,6 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Controlla il numero di pedine e cittadelle presenti sulla stessa riga o colonna del re
 	 * @param rigaRe Riga in cui si trova il re
 	 * @param colonnaRe Colonna in cui si trova il re
@@ -232,6 +231,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return un intero che rappresenta il valore dell'ostacolo presente nella posizione
 	 */
+	
 	private int getObstacleValue(int riga, int colonna, StateTablut s) {
 		//Controlla se è una cittadella
 		if(common.isCitadel(s.getBox(riga, colonna))) {
@@ -246,7 +246,9 @@ public class IntelligenzaBianca implements IA {
 			return WHITE_OBSTACLE;
 		}
 		return 0;
-=======
+	}
+
+	/**
 	 * Controlla lo stato genera una situazione di pareggio
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se lo stato è già presente nella lista degli stati visitati, false in caso contrario
@@ -270,7 +272,6 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		return false;
->>>>>>> refs/remotes/origin/master
 	}
 	
 	/**
