@@ -581,14 +581,14 @@ public class IntelligenzaNera implements IA {
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna))
+			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -596,14 +596,14 @@ public class IntelligenzaNera implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna))
+			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -616,14 +616,14 @@ public class IntelligenzaNera implements IA {
 		private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -636,7 +636,7 @@ public class IntelligenzaNera implements IA {
 		private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -649,14 +649,14 @@ public class IntelligenzaNera implements IA {
 		private List<Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna))
+			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -664,7 +664,7 @@ public class IntelligenzaNera implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -677,21 +677,21 @@ public class IntelligenzaNera implements IA {
 		private List<Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna))
+			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna))
+			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna))
+			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -875,13 +875,13 @@ public class IntelligenzaNera implements IA {
 			
 			State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
 			State.Pawn[][] newBoard = new State.Pawn[9][9];
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < 9 && isRunning; i++) {
 				for (int j = 0; j < 9; j++) {
 					newBoard[i][j] = state.getPawn(i, j);
 				}
 			}
 			//libero il trono o una casella qualunque
-			if(a.getColumnFrom()==4 && a.getRowFrom()==4)
+			if(a.getColumnFrom()==4 && a.getRowFrom()==4 && isRunning)
 			{
 				newBoard[a.getRowFrom()][a.getColumnFrom()]= State.Pawn.THRONE;
 			}
