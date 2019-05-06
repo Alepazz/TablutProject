@@ -35,7 +35,6 @@ public class IntelligenzaNera implements IA {
 	
 	public IntelligenzaNera() {
 		albero = new ArrayList<Livello>();
-<<<<<<< HEAD
 		//this.simulatore = new Simulator();
 		this.citadels = new ArrayList<String>();
 		this.citadels.add("a4");
@@ -56,16 +55,12 @@ public class IntelligenzaNera implements IA {
 		this.citadels.add("e8");
 		this.common= new CommonHeuristicFunction(this.citadels);
 		//this.listState = new ArrayList<StateTablut>();
-=======
-		this.simulatore = new Simulator();
+		//this.simulatore = new Simulator();
 		//this.nodiEsistenti = new ArrayList<Nodo>();
-		this.common= new CommonHeuristicFunction();
 		this.posNeri = new String[] {"12","21","61","72","67","76","16","27"};
 
 		
->>>>>>> branch 'master' of https://github.com/Alepazz/TablutProject.git
 	}
-
 
 	private int getHeuristicValue(StateTablut s) {
 		
@@ -248,14 +243,12 @@ public class IntelligenzaNera implements IA {
 				
 				
 				//controllo che ci siano bianchi mangiabili
-<<<<<<< HEAD
+
 				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
 				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
 				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
 				/*if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
-=======
 				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
->>>>>>> branch 'master' of https://github.com/Alepazz/TablutProject.git
 					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
 						value =+ this.VALUE_BLACK_PAWN*10;
 				if(common.checkNeighbourTop(riga, colonna, s).equals("W") )
