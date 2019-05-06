@@ -17,12 +17,16 @@ public class IntelligenzaNera implements IA {
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
+	private String[] posNeri;
 	
 	public IntelligenzaNera() {
 		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
 		//this.nodiEsistenti = new ArrayList<Nodo>();
 		this.common= new CommonHeuristicFunction();
+		this.posNeri = new String[] {"12","21","61","72","67","76","16","27"};
+
+		
 	}
 
 
@@ -158,14 +162,28 @@ public class IntelligenzaNera implements IA {
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
 			return this.MIN_VALUE;
 		}
-			
+			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
 		else {
+			
+			
+			//controllo che possa andare in una delle posizioni buone
+			if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s))
+				value =+ 1000;
+			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s))
+				value =+ 1000;
+			
+			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s))
+				value =+ 1000;
+			if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s))
+				value =+ 1000;
+			
 			for(int i=0; i<indexNeri; i++ ) {
 				
 				int posizione= Integer.parseInt(neri[i]);
 				//le unit� sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
 				int colonna= posizione % 10;
+			
 				
 				//controllo che ci siano delle pedine in diagonale
 				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
@@ -193,9 +211,6 @@ public class IntelligenzaNera implements IA {
 				
 				
 				//controllo che ci siano bianchi mangiabili
-				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
-				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
-				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
 				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
 						value =+ this.VALUE_BLACK_PAWN*10;
@@ -205,7 +220,7 @@ public class IntelligenzaNera implements IA {
 				if(common.checkNeighbourLeft(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna-1, s))
 						value =+ this.VALUE_BLACK_PAWN*10;
-				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
+				if(common.checkNeighbourRight(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
 						value =+ this.VALUE_BLACK_PAWN*10;
 				
@@ -223,6 +238,7 @@ public class IntelligenzaNera implements IA {
 				
 				}
 			}
+		System.out.println("valore"+value);
 		return value;
 	}
 
