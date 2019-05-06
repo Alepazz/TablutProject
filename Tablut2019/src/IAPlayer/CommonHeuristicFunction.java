@@ -12,24 +12,9 @@ public class CommonHeuristicFunction {
 	private List<String> citadels;
 		
 	
-	public CommonHeuristicFunction() {
-		this.citadels = new ArrayList<String>();
-		this.citadels.add("a4");
-		this.citadels.add("a5");
-		this.citadels.add("a6");
-		this.citadels.add("b5");
-		this.citadels.add("d1");
-		this.citadels.add("e1");
-		this.citadels.add("f1");
-		this.citadels.add("e2");
-		this.citadels.add("i4");
-		this.citadels.add("i5");
-		this.citadels.add("i6");
-		this.citadels.add("h5");
-		this.citadels.add("d9");
-		this.citadels.add("e9");
-		this.citadels.add("f9");
-		this.citadels.add("e8");
+	public CommonHeuristicFunction(List<String> citadels) {
+		this.citadels = citadels;
+		
 	}
 	
 	/**
@@ -564,21 +549,33 @@ public class CommonHeuristicFunction {
 	public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno nero
+		//deve arrivare il nero da qualsiasi posizione && deve avere un nero, il trono, un cittadella o il muro vicino
 		
 		if( this.checkPedinaIsolata(riga, colonna, s)) {
 			return false; //se la pedina non ha vicini, non pu� essere catturata
 		}
-		
+		//pedina che può arrivare da sotto (sopra c'è già)
 		if((this.checkNeighbourTop(riga, colonna, s).equals("B")|| this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("X") || this.checkNeighbourTop(riga, colonna, s).equals("T")) 
-				&& (this.checkNeighbourBottom(riga, colonna, s).equals("B") || this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("X") || this.checkNeighbourBottom(riga, colonna, s).equals("T"))) {
+				&& (this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s))) {
+			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
+		}
+		//pedina che può arrivare da sopra (sotto c'è già)
+		if((this.checkNeighbourBottom(riga, colonna, s).equals("B")|| this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("X") || this.checkNeighbourBottom(riga, colonna, s).equals("T")) 
+				&& (this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s))) {
 			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
 		}
 		
-		if((this.checkNeighbourLeft(riga, colonna, s).equals("B") || this.checkNeighbourLeft(riga, colonna, s).equals("K") || this.checkNeighbourLeft(riga, colonna, s).equals("X") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) 
-				&& (this.checkNeighbourRight(riga, colonna, s).equals("B") || this.checkNeighbourRight(riga, colonna, s).equals("K") || this.checkNeighbourRight(riga, colonna, s).equals("X") || this.checkNeighbourRight(riga, colonna, s).equals("T"))) {
-			return true; // se la pedina ha due pedine nere a destra e sinistra, in due lati opposti, allora non pu� essere catturata
+		//pedina che può arrivare da destra
+		if((this.checkNeighbourLeft(riga, colonna, s).equals("B")|| this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("X") || this.checkNeighbourLeft(riga, colonna, s).equals("T")) 
+				&& (this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s))) {
+			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
 		}
 		
+		//pedina che può arrivare da sinistra
+		if((this.checkNeighbourRight(riga, colonna, s).equals("B")|| this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("X") || this.checkNeighbourRight(riga, colonna, s).equals("T")) 
+				&& (this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s))) {
+			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
+		}
 
 		return false;
 	}
