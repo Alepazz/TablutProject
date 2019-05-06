@@ -70,6 +70,7 @@ public class IntelligenzaBianca implements IA {
 		int nNeri=0;
 		int rigaRe=-1;
 		int colonnaRe=-1;
+		
 		/* Per ogni pezzo trovato viene aggiunto il suo valore al valore totale dello stato
 		 * Valori definiti per adesso: <--- SI POSSONO CAMBIARE
 		 * Pedina Nera: 100
@@ -78,8 +79,7 @@ public class IntelligenzaBianca implements IA {
 		 * Pedina Bianca Mangiabile: 100
 		 * 
 		 * Il peso della pedina bianca e' il doppio di quella nera 
-		 */
-		
+		 */		
 		for(int i=0; i<9; i++)
 		{
 			for(int j=0; j<9; j++)
@@ -108,6 +108,11 @@ public class IntelligenzaBianca implements IA {
 					colonnaRe=j;
 				}
 			}
+		}
+		
+		//Controlla se il re si può muovere, se si, riassegna il valore value
+		if(common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
+			value= getKingPositionValue(rigaRe, colonnaRe, s);
 		}
 		
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
@@ -152,6 +157,63 @@ public class IntelligenzaBianca implements IA {
 			
 				
 		return value;	
+	}
+	
+	/**
+	 * Controlla il numero di pedine e cittadelle presenti sulla stessa riga o colonna del re
+	 * @param rigaRe Riga in cui si trova il re
+	 * @param colonnaRe Colonna in cui si trova il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return un intero che rappresenta il valore della posizione del re
+	 */
+	private int getKingPositionValue(int rigaRe, int colonnaRe, StateTablut s) {
+		int value=0;
+		
+		//Ciclo che controlla la parte alta della croce
+		for(int i=colonnaRe;i>=0;i--) {
+			value=+this.getObstacleValue(rigaRe,i,s);
+		}
+		//Ciclo che controlla la parte destra della croce
+		for(int i=rigaRe;i<9;i++) {
+			value=+this.getObstacleValue(i,colonnaRe,s);
+		}
+		for(int i=colonnaRe;i<9;i++) {
+			value=+this.getObstacleValue(rigaRe,i,s);
+		}
+		for(int i=rigaRe;i>=0;i--) {
+			value=+this.getObstacleValue(i,colonnaRe,s);
+		}
+		
+		return -value;
+	}
+	
+	private final int WHITE_OBSTACLE = 100;
+	private final int BLACK_OBSTACLE = 200;
+	private final int CITADEL_OBSTACLE = 1000;
+	//Il trono non è considerato perché si trova sullo stesso asse delle cittadelle
+	
+	
+	/**
+	 * Controlla se nella posizione passata come parametro è presente un ostacolo
+	 * @param riga Riga della posizione da controllare
+	 * @param colonna Colonna della posizione da controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return un intero che rappresenta il valore dell'ostacolo presente nella posizione
+	 */
+	private int getObstacleValue(int riga, int colonna, StateTablut s) {
+		//Controlla se è una cittadella
+		if(common.isCitadel(s.getBox(riga, colonna))) {
+			return CITADEL_OBSTACLE;
+		}
+		//Controlla se è una pedina nera
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return BLACK_OBSTACLE;
+		}
+		//Controlla se è una pedina bianca
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return WHITE_OBSTACLE;
+		}
+		return 0;
 	}
 	
 	/**

@@ -32,6 +32,26 @@ public class CommonHeuristicFunction {
 		this.citadels.add("e8");
 	}
 	
+	/**
+	 * Controlla se la posizione passata come parametro(coordinate riga-colonna) corrisponde ad una cittadella
+	 * @param riga Riga della posizione passata
+	 * @param colonna Colonna della posizione passata
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la posizione passata corrisponde ad una cittadella, false in caso contrario
+	 */
+	public boolean isCitadel(int riga, int colonna, StateTablut s) {
+		return isCitadel(s.getBox(riga, colonna));
+	}
+	
+	/**
+	 * Controlla se la posizione passata come parametro(formato testuale) corrisponde ad una cittadella
+	 * @param position Stringa che rappresenta la posizione(es. "a4")
+	 * @return true se la posizione passata corrisponde ad una cittadella, false in caso contrario
+	 */
+	public boolean isCitadel(String position) {
+		return this.citadels.contains(position);
+	}
+	
 	//TODO: Commentare cosa fa questa funzione
 	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 			
@@ -518,7 +538,9 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkBlackCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
-		//sottointeso turno bianco		
+		//sottointeso turno bianco
+		
+		//Controllo inutile, volendo si può togliere
 		if(this.checkPedinaIsolata(riga, colonna, s)) {
 			return false; //il nero non può essere catturato
 		}
@@ -560,6 +582,33 @@ public class CommonHeuristicFunction {
 
 		return false;
 	}
+	
+	/**
+	 * Controlla se una pedina è circondata e quindi non si può muovere
+	 * @param riga Riga in cui si trova la pedina
+	 * @param colonna Colonna in cui si trova la pedina
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la pedina è circondata, false in caso contrario
+	 */
+	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) {
+		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
+		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
+				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
+			return (!this.checkNeighbourTop(riga, colonna, s).equals("O")) &&
+					(!this.checkNeighbourBottom(riga, colonna, s).equals("O")) &&
+					(!this.checkNeighbourLeft(riga, colonna, s).equals("O")) &&
+					(!this.checkNeighbourRight(riga, colonna, s).equals("O"));
+		}
+		//La pedina passata è una pedina nera dentro una cittadella
+		if(s.getPawn(riga, colonna).equalsPawn("B") && this.citadels.contains(s.getBox(riga, colonna))) {
+			return (!this.checkNeighbourTop(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
+					(!this.checkNeighbourBottom(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
+					(!this.checkNeighbourLeft(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
+					(!this.checkNeighbourRight(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna)));
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Controlla se una pedina non ha vicini
@@ -1346,6 +1395,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkWhiteCanArrive(int riga, int colonna, StateTablut s)
 	{
+		//Negli spostamenti non è compreso il re, da aggiungere
 		if(checkWhiteCanArriveFromBottom(riga, colonna, s) || 
 				checkWhiteCanArriveFromTop(riga, colonna, s) || 
 				checkWhiteCanArriveFromRight(riga, colonna, s) || 
@@ -1367,7 +1417,7 @@ public class CommonHeuristicFunction {
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
 		for(int i=riga; i>=0;i--) {
-			//Se trova la pedina nera ritorna risposta positiva
+			//Se trova la pedina bianca ritorna risposta positiva
 			if(s.getPawn(i, colonna).equalsPawn("W"))
 			{
 				return true;
