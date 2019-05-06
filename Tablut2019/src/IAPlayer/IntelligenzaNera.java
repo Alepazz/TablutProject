@@ -31,17 +31,11 @@ public class IntelligenzaNera implements IA {
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	//private Simulator simulatore;
 	private CommonHeuristicFunction common;
-	private String[] posNeri;
-	
 	public IntelligenzaNera() {
 		albero = new ArrayList<Livello>();
 		//this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
 		this.citadels = this.common.getCitadels();
-		//this.listState = new ArrayList<StateTablut>();
-		//this.simulatore = new Simulator();
-		//this.nodiEsistenti = new ArrayList<Nodo>();
-		this.posNeri = new String[] {"12","21","61","72","67","76","16","27"};
 
 		
 	}
@@ -443,7 +437,7 @@ public class IntelligenzaNera implements IA {
 				return true;
 			}
 		
-		//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
+		//restituisce tutti i nodi a cui ï¿½ possibile arrivare a partire dal nodo passato
 		public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
 			
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -473,7 +467,7 @@ public class IntelligenzaNera implements IA {
 				//poi le colonne
 				for(int j=0; j<colonneDaControllare && isRunning; j++)
 				{
-					//se è il turno nero conto le mosse delle pedine nere
+					//se ï¿½ il turno nero conto le mosse delle pedine nere
 					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()))
 					{
 						if(statiSimm && j==4)
@@ -523,7 +517,7 @@ public class IntelligenzaNera implements IA {
 								
 					}
 					
-					//se è il turno bianco conto le mosse delle pedine bianche
+					//se ï¿½ il turno bianco conto le mosse delle pedine bianche
 					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString())) 
 					{
 						if(node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K"))
@@ -583,7 +577,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento della pedina bianca indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento della pedina bianca indicata
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -707,7 +701,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso l'alto della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso l'alto della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -726,7 +720,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso il basso della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso il basso della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -745,7 +739,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -763,7 +757,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
@@ -783,7 +777,7 @@ public class IntelligenzaNera implements IA {
 			return listaMossePossibili;
 		}
 		
-		//dice se una data pedina può muoversi verso l'alto
+		//dice se una data pedina puï¿½ muoversi verso l'alto
 		private boolean canMoveUp(State state, int row, int column) {
 			if(row==0)
 			{
@@ -796,7 +790,7 @@ public class IntelligenzaNera implements IA {
 			return true;		
 		}
 		
-		//dice se una data pedina può muoversi verso il basso
+		//dice se una data pedina puï¿½ muoversi verso il basso
 		private boolean canMoveDown(State state, int row, int column) {
 			if(row==state.getBoard().length-1)
 			{
@@ -809,7 +803,7 @@ public class IntelligenzaNera implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina può muoversi verso sinistra
+		//dice se una data pedina puï¿½ muoversi verso sinistra
 		private boolean canMoveLeft(State state, int row, int column) {
 			if(column==0)
 			{
@@ -822,7 +816,7 @@ public class IntelligenzaNera implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina può muoversi verso destra
+		//dice se una data pedina puï¿½ muoversi verso destra
 		private boolean canMoveRight(State state, int row, int column) {
 			if(column==state.getBoard().length-1)
 			{
@@ -1308,7 +1302,6 @@ public class IntelligenzaNera implements IA {
 	
 
 			
-	@SuppressWarnings("static-access")
 	@Override
 	public synchronized Action getBetterMove(StateTablut s) {
 
