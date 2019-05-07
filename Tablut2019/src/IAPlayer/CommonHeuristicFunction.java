@@ -606,7 +606,7 @@ public class CommonHeuristicFunction {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina è circondata, false in caso contrario
 	 */
-	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) {
+	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { //DA MODIFICARE QUESTA PARTE
 		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
 		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
 				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
@@ -1120,7 +1120,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkBlackCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
 		if(colonna!=8) {
-			if(checkBlackCanArriveFromTop(riga, colonna+1, s) || checkBlackCanArriveFromRight(riga, colonna+1, s) || checkBlackCanArriveFromLeft(riga, colonna+1, s)) {
+			if(checkBlackCanArriveFromTop(riga, colonna+1, s) || checkBlackCanArriveFromRight(riga, colonna+1, s) || checkBlackCanArriveFromBottom(riga, colonna+1, s)) {
 				return true;
 			}
 		}
@@ -1136,7 +1136,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkBlackCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
 		if(riga!=8) {
-			if(checkBlackCanArriveFromTop(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
+			if(checkBlackCanArriveFromBottom(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
 				return true;
 			}
 		}
@@ -1152,7 +1152,7 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean checkBlackCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
 		if(colonna!=0) {
-			if(checkBlackCanArriveFromTop(riga, colonna-1, s) || checkBlackCanArriveFromRight(riga, colonna-1, s) || checkBlackCanArriveFromLeft(riga, colonna-1, s)) {
+			if(checkBlackCanArriveFromTop(riga, colonna-1, s) || checkBlackCanArriveFromLeft(riga, colonna-1, s) || checkBlackCanArriveFromBottom(riga, colonna-1, s)) {
 				return true;
 			}
 		}
