@@ -198,13 +198,13 @@ public class IntelligenzaNera implements IA {
 			
 				
 				//controllo che ci siano delle pedine in diagonale
-				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna+1, s))
 					value =+ VALUE_BLACK_PAWN*3;
-				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna-1, s))
 					value =+ VALUE_BLACK_PAWN*3;
-				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
+				if(common.checkBlackCanArriveAdjacentInTopPosition(riga, colonna+1, s))
 					value =+ VALUE_BLACK_PAWN*3;
-				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
+				if(common.checkBlackCanArriveAdjacentInTopPosition(riga, colonna-1, s))
 					value =+ VALUE_BLACK_PAWN*3;
 				
 				//controllo pedine vicine sugli assi (� preferibile che siano in diagonale)
@@ -224,9 +224,6 @@ public class IntelligenzaNera implements IA {
 				
 				//controllo che ci siano bianchi mangiabili
 
-				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
-				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
-				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
 				/*if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
