@@ -1,23 +1,18 @@
 package IAPlayerTest;
 
+import static org.junit.jupiter.api.Assertions.*;
 
-import it.unibo.ai.didattica.competition.tablut.domain.State;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+
+import IAPlayer.CommonHeuristicFunction;
+import IAPlayer.IntelligenzaBianca;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
 import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import IAPlayer.CommonHeuristicFunction;
-import IAPlayer.IntelligenzaBianca;
-
 class CommonHeuristicFunctionTest {
 
-	private List<String> citadels;
 	private CommonHeuristicFunction c = new CommonHeuristicFunction();
 	private StateTablut s = new StateTablut();
 	private Pawn[][] board =   {{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
@@ -30,7 +25,6 @@ class CommonHeuristicFunctionTest {
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY},
 			{Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY,Pawn.EMPTY}	
 };
-	
 	
 	@Test
 	void isColumnFreeTest_1() {	
