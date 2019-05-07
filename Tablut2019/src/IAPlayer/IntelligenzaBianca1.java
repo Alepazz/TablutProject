@@ -15,7 +15,7 @@ import it.unibo.ai.didattica.competition.tablut.exceptions.StopException;
 import it.unibo.ai.didattica.competition.tablut.exceptions.ThroneException;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 
@@ -25,7 +25,7 @@ public class IntelligenzaBianca1 implements IA {
 	private static final int TIMETOSTOPTREEGENERATOR = 30000;
 	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
 	private List<String> citadels;
-	private static HashMap<Integer, Livello> albero;
+	private static IdentityHashMap<Integer, Livello> albero;
 	private static Action a = null;
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
@@ -33,13 +33,13 @@ public class IntelligenzaBianca1 implements IA {
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
 	//private Simulator simulatore;
 	private CommonHeuristicFunction common;
-	private HashMap<Integer, StateTablut> listState; 
+	private IdentityHashMap<Integer, StateTablut> listState; 
 	
 	public IntelligenzaBianca1() {
-		albero = new HashMap<Integer, Livello>();
+		albero = new IdentityHashMap<Integer, Livello>();
 		//this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
-		this.listState = new HashMap<Integer, StateTablut>();
+		this.listState = new IdentityHashMap<Integer, StateTablut>();
 		this.citadels = common.getCitadels();
 	}
 	
@@ -503,9 +503,9 @@ public class IntelligenzaBianca1 implements IA {
 			}
 		
 		//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
-		public HashMap<Integer, Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
+		public IdentityHashMap<Integer, Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
 			
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			boolean simmV = this.statoSimmetricoVerticalmente(node.getStato());
 			boolean simmO = this.statoSimmetricoOrizontalmente(node.getStato());
 			boolean statiSimm = this.assiSimmetrici(node.getStato());
@@ -541,7 +541,7 @@ public class IntelligenzaBianca1 implements IA {
 							{
 								listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 								indice++;
-								System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+								//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 							}
 						}
 						else
@@ -552,7 +552,7 @@ public class IntelligenzaBianca1 implements IA {
 								{
 									listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 									indice++;
-									System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+									//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 								}
 							}
 							else
@@ -563,7 +563,7 @@ public class IntelligenzaBianca1 implements IA {
 									{
 										listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 										indice++;
-										System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+										//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 									}
 								}
 								else
@@ -574,7 +574,7 @@ public class IntelligenzaBianca1 implements IA {
 										{
 											listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 											indice++;
-											System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+											//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 										}
 									}
 									else
@@ -583,7 +583,7 @@ public class IntelligenzaBianca1 implements IA {
 										{
 											listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 											indice++;
-											System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+											//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 										}
 									}
 								}	
@@ -603,7 +603,7 @@ public class IntelligenzaBianca1 implements IA {
 								{
 									listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 									indice++;
-									System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+									//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 								}
 							}
 							else
@@ -614,7 +614,7 @@ public class IntelligenzaBianca1 implements IA {
 									{
 										listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 										indice++;
-										System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+										//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 									}
 								}
 								else
@@ -625,7 +625,7 @@ public class IntelligenzaBianca1 implements IA {
 										{
 											listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 											indice++;
-											System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+											//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 										}
 									}
 									else
@@ -636,7 +636,7 @@ public class IntelligenzaBianca1 implements IA {
 											{
 												listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 												indice++;
-												System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+												//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 											}
 										}
 										else
@@ -645,7 +645,7 @@ public class IntelligenzaBianca1 implements IA {
 											{
 												listaMossePossibili.put(indice, mossePossibiliPedina(node, i, j).get(nod));
 												indice++;
-												System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+												//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 											}
 										}
 									}	
@@ -663,9 +663,9 @@ public class IntelligenzaBianca1 implements IA {
 		}
 		
 		//ritorna i nodi nei quali è possibile trovarsi col movimento della pedina bianca indicata
-		private HashMap<Integer, Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int indice = 0;
 			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
@@ -673,7 +673,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSopra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
@@ -683,7 +683,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSotto(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
@@ -692,7 +692,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSinistra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
@@ -701,15 +701,15 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaDestra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			return listaMossePossibili;
 		}
 		
-		private HashMap<Integer, Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int indice = 0;
 			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
@@ -717,7 +717,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSopra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveLeft(node.getStato(), riga, colonna))
@@ -726,15 +726,15 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSinistra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			return listaMossePossibili;
 		}
 		
-		private HashMap<Integer, Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int indice = 0;
 			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
 			{
@@ -742,15 +742,15 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSinistra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			return listaMossePossibili;
 		}
 		
-		private HashMap<Integer, Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int indice = 0;
 			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
@@ -758,7 +758,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSopra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
@@ -768,7 +768,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSotto(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
@@ -777,15 +777,15 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSinistra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			return listaMossePossibili;
 		}
 		
-		private HashMap<Integer, Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int indice = 0;
 			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
 			{
@@ -793,7 +793,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSopra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
@@ -802,7 +802,7 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaSinistra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
@@ -811,16 +811,16 @@ public class IntelligenzaBianca1 implements IA {
 				{
 					listaMossePossibili.put(indice, mossePossibiliPedinaDestra(node, riga, colonna).get(nod));
 					indice++;
-					System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+					//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				}
 			}
 			return listaMossePossibili;
 		}
 		
 		//ritorna i nodi nei quali è possibile trovarsi col movimento verso l'alto della pedina indicata
-		private HashMap<Integer, Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
 			int indice = 0;
@@ -833,16 +833,16 @@ public class IntelligenzaBianca1 implements IA {
 				nodo2.setAzione(ac);
 				listaMossePossibili.put(indice, nodo2);
 				indice++;
-				System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+				//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 				//System.out.println(ac);
 			}
 			return listaMossePossibili;
 		}
 		
 		//ritorna i nodi nei quali è possibile trovarsi col movimento verso il basso della pedina indicata
-		private HashMap<Integer, Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
 			int indice = 0;
@@ -856,15 +856,15 @@ public class IntelligenzaBianca1 implements IA {
 				listaMossePossibili.put(indice, nodo2);
 				//System.out.println(ac);
 				indice++;
-				System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+				//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 			}		
 			return listaMossePossibili;
 		}
 		
 		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
-		private HashMap<Integer, Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int c = 0;
 			int indice = 0;
 			while(canMoveRight(node.getStato(), riga, colonna+c) && isRunning)
@@ -877,15 +877,15 @@ public class IntelligenzaBianca1 implements IA {
 				listaMossePossibili.put(indice, nodo2);
 				//System.out.println(ac);
 				indice++;
-				System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+				//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 			}		
 			return listaMossePossibili;
 		}
 		
 		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
-		private HashMap<Integer, Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		private IdentityHashMap<Integer, Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			HashMap<Integer, Nodo> listaMossePossibili = new HashMap<Integer, Nodo>();
+			IdentityHashMap<Integer, Nodo> listaMossePossibili = new IdentityHashMap<Integer, Nodo>();
 			int c = 0;
 			int indice = 0;
 			while(canMoveLeft(node.getStato(), riga, colonna-c) && isRunning)
@@ -900,7 +900,7 @@ public class IntelligenzaBianca1 implements IA {
 				listaMossePossibili.put(indice, nodo2);
 				//System.out.println(ac);
 				indice++;
-				System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
+				//System.out.println("Grandezza mosse possibili: " + listaMossePossibili.size());
 			}			
 			return listaMossePossibili;
 		}
@@ -1408,8 +1408,8 @@ public class IntelligenzaBianca1 implements IA {
 					{
 						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
 						long x1 = System.currentTimeMillis();
-						HashMap<Integer, Nodo> mosse = this.mossePossibiliComplete(n);
-						System.out.println("Grandezza mosse: " + mosse.size());
+						IdentityHashMap<Integer, Nodo> mosse = this.mossePossibiliComplete(n);
+						//System.out.println("Grandezza mosse: " + mosse.size());
 						for(int y=0; y<mosse.size() && isRunning; y++)
 						{
 							Nodo nodo = mosse.get(y);
@@ -1455,10 +1455,10 @@ public class IntelligenzaBianca1 implements IA {
 			//System.out.println("Finito sviluppo albero");
 			t3 = System.currentTimeMillis();
 			System.out.println("Tempo trascorso sviluppo albero: "+(t3-t1)+" millisecondi");
-			/*for(int x=0; x<albero.size(); x++)
+			for(int x=0; x<albero.size(); x++)
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-			}*/
+			}
 			
 			
 			HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
