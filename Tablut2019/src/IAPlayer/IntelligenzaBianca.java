@@ -21,6 +21,7 @@ import java.util.List;
 
 public class IntelligenzaBianca implements IA {
 
+
 	private static final int TIMETOSTOPTREEGENERATOR = 30000;
 	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
 	private List<String> citadels;
