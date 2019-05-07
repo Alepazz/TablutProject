@@ -21,6 +21,8 @@ import java.util.List;
 
 public class IntelligenzaNera implements IA {
 	
+	private static final int TIMETOSTOPTREEGENERATOR = 30000;
+	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
 	private List<String> citadels;
 	private static Action a = null;
 	private static List<Livello> albero;
@@ -263,10 +265,12 @@ public class IntelligenzaNera implements IA {
 	private class HeuristicValuator implements Runnable {
 		private IntelligenzaNera ia;
 		private boolean isRunning;
+		private int timeToStopHeuristicValuator;
 		
-		public HeuristicValuator(IntelligenzaNera ia){
+		public HeuristicValuator(IntelligenzaNera ia, int timeToStopHeuristicValuator){
 			this.ia = ia;
 			this.isRunning=true;
+			this.timeToStopHeuristicValuator = timeToStopHeuristicValuator;
 		}
 		
 		public void stopThread()
@@ -377,13 +381,15 @@ public class IntelligenzaNera implements IA {
 		private boolean isRunning;
 		//private CommonHeuristicFunction iaB;
 		private List<String> citadels;
+		private int timeToStopTreeGenerator;
 		
-		public TreeGenerator(Nodo n, List<String> cit) {
+		public TreeGenerator(Nodo n, List<String> cit, int timeToStopTreeGenerator) {
 			this.nodoAttuale = n;
 			//this.simulatore = s;
 			this.isRunning=true;
 			//this.iaB = ia;
 			this.citadels = cit;
+			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
 		}
 
 		public void stopThread()
@@ -1311,11 +1317,11 @@ public class IntelligenzaNera implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels);
+			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels, TIMETOSTOPTREEGENERATOR);
 			Thread t = new Thread(treeGenerator);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			//System.out.println("Lancio l'interruzione");
 			treeGenerator.stopThread();
 			//t.interrupt();
@@ -1329,11 +1335,11 @@ public class IntelligenzaNera implements IA {
 			}*/
 			
 			
-			HeuristicValuator heuristicValuator = new HeuristicValuator(this);
+			HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
 			t = new Thread(heuristicValuator);
 			t.start();
 			//this.wait(25000);
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			//System.out.println("Lancio l'interruzione");
 			//t.interrupt();
 			heuristicValuator.stopThread();
