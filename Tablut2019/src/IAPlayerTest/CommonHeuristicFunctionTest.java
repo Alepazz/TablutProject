@@ -1500,16 +1500,16 @@ class CommonHeuristicFunctionTest {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
 		board[0][5] = Pawn.BLACK;
-		board[5][5] = Pawn.BLACK;
+		board[2][5] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
 		 * OOOOOBOOO
 		 * OOOOOWOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
 		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
@@ -1530,12 +1530,12 @@ class CommonHeuristicFunctionTest {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
 		board[0][5] = Pawn.BLACK;
-		board[1][2] = Pawn.BLACK;
+		board[1][4] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
 		 * OOOOOBOOO
-		 * OOBOOWOOO
+		 * OOOOBWOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
@@ -1560,18 +1560,18 @@ class CommonHeuristicFunctionTest {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
 		board[1][6] = Pawn.BLACK;
-		board[7][4] = Pawn.BLACK;
+		board[1][4] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
 		 * OOOOOOOOO
-		 * OOOOOWBOO
+		 * OOOOBWBOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
-		 * OOOOBOOOO
+		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * 
 		 * */
@@ -1590,13 +1590,13 @@ class CommonHeuristicFunctionTest {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
 		board[1][6] = Pawn.BLACK;
-		board[2][3] = Pawn.BLACK;
+		board[1][3] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
 		 * OOOOOOOOO
-		 * OOOOOWBOO
-		 * OOBOOOOOO
+		 * OOBOOWBOO
+		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO

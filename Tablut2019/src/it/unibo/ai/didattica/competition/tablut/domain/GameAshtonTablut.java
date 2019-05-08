@@ -398,7 +398,7 @@ public class GameAshtonTablut implements Game {
 			}
 			//re adiacente al trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4"))
-			{
+			{		
 				if(state.getPawn(2, 4).equalsPawn("B")
 						&& state.getPawn(3, 3).equalsPawn("B"))
 				{
@@ -406,19 +406,19 @@ public class GameAshtonTablut implements Game {
 					this.loggGame.fine("Nero vince con re catturato in: " + state.getBox(a.getRowTo(), a.getColumnTo() - 1));
 				}
 			}
-			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
 			{
-				if(state.getPawn(5, 3).equalsPawn("B")
-						&& state.getPawn(6, 4).equalsPawn("B"))
+				if(state.getPawn(5, 5).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
 				{
 					state.setTurn(State.Turn.BLACKWIN);
 					this.loggGame.fine("Nero vince con re catturato in: " + state.getBox(a.getRowTo(), a.getColumnTo() - 1));
 				}
 			}
-			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
 			{
-				if(state.getPawn(3, 5).equalsPawn("B")
-						&& state.getPawn(5, 5).equalsPawn("B"))
+				if(state.getPawn(6, 4).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
 				{
 					state.setTurn(State.Turn.BLACKWIN);
 					this.loggGame.fine("Nero vince con re catturato in: " + state.getBox(a.getRowTo(), a.getColumnTo() - 1));
@@ -478,7 +478,7 @@ public class GameAshtonTablut implements Game {
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5"))
 			{
 				if(state.getPawn(3, 3).equalsPawn("B")
-						&& state.getPawn(3, 5).equalsPawn("B"))
+						&& state.getPawn(5, 3).equalsPawn("B"))
 				{
 					state.setTurn(State.Turn.BLACKWIN);
 					this.loggGame.fine("Nero vince con re catturato in: " + state.getBox(a.getRowTo(), a.getColumnTo() + 1));
@@ -598,7 +598,7 @@ public class GameAshtonTablut implements Game {
 			}
 			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5"))
 			{
-				if(state.getPawn(4, 4).equalsPawn("B")
+				if(state.getPawn(4, 6).equalsPawn("B")
 						&& state.getPawn(3, 5).equalsPawn("B"))
 				{
 					state.setTurn(State.Turn.BLACKWIN);

@@ -1103,7 +1103,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInTopPosition(int riga, int  colonna, StateTablut s) {
-		if(riga!=8 && riga>0  && colonna>= 0 && colonna<= 8) {
+		if(riga!=0) {
 			if(checkBlackCanArriveFromTop(riga-1, colonna, s) || checkBlackCanArriveFromRight(riga-1, colonna, s) || checkBlackCanArriveFromLeft(riga-1, colonna, s)) {
 				return true;
 			}
@@ -1135,7 +1135,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
-		if(riga!=8 && colonna>= 0 && colonna<= 8) {
+		if(riga!=8) {
 			if(checkBlackCanArriveFromBottom(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
 				return true;
 			}
