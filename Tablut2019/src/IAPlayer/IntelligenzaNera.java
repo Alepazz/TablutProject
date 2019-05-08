@@ -981,223 +981,227 @@ public class IntelligenzaNera implements IA {
 			return state;
 		}
 
-		private void checkCaptureBlackKingLeft(State state, Action a){
-			//ho il re sulla sinistra
-			if (a.getColumnTo()>1&&state.getPawn(a.getRowTo(), a.getColumnTo()-1).equalsPawn("K"))
+		private State checkCaptureBlackKingLeft(State state, Action a){
+		//ho il re sulla sinistra
+		if (a.getColumnTo()>1&&state.getPawn(a.getRowTo(), a.getColumnTo()-1).equalsPawn("K"))
+		{
+			//re sul trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5"))
 			{
-				//re sul trono
-				if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5"))
+				if(state.getPawn(3, 4).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B")
+						&& state.getPawn(5, 4).equalsPawn("B"))
 				{
-					if(state.getPawn(3, 4).equalsPawn("B")
-							&& state.getPawn(4, 3).equalsPawn("B")
-							&& state.getPawn(5, 4).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				//re adiacente al trono
-				if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4"))
-				{
-					if(state.getPawn(2, 4).equalsPawn("B")
-							&& state.getPawn(3, 3).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
-				{
-					if(state.getPawn(5, 3).equalsPawn("B")
-							&& state.getPawn(6, 4).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
-				{
-					if(state.getPawn(3, 5).equalsPawn("B")
-							&& state.getPawn(5, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				//sono fuori dalle zone del trono
-				if(!state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
-				{
-					if(state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("B")
-							|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()-2)))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}					
-				}
-			}		
-		}
-		
-		private void checkCaptureBlackKingRight(State state, Action a){
-			//ho il re sulla destra
-			if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
-			{
-				//re sul trono
-				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
-				{
-					if(state.getPawn(3, 4).equalsPawn("B")
-							&& state.getPawn(4, 5).equalsPawn("B")
-							&& state.getPawn(5, 4).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				//re adiacente al trono
-				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4"))
-				{
-					if(state.getPawn(2, 4).equalsPawn("B")
-							&& state.getPawn(3, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6"))
-				{
-					if(state.getPawn(5, 5).equalsPawn("B")
-							&& state.getPawn(6, 4).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5"))
-				{
-					if(state.getPawn(3, 3).equalsPawn("B")
-							&& state.getPawn(3, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				//sono fuori dalle zone del trono
-				if(!state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4")
-						&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
-				{
-					if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("B")
-							|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()+2)))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}					
+					state.setTurn(State.Turn.BLACKWIN);
 				}
 			}
-		}
-		
-		private void checkCaptureBlackKingDown(State state, Action a){
-			//ho il re sotto
-			if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4"))
+			{		
+				if(state.getPawn(2, 4).equalsPawn("B")
+						&& state.getPawn(3, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
 			{
-				//System.out.println("Ho il re sotto");
-				//re sul trono
-				if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
+				if(state.getPawn(5, 5).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
 				{
-					if(state.getPawn(5, 4).equalsPawn("B")
-							&& state.getPawn(4, 5).equalsPawn("B")
-							&& state.getPawn(4, 3).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
+					state.setTurn(State.Turn.BLACKWIN);
 				}
-				//re adiacente al trono
-				if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4"))
-				{
-					if(state.getPawn(3, 3).equalsPawn("B")
-							&& state.getPawn(3, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5"))
-				{
-					if(state.getPawn(4, 2).equalsPawn("B")
-							&& state.getPawn(5, 3).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5"))
-				{
-					if(state.getPawn(4, 6).equalsPawn("B")
-							&& state.getPawn(5, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
-				}
-				//sono fuori dalle zone del trono
-				if(!state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5")
-						&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4")
-						&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5")
-						&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
-				{
-					if(state.getPawn(a.getRowTo()+2, a.getColumnTo()).equalsPawn("B")
-							|| this.citadels.contains(state.getBox(a.getRowTo()+2, a.getColumnTo())))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}					
-				}			
-			}		
-		}
-
-		private void checkCaptureBlackKingUp(State state, Action a){
-			//ho il re sopra
-			if (a.getRowTo()>1&&state.getPawn(a.getRowTo()-1, a.getColumnTo()).equalsPawn("K"))
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
 			{
-				//re sul trono
-				if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+				if(state.getPawn(6, 4).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
 				{
-					if(state.getPawn(3, 4).equalsPawn("B")
-							&& state.getPawn(4, 5).equalsPawn("B")
-							&& state.getPawn(4, 3).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
+					state.setTurn(State.Turn.BLACKWIN);
 				}
-				//re adiacente al trono
-				if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e6"))
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
+			{
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()-2)))
 				{
-					if(state.getPawn(5, 3).equalsPawn("B")
-							&& state.getPawn(5, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}
+		}		
+		return state;
+	}
+	
+	private State checkCaptureBlackKingRight(State state, Action a){
+		//ho il re sulla destra
+		if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
+		{
+			//re sul trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
+			{
+				if(state.getPawn(3, 4).equalsPawn("B")
+						&& state.getPawn(4, 5).equalsPawn("B")
+						&& state.getPawn(5, 4).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
 				}
-				if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5"))
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4"))
+			{
+				if(state.getPawn(2, 4).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
 				{
-					if(state.getPawn(4, 2).equalsPawn("B")
-							&& state.getPawn(3, 3).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
+					state.setTurn(State.Turn.BLACKWIN);
 				}
-				if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5"))
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6"))
+			{
+				if(state.getPawn(5, 5).equalsPawn("B")
+						&& state.getPawn(6, 4).equalsPawn("B"))
 				{
-					if(state.getPawn(4, 4).equalsPawn("B")
-							&& state.getPawn(3, 5).equalsPawn("B"))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}
+					state.setTurn(State.Turn.BLACKWIN);
 				}
-				//sono fuori dalle zone del trono
-				if(!state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5")
-						&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e4")
-						&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5")
-						&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5"))
+			{
+				if(state.getPawn(3, 3).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
 				{
-					if(state.getPawn(a.getRowTo()-2, a.getColumnTo()).equalsPawn("B")
-							|| this.citadels.contains(state.getBox(a.getRowTo()-2, a.getColumnTo())))
-					{
-						state.setTurn(State.Turn.BLACKWIN);
-					}					
-				}	
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()+2)))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
 			}
 		}
-
+		return state;
+	}
+	
+	private State checkCaptureBlackKingDown(State state, Action a){
+		//ho il re sotto
+		if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
+		{
+			System.out.println("Ho il re sotto");
+			//re sul trono
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(5, 4).equalsPawn("B")
+						&& state.getPawn(4, 5).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4"))
+			{
+				if(state.getPawn(3, 3).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5"))
+			{
+				if(state.getPawn(4, 2).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5"))
+			{
+				if(state.getPawn(4, 6).equalsPawn("B")
+						&& state.getPawn(5, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo()+2, a.getColumnTo()).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo()+2, a.getColumnTo())))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}			
+		}		
+		return state;
+	}
+	
+	private State checkCaptureBlackKingUp(State state, Action a){
+		//ho il re sopra
+		if (a.getRowTo()>1&&state.getPawn(a.getRowTo()-1, a.getColumnTo()).equalsPawn("K"))
+		{
+			//re sul trono
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(3, 4).equalsPawn("B")
+						&& state.getPawn(4, 5).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e6"))
+			{
+				if(state.getPawn(5, 3).equalsPawn("B")
+						&& state.getPawn(5, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5"))
+			{
+				if(state.getPawn(4, 2).equalsPawn("B")
+						&& state.getPawn(3, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5"))
+			{
+				if(state.getPawn(4, 6).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e4")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo()-2, a.getColumnTo()).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo()-2, a.getColumnTo())))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}	
+		}
+		return state;
+	}
+	
 		private void checkCaptureBlackPawnRight(State state, Action a)	{
 			//mangio a destra
 			if (a.getColumnTo() < state.getBoard().length - 2 && state.getPawn(a.getRowTo(), a.getColumnTo() + 1).equalsPawn("W"))
