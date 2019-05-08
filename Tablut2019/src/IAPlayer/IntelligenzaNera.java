@@ -189,7 +189,7 @@ public class IntelligenzaNera implements IA {
 			if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s))
 				value =+ 1000;
 			
-			for(int i=0; i<indexNeri; i++ ) {
+			/*for(int i=0; i<indexNeri; i++ ) {
 				
 				int posizione= Integer.parseInt(neri[i]);
 				//le unit� sono le colonne mentre le decine sono le righe
@@ -236,7 +236,7 @@ public class IntelligenzaNera implements IA {
 						value =+ this.VALUE_BLACK_PAWN*10;
 				if(common.checkNeighbourRight(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
-						value =+ this.VALUE_BLACK_PAWN*10;*/
+						value =+ this.VALUE_BLACK_PAWN*10;
 				
 				//controllo se possono arrivare pedine bianche da dx-sx e up-down
 				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
@@ -250,7 +250,7 @@ public class IntelligenzaNera implements IA {
 					value =- this.VALUE_BLACK_PAWN*7;
 
 				
-				}
+				}*/
 			}
 		//System.out.println("valore"+value);
 		return value;
