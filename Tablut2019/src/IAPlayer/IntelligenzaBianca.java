@@ -369,6 +369,7 @@ public class IntelligenzaBianca implements IA {
 			int x =0;
 			//inizializzato per non avere errori di tempo
 			a=albero.get(1).getNodi().get(0).getAzione();
+			System.out.println("Mossa di default: "+a.toString());
 			//ciclo sull'ultimo livello
 			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !!Thread.currentThread().isInterrupted(); i++)
 			{
@@ -441,7 +442,7 @@ public class IntelligenzaBianca implements IA {
 			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(1).getNodi().get(i);
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 					a=n.getAzione();
@@ -453,6 +454,16 @@ public class IntelligenzaBianca implements IA {
 			{
 				l.getNodi().clear();
 			}*/
+			
+			for(Nodo nodo : albero.get(1).getNodi())
+			{
+				System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
+				//System.out.println("Stato: \n"+nodo.getStato().toString());
+				System.out.println("VALORE STATO: "+nodo.getValue());
+				System.out.println();
+				System.out.println();
+				System.out.println();
+			}
 			albero.clear();
 			System.out.println("Albero ripulito: " + albero.size());
 			System.out.println("Thread heuristicValuator terminato");
@@ -1365,6 +1376,7 @@ public class IntelligenzaBianca implements IA {
 		public void run() {
 			System.out.println("Attivazione thread treeGenerator");
 			try {
+				System.out.println("Nodo attuale: \n"+this.nodoAttuale.getStato());
 				Livello liv = new Livello();
 				liv.add(this.nodoAttuale);
 				albero.add(liv);
@@ -1405,14 +1417,14 @@ public class IntelligenzaBianca implements IA {
 						{
 							for(Nodo nodo : albero.get(1).getNodi())
 							{
-								/*if(nodo.getStato().getTurn().equalsTurn("WW"))
+								if(nodo.getStato().getTurn().equalsTurn("WW"))
 								{
 									nodo.setValue(10000);
 								}
 								if(nodo.getStato().getTurn().equalsTurn("BW"))
 								{
 									nodo.setValue(10000);
-								}*/								
+								}						
 								if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
 								{
 									nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
@@ -1427,12 +1439,12 @@ public class IntelligenzaBianca implements IA {
 						    });
 							for(Nodo nodo : albero.get(1).getNodi())
 							{
-								/*System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
-								System.out.println("Stato: \n"+nodo.getStato().toString());
+								System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
+								//System.out.println("Stato: \n"+nodo.getStato().toString());
 								System.out.println("VALORE STATO: "+nodo.getValue());
 								System.out.println();
 								System.out.println();
-								System.out.println();*/
+								System.out.println();
 								if(nodo.getValue()!=10000 && nodo.getValue()!=-10000 && !nodo.getTurn().equalsTurn("D"))
 								{
 									nodo.setValue(Float.NaN);
@@ -1484,7 +1496,7 @@ public class IntelligenzaBianca implements IA {
 			Thread t = new Thread(treeGenerator);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			//System.out.println("Lancio l'interruzione");
 			//treeGenerator.stopThread();
 			t.interrupt();
@@ -1502,10 +1514,10 @@ public class IntelligenzaBianca implements IA {
 			t = new Thread(heuristicValuator);
 			t.start();
 			//this.wait(10000);
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			//System.out.println("Lancio l'interruzione");
-			//t.interrupt();
-			heuristicValuator.stopThread();
+			t.interrupt();
+			//heuristicValuator.stopThread();
 			//System.out.println("Finito sviluppo euristica");
 			//t.stop();
 			

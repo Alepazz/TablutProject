@@ -31,14 +31,28 @@ public class IntelligenzaNera implements IA {
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
+	private List<String> perfectPos;	
 	//private Simulator simulatore;
 	private CommonHeuristicFunction common;
+	
 	public IntelligenzaNera() {
 		albero = new ArrayList<Livello>();
 		//this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
 		this.citadels = this.common.getCitadels();
-
+		this.perfectPos= new ArrayList<String>();
+		this.perfectPos.add("13");
+		this.perfectPos.add("22");
+		this.perfectPos.add("31");
+		this.perfectPos.add("51");
+		this.perfectPos.add("62");
+		this.perfectPos.add("73");
+		this.perfectPos.add("75");
+		this.perfectPos.add("66");
+		this.perfectPos.add("57");
+		this.perfectPos.add("37");
+		this.perfectPos.add("26");
+		this.perfectPos.add("15");
 		
 	}
 
@@ -66,11 +80,9 @@ public class IntelligenzaNera implements IA {
 		int rigaRe=-1;
 		int colonnaRe=-1;
 		//faccio una lista di tutti i neri/bianchi e delle loro posizioni
-		String[] neri = new String[16];
-		String[] bianchi = new String[8];
-	
-		int indexNeri=0;
-		int indexBianchi=0;
+		List<String> neri= new ArrayList<String>();
+		List<String> bianchi = new ArrayList<String>();;
+
 		
 		for(int i=0; i<9; i++)
 		{
@@ -80,14 +92,12 @@ public class IntelligenzaNera implements IA {
 				{
 					nNeri++; //volendo il numero delle pedine si puï¿½ avere cercando lunghezza della lista
 					//aggiungo la posizione ij di ogni nero
-					neri[indexNeri]= ""+i+j;
-					indexNeri++;
+					neri.add(""+i+j);
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
 					nBianchi++;
-					bianchi[indexBianchi]= ""+i+j;
-					indexBianchi++;
+					bianchi.add(""+i+j);
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
 				{
@@ -113,19 +123,19 @@ public class IntelligenzaNera implements IA {
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
 					nNeri++;
-					value=- VALUE_BLACK_PAWN;
+					value-= VALUE_BLACK_PAWN;
 					if(common.checkBlackCanBeCaptured(i, j, s))
 					{
-						value=+ VALUE_BLACK_PAWN/2;
+						value+= VALUE_BLACK_PAWN/2;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
 					nBianchi++;
-					value=+ VALUE_WHITE_PAWN;
+					value+= VALUE_WHITE_PAWN;
 					if(common.checkWhiteCanBeCaptured(i, j, s))
 					{
-						value=- VALUE_WHITE_PAWN/2;
+						value-= VALUE_WHITE_PAWN/2;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
@@ -139,7 +149,9 @@ public class IntelligenzaNera implements IA {
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
 		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
 		{
-			return this.MAX_VALUE+1;
+			
+			return this.MAX_VALUE;
+			
 		}
 		
 		//controllo vie di fuga re
@@ -148,23 +160,28 @@ public class IntelligenzaNera implements IA {
 		//controllo se nella mossa del nero mi mangia il re
 		if(viedifuga>1)
 		{
+			
 			return this.MIN_VALUE+viedifuga;			
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
+			
 			return this.MIN_VALUE+1;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
 			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
 			{
+				
 				return this.MIN_VALUE+1;
+				
 			}
 		}		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
+			
 			return this.MIN_VALUE;
 		}
 		
@@ -172,93 +189,317 @@ public class IntelligenzaNera implements IA {
 		 * Funzione che controlla se, eseguita una mossa del re in verticale, esso ha liberato un'intera riga (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
+			
 			return this.MIN_VALUE;
 		}
 			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
 		else {
 			
 			
-			//controllo che possa andare in una delle posizioni buone
-			if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s))
-				value =+ 1000;
-			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s))
-				value =+ 1000;
+			value += this.getValueofDiagonali(neri, rigaRe, colonnaRe, s);
 			
-			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s))
-				value =+ 1000;
-			if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s))
-				value =+ 1000;
+			value +=this.getValueOfReAccerchiato(neri, rigaRe, colonnaRe, s);
 			
-			for(int i=0; i<indexNeri; i++ ) {
+			value +=this.getValueOfBianchiScappano(bianchi, s);
+			
+			for(int i=0; i<neri.size(); i++ ) {
 				
-				int posizione= Integer.parseInt(neri[i]);
+				int posizione= Integer.parseInt(neri.get(i));
+				
 				//le unitï¿½ sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
-				int colonna= posizione % 10;
-			
-				
-				//controllo che ci siano delle pedine in diagonale
+				int colonna= posizione%10;
+	
+
 				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += 10;
 				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += 10;
 				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += 10;
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += 10;
 				
 				//controllo pedine vicine sugli assi (ï¿½ preferibile che siano in diagonale)
 				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value -= 1;
 				if( common.checkNeighbourTop(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value -= 1;
 				if( common.checkNeighbourLeft(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value -= 1;
 				if( common.checkNeighbourRight(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value -= 1;
 				
 				//controllo che ci siano pedine nere isolate (che non va bene)
 				if(common.blackIsIsolated(riga, colonna, s))
-					value =- this.VALUE_BLACK_PAWN*5;
+					value -= 100;
 				
 				
 				//controllo che ci siano bianchi mangiabili
 
-				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
-				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
-				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
-				/*if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+ 4;
 				if(common.checkNeighbourTop(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga-1, colonna, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+ 4;
 				if(common.checkNeighbourLeft(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna-1, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+4;
 				if(common.checkNeighbourRight(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
-						value =+ this.VALUE_BLACK_PAWN*10;*/
+						value =+ 4;
 				
-				//controllo se possono arrivare pedine bianche da dx-sx e up-down
-				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
-					value =- this.VALUE_WHITE_PAWN;
-				if(common.checkWhiteCanArriveFromLeft(riga, colonna, s) && common.checkWhiteCanArriveFromRight(riga, colonna, s))
-					value =- this.VALUE_WHITE_PAWN;
 				
 				//controllo se mi viene mangiato il nero
-				//DA MODIFICARE NELLA COMMON
 				if(common.checkBlackCanBeCaptured(riga, colonna, s))
-					value =- this.VALUE_BLACK_PAWN*7;
+					value -= 600;
 
 				
 				}
 			}
-		//System.out.println("valore"+value);
+		System.out.println("valore"+value);
 		return value;
 	}
-
+	
+	private int getValueofDiagonali(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
+		int value=0;
+		 //controllo che possa andare in una delle posizioni buone (per le prime mosse)
+		/*
+		 * OOOOOOOOO
+		 * OOOBOBOOO
+		 * OOBOOOBOO
+		 * OBOOOOOBO
+		 * OOOOOOOOO
+		 * OBOOOOOBO
+		 * OOBOOOBOO
+		 * OOOBOBOOO
+		 * OOOOOOOOO
+		 * */
+		if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
+			value += 100;
+		
+		if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 6, s) && !common.checkBlackCanBeCaptured(1, 5, s)) 
+			value += 100;
+		
+		
+		if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
+			value +=100;
+		if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
+			value += 100;
+		
+		if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
+			value+=100;
+		if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
+			value+=100;
+		if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
+			value+=100;
+		//hanno tutte lo stesso valore
+		//ora faccio le casistiche in cui ci sono già dei neri sulla diagonale
+		for(String st : this.perfectPos ) {
+			if(posNeri.contains(st)) {
+				int riga= Integer.parseInt(st)/10;
+				int colonna = Integer.parseInt(st)%10;
+				//se si trova in basso a destra
+				if(riga> 4 && colonna >4){
+					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
+						value += 30;
+				}
+				//se si trova in basso a sinistra
+				if(riga>4 && colonna <4) {
+					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 6, s) && !common.checkBlackCanBeCaptured(1, 5, s)) 
+						value += 30;
+				}
+				//se si trova in alto a destra
+				if(riga < 4 && colonna > 4) {
+					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
+						value +=30;
+					if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
+						value += 30;
+				}
+				if(riga < 4 && colonna < 4) {
+					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
+						value+=30;
+					if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
+						value+=30;
+					if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
+						value+=30;
+				}
+			}
+				
+		}
+		//caso in cui il re si sposta in una delle 4 macroaree
+		if(rigaRe != 4 && colonnaRe != 4) {
+			if(rigaRe> 4 && colonnaRe >4){
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
+					value += 60;
+			}
+			//se si trova in basso a sinistra
+			if(rigaRe>4 && colonnaRe <4) {
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 6, s) && !common.checkBlackCanBeCaptured(1, 5, s)) 
+					value += 60;
+			}
+			//se si trova in alto a destra
+			if(rigaRe < 4 && colonnaRe > 4) {
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
+					value +=60;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
+					value += 60;
+			}
+			if(rigaRe < 4 && colonnaRe < 4) {
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
+					value+=60;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
+					value+=60;
+				if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
+					value+=60;
+			}
+		}
+		//caso re si sposta solo orizzotale o voerticale dal trono
+		//si sposta in verticale
+		if(rigaRe != 4 && colonnaRe ==4) {
+			if(rigaRe <4){
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
+					value += 50;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 6, s) && !common.checkBlackCanBeCaptured(1, 5, s)) 
+					value += 50;
+			}
+			if(rigaRe > 4) {
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
+					value += 50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
+					value+=50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
+					value+=50;
+				if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
+					value+=50;
+			}
+		}
+		if(rigaRe == 4 && colonnaRe !=4) {
+			if( colonnaRe <4){
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
+					value += 50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
+					value += 50;
+			}
+			if(colonnaRe >4) {
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
+					value +=50;
+				if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 6, s) && !common.checkBlackCanBeCaptured(1, 5, s)) 
+					value += 50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
+					value+=50;
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
+					value+=50;
+				if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
+					value+=50;
+			}
+		}
+		
+			
+		
+		
+		return value;
+	}
+	
+	private int getValueOfReAccerchiato(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
+		int value=0;
+		//controllo che le pedine possano arrivare al re senza essere mangiate
+		if(common.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
+			value+= 110;
+		if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
+			value+= 110;
+		if(common.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
+			value+= 110;
+		if(common.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
+			value+= 110;
+		//se una pedina è già vicino al re e non rischia di essere mangiata deve rimanere lì
+		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
+			value+=500;
+		if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
+			value+=500;
+		if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
+			value+=500;
+		if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
+			value+=500;
+		
+		
+		return value;
+		
+	}
+	
+	/**se un bianco si trova dietro a dei neri (inteso nelle posizioni dietro la diagonale perfetta) lui deve essere mangiato. 
+	*se ci si trova ma non può essere mangiato devo restituire un valore molto negativo(ovvero evito di finire in questo stato)
+	*
+	**/
+	private int getValueOfBianchiScappano(List<String> posBianchi, StateTablut s) {
+		int value=0;
+		for(String st : posBianchi){
+			int riga= Integer.parseInt(st)/10;
+			int colonna = Integer.parseInt(st)%10;
+			if(riga == 0 || colonna ==0 || riga ==8 || colonna == 8 || 
+					((riga == 1 || riga==7) && ( colonna == 1 || colonna == 2 || colonna == 6 || colonna ==7)) ||
+					((riga ==2 || riga==6)&& (colonna ==1 || colonna ==7)) )
+				if(common.checkWhiteCanBeCaptured(riga, colonna, s))
+					//non so se inserire anche il rischio che i neri vengano mangiati
+					value+=2000; // molto importante
+				else value -= 2000;
+		}
+		
+		return value;
+	}
 	
 	//valuta gli ultimi rami dell'albero
 	//da implementare i tagli ecc...
