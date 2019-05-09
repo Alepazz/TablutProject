@@ -497,14 +497,208 @@ class CommonHeuristicFunctionTest {
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.BLACK);
-		System.out.println("qui");
+		
 		//Esecuzione Test
 		Assert.assertFalse(c.kingCanBeCaptured(4, 4, s));
 	}
 	
 	@Test
+	void kingCanBeCapturedTest_7() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		board[3][5] = Pawn.BLACK;
+		board[5][4] = Pawn.BLACK;
+		board[4][5] = Pawn.BLACK;
+		board[4][3] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOBOOO
+		 * OOOBKBOOO
+		 * OOOOBOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingCanBeCaptured(4, 4, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_8() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.KING;
+		board[4][0] = Pawn.BLACK;
+		board[3][3] = Pawn.BLACK;
+		board[5][3] = Pawn.BLACK;
+		board[4][4] = Pawn.THRONE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * BOOKTOOOO
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingCanBeCaptured(4, 3, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_9() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.KING;
+		board[6][2] = Pawn.BLACK;
+		board[3][3] = Pawn.BLACK;
+		board[5][3] = Pawn.BLACK;
+		board[4][4] = Pawn.THRONE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOKTOOOO
+		 * OOOBOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingCanBeCaptured(4, 3, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_10() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.KING;
+		board[6][2] = Pawn.BLACK;
+		board[3][3] = Pawn.BLACK;
+		board[5][3] = Pawn.WHITE;
+		board[4][4] = Pawn.THRONE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOKTOOOO
+		 * OOOWOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.kingCanBeCaptured(4, 3, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_11() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.KING;
+		board[3][3] = Pawn.BLACK;
+		board[6][1] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOKBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OBOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.kingCanBeCaptured(3, 2, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_12() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][1] = Pawn.KING;
+		board[2][2] = Pawn.BLACK;
+		board[5][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OKBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingCanBeCaptured(2, 1, s));
+	}
+	
+	@Test
 	void checkNeighbourTopLeftAndRight_1() {
-//Varianti del particolare caso in osservazione
+		//Varianti del particolare caso in osservazione
 		board[1][2] = Pawn.BLACK;
 		board[0][1] = Pawn.BLACK;
 		board[0][3] = Pawn.BLACK;
@@ -537,7 +731,7 @@ class CommonHeuristicFunctionTest {
 		
 	@Test
 	void checkNeighbourTopLeftandRight_2() {
-//Varianti del particolare caso in osservazione
+		//Varianti del particolare caso in osservazione
 		board[0][2] = Pawn.BLACK;
 		
 		
@@ -568,7 +762,7 @@ class CommonHeuristicFunctionTest {
 	
 	@Test
 	void checkNeighbourBottomLeftAndRight_1() {
-//Varianti del particolare caso in osservazione
+		//Varianti del particolare caso in osservazione
 		board[1][2] = Pawn.BLACK;
 		board[2][1] = Pawn.BLACK;
 		board[2][3] = Pawn.BLACK;
@@ -601,7 +795,7 @@ class CommonHeuristicFunctionTest {
 		
 	@Test
 	void checkNeighbourBottomLeftandRight_2() {
-//Varianti del particolare caso in osservazione
+		//Varianti del particolare caso in osservazione
 		board[8][2] = Pawn.BLACK;
 		
 		
@@ -909,7 +1103,7 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertTrue(c.enemyOnTheRight(1, 3, s));
-			
+
 	}
 	
 	@Test
@@ -1522,7 +1716,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
 	@Test
@@ -1583,7 +1777,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
 	@Test
@@ -2087,6 +2281,66 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void checkBlackCanArriveFromTopTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][1] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OBOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OXOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromTop(6, 1, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromTopTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * XOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromTop(7, 0, s));
+			
+	}
+	
+	@Test
 	void checkBlackCanArriveFromRightTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -2207,6 +2461,66 @@ class CommonHeuristicFunctionTest {
 		//Esecuzione Test
 		Assert.assertTrue(c.checkBlackCanArriveFromRight(0, 1, s));
 		Assert.assertTrue(c.checkBlackCanArriveFromRight(4, 6, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromRightTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][6] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOXOOOBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromRight(1, 2, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromRightTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][5] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OXOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromRight(0, 1, s));
 			
 	}
 		
@@ -2330,6 +2644,66 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertTrue(c.checkBlackCanArriveFromBottom(5, 4, s));
+		Assert.assertTrue(c.checkBlackCanArriveFromBottom(1, 0, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[6][1] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OXOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OBOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromBottom(2, 1, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromBottomTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[5][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * XOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * BOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
 		Assert.assertTrue(c.checkBlackCanArriveFromBottom(1, 0, s));
 			
 	}
@@ -2457,6 +2831,66 @@ class CommonHeuristicFunctionTest {
 		Assert.assertTrue(c.checkBlackCanArriveFromLeft(4, 2, s));
 			
 	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOBOOOXOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkBlackCanArriveFromLeft(1, 6, s));
+			
+	}
+	
+	@Test
+	void checkBlackCanArriveFromLeftTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[0][3] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOBOOOXO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanArriveFromLeft(0, 7, s));
+			
+	}
 
 	@Test
 	void checkWhiteCanArriveFromTopTest_1() {	
@@ -2578,6 +3012,36 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanArriveFromTop(7, 1, s));
+			
+	}
+	
+	@Test
+	void checkWhiteCanArriveFromTopTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][1] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OXOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanArriveFromTop(6, 1, s));
 			
 	}
 
@@ -2704,6 +3168,36 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void checkWhiteCanArriveFromRightTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][6] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOXOOOWOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanArriveFromRight(1, 2, s));
+			
+	}
+	
+	@Test
 	void checkWhiteCanArriveFromBottomTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -2826,6 +3320,36 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void checkWhiteCanArriveFromBottomTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[6][1] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OXOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanArriveFromBottom(2, 1, s));
+			
+	}
+	
+	@Test
 	void checkWhiteCanArriveFromLeftTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -2944,6 +3468,36 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanArriveFromLeft(1, 7, s));
+			
+	}
+	
+	@Test
+	void checkWhiteCanArriveFromLeftTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][2] = Pawn.WHITE;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOWOOOXOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <-----  X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanArriveFromLeft(1, 6, s));
 			
 	}
 	
@@ -3365,7 +3919,6 @@ class CommonHeuristicFunctionTest {
 		board[7][3] = Pawn.WHITE;
 		board[7][2] = Pawn.BLACK;
 		board[6][3] = Pawn.BLACK;
-		board[7][4] = Pawn.THRONE;//non c'è citadel
 		
 		
 		/* Rappresentazione tavola
@@ -3377,7 +3930,7 @@ class CommonHeuristicFunctionTest {
 		 * OOOOOOOOO     
 		 * OOOOOOOOO
 		 * OOOBOOOOO
-		 * OOBWCOOOO
+		 * OOBWOOOOO
 		 * OOOOOOOOO
 		 * 
 		 * */
@@ -3392,7 +3945,108 @@ class CommonHeuristicFunctionTest {
 		
 	}
 	
+	@Test
+	void checkPawnBlockedTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][2] = Pawn.WHITE;
+		board[3][3] = Pawn.BLACK;
+		board[5][3] = Pawn.BLACK;
+		board[4][3] = Pawn.KING;
+		board[4][4] = Pawn.THRONE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOWKTOOOO     
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkPawnBlocked(4, 3, s));
+		
+	}
 	
+	@Test
+	void checkPawnBlockedTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][1] = Pawn.WHITE;
+		board[4][1] = Pawn.BLACK;
+		board[4][2] = Pawn.BLACK;
+		board[5][1] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OWOOOOOOO
+		 * OBBOOOOOO     
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkPawnBlocked(4, 1, s));
+		
+	}
+	
+	@Test
+	void checkPawnBlockedTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.WHITE;
+		board[4][3] = Pawn.KING;
+		board[4][2] = Pawn.BLACK;
+		board[5][2] = Pawn.WHITE;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * OOBKOOOOO     
+		 * OOWOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkPawnBlocked(4, 2, s));
+		
+	}
 	
 	@Test
 	void blackIsIsolatedTest_1() {
