@@ -184,14 +184,14 @@ public class IntelligenzaBianca implements IA {
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
-			return this.MAX_VALUE;
+			return this.MAX_VALUE-1;
 		}
 		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in verticale, esso ha liberato un'intera riga (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
-			return this.MAX_VALUE;
+			return this.MAX_VALUE-1;
 		}
 		
 		/*
