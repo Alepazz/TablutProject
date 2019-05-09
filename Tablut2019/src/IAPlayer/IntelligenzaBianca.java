@@ -20,11 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 
 public class IntelligenzaBianca implements IA {
@@ -118,6 +113,9 @@ public class IntelligenzaBianca implements IA {
 					{
 						value=+ VALUE_BLACK_PAWN/2;
 					}
+					if(common.checkPawnBlocked(i, j, s)) {
+						value += VALUE_BLACK_PAWN/4;
+					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
@@ -126,6 +124,9 @@ public class IntelligenzaBianca implements IA {
 					if(common.checkWhiteCanBeCaptured(i, j, s))
 					{
 						value=- VALUE_WHITE_PAWN/2;
+					}
+					if(common.checkPawnBlocked(i, j, s)) {
+						value -= VALUE_WHITE_PAWN/4;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
@@ -136,6 +137,18 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		if(common.getNumberStarFree(s) < 4) {
+			
+			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera
+			
+		} else {
+			value += 2*common.getNumberStarFree(s);
+		}
+		
+		if(common.getNumberOfColor("W", s)*3 < common.getNumberOfColor("B", s)) {
+			value -= 900 - (common.getNumberOfColor("W", s) * 50); //per ogni pedina bianca tolgo 50
+		}
+				
 		//Controlla se il re si può muovere, se si, riassegna il valore value
 		if(common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
 			value = getKingPositionValue(rigaRe, colonnaRe, s);
@@ -190,7 +203,6 @@ public class IntelligenzaBianca implements IA {
 				this.common.enemyOnTheTop(rigaRe, colonnaRe, s )) && rigaRe!=4 && colonnaRe !=4) {
 			return this.MIN_VALUE+1;
 		}
-			
 				
 		return value;	
 	}
