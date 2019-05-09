@@ -305,6 +305,126 @@ class CommonHeuristicFunctionTest {
 		Assert.assertFalse(c.isSemirowFree(1, s));
 		Assert.assertFalse(c.isSemirowFree(7, s));
 	}
+	
+	@Test
+	void kingOnTheThroneTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][4] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOKOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingOnTheThrone(4, 4));
+	}
+	
+	@Test
+	void kingOnTheThroneTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOKOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.kingOnTheThrone(4, 3));
+	}
+	
+	@Test
+	void kingAdjacentToTheThroneTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOKOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingAdjacentToTheThrone(4, 3));
+	}
+	
+	@Test
+	void kingAdjacentToTheThroneTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][3] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOKOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.kingAdjacentToTheThrone(3, 3));
+	}
 		
 	@Test
 	void kingCanBeCapturedTest_1() {	
@@ -694,6 +814,36 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertTrue(c.kingCanBeCaptured(2, 1, s));
+	}
+	
+	@Test
+	void kingCanBeCapturedTest_13() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][1] = Pawn.KING;
+		board[5][2] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OKOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.kingCanBeCaptured(3, 1, s));
 	}
 	
 	@Test

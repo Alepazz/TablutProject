@@ -56,6 +56,26 @@ public class CommonHeuristicFunction {
 		return this.citadels.contains(position);
 	}
 	
+	/**
+	 * Controlla se il re si trova sul trono
+	 * @param rigaRe Riga dove si trova il re
+	 * @param colonnaRe Colonna dove si trova il re
+	 * @return true se il re si trova sul trono, false in caso contrario
+	 */
+	public boolean kingOnTheThrone(int rigaRe, int colonnaRe) {
+		return (rigaRe==4 && colonnaRe==4);
+	}
+	
+	/**
+	 * Controlla se il re si trova adiacente al trono
+	 * @param rigaRe Riga dove si trova il re
+	 * @param colonnaRe Colonna dove si trova il re
+	 * @return true se il re si trova adiacente al trono, false in caso contrario
+	 */
+	public boolean kingAdjacentToTheThrone(int rigaRe, int colonnaRe) {
+		return (rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3);
+	}
+	
 	//TODO: Commentare cosa fa questa funzione
 	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 			
@@ -348,8 +368,8 @@ public class CommonHeuristicFunction {
 		//Se e' il turno del bianco ritorna false se no controlla i 3 casi
 		if(s.getTurn().equalsTurn("B"))
 		{
-			//Controllo di cattura con il re sul trono
-			if(rigaRe==4 && colonnaRe==4)
+			//Controllo di cattura con il re sul trono oppure adiacente al trono
+			if(this.kingOnTheThrone(rigaRe, colonnaRe) || this.kingAdjacentToTheThrone(rigaRe, colonnaRe))
 			{
 				//Bloccato sopra, destra e sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
@@ -383,155 +403,7 @@ public class CommonHeuristicFunction {
 						return true;
 					}
 				}
-			} //Controllo di cattura con il re adiacente al trono
-			else if(rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3) 
-			{
-				//Bloccato sopra(Trono), destra e sinistra
-				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-				{
-					if(this.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s))
-					{
-						return true;
-					}
-				}
-				//Bloccato sotto(Trono), destra, sinistra
-				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-				{
-					if(this.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s))
-					{
-						return true;
-					}
-				}
-				//Bloccato sopra, sotto, destra(Trono)
-				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-				{
-					if(this.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s))
-					{
-						return true;
-					}
-				}
-				//Bloccato sopra, sotto, sinistra(Trono)
-				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-				{
-					if(this.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s))
-					{
-						return true;
-					}
-				}
-				/*
-				//controllo casella adiacente sopra
-				if(rigaRe==3 && colonnaRe==4)
-				{
-					//bloccato sopra e a destra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 3, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sinistra e destra
-					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(2, 4, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e a sinistra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 5, s))
-						{
-							return true;
-						}
-					}
-				}
-				//controllo casella adiacente sotto
-				if(rigaRe==5 && colonnaRe==4)
-				{
-					//bloccato destra e sinistra
-					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(6, 4, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sotto e a destra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 3, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sotto e a sinistra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 5, s))
-						{
-							return true;
-						}
-					}
-				}
-				//controllo casella adiacente destra
-				if(rigaRe==4 && colonnaRe==5)
-				{
-					//bloccato sotto e a destra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 5, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e a destra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 5, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e sotto
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(4, 6, s))
-						{
-							return true;
-						}
-					}			
-				}
-				//controllo casella adiacente sinistra
-				if(rigaRe==4 && colonnaRe==3)
-				{
-					//bloccato sopra e sotto
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(4, 2, s))
-						{
-							return true;
-						}
-					}	
-					//bloccato sotto e a sinistra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 3, s))
-						{
-							return true;
-						}
-					}//bloccato sopra e a sinistra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 3, s))
-						{
-							return true;
-						}
-					}			
-				}
-				*/
-			} //Controllo di cattura con il re lontano dal trono
+			}//Controllo di cattura con il re lontano dal trono
 			else
 			{
 				if(this.enemyOnTheRight(rigaRe, colonnaRe, s))
