@@ -68,7 +68,7 @@ public class IntelligenzaNera implements IA {
 		//faccio una lista di tutti i neri/bianchi e delle loro posizioni
 		String[] neri = new String[16];
 		String[] bianchi = new String[8];
-	
+
 		int indexNeri=0;
 		int indexBianchi=0;
 		
@@ -113,19 +113,19 @@ public class IntelligenzaNera implements IA {
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
 					nNeri++;
-					value=- VALUE_BLACK_PAWN;
+					value-= VALUE_BLACK_PAWN;
 					if(common.checkBlackCanBeCaptured(i, j, s))
 					{
-						value=+ VALUE_BLACK_PAWN/2;
+						value+= VALUE_BLACK_PAWN/2;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
 					nBianchi++;
-					value=+ VALUE_WHITE_PAWN;
+					value+= VALUE_WHITE_PAWN;
 					if(common.checkWhiteCanBeCaptured(i, j, s))
 					{
-						value=- VALUE_WHITE_PAWN/2;
+						value-= VALUE_WHITE_PAWN/2;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
@@ -139,7 +139,9 @@ public class IntelligenzaNera implements IA {
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
 		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
 		{
-			return this.MAX_VALUE+1;
+			
+			return this.MAX_VALUE;
+			
 		}
 		
 		//controllo vie di fuga re
@@ -148,23 +150,28 @@ public class IntelligenzaNera implements IA {
 		//controllo se nella mossa del nero mi mangia il re
 		if(viedifuga>1)
 		{
+			
 			return this.MIN_VALUE+viedifuga;			
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
+			
 			return this.MIN_VALUE+1;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
 			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
 			{
+				
 				return this.MIN_VALUE+1;
+				
 			}
 		}		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
+			
 			return this.MIN_VALUE;
 		}
 		
@@ -172,91 +179,129 @@ public class IntelligenzaNera implements IA {
 		 * Funzione che controlla se, eseguita una mossa del re in verticale, esso ha liberato un'intera riga (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
+			
 			return this.MIN_VALUE;
 		}
 			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
 		else {
 			
 			
-			//controllo che possa andare in una delle posizioni buone
-			if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s))
-				value =+ 1000;
-			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s))
-				value =+ 1000;
 			
-			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s))
-				value =+ 1000;
-			if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s))
-				value =+ 1000;
+			
+			
 			
 			for(int i=0; i<indexNeri; i++ ) {
 				
 				int posizione= Integer.parseInt(neri[i]);
+				
 				//le unitï¿½ sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
-				int colonna= posizione % 10;
+				int colonna= posizione%10;
+				
+				//System.out.println("posizione" + riga + " "+ colonna);
 			
 				
-				//controllo che ci siano delle pedine in diagonale
-				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+				 //controllo che possa andare in una delle posizioni buone
+				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s)) {
+					//System.out.println("va in alto a sinistra");
+					value += 100;
+				}
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s)) {
+					//System.out.println("va in basso a sinistra");
+					value += 101;
+				}
+				
+				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s)) {
+					value += 102;
+				}
+				if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s)){
+					
+					value += 103;
+				}
+				/*if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
+					value += VALUE_BLACK_PAWN*3;
 				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += VALUE_BLACK_PAWN*3;
 				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += VALUE_BLACK_PAWN*3;
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
-					value =+ VALUE_BLACK_PAWN*3;
+					value += VALUE_BLACK_PAWN*3;*/
 				
 				//controllo pedine vicine sugli assi (ï¿½ preferibile che siano in diagonale)
 				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value += this.VALUE_BLACK_PAWN/2;
 				if( common.checkNeighbourTop(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value += this.VALUE_BLACK_PAWN/2;
 				if( common.checkNeighbourLeft(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value += this.VALUE_BLACK_PAWN/2;
 				if( common.checkNeighbourRight(riga, colonna, s).equals("B"))
-					value =+ this.VALUE_BLACK_PAWN/2;
+					value += this.VALUE_BLACK_PAWN/2;
 				
 				//controllo che ci siano pedine nere isolate (che non va bene)
 				if(common.blackIsIsolated(riga, colonna, s))
-					value =- this.VALUE_BLACK_PAWN*5;
+					value -= this.VALUE_BLACK_PAWN*5;
 				
 				
 				//controllo che ci siano bianchi mangiabili
 
-				//MI SEMBRA GIUSTO CHE IO GLI PASSO LA POSIZIONE DEL NERO PER CHECK BIANCO!!
-				//DA RIFARE.. CASO MAI IN UN IF IN CUI VEDO SE HO UN BIANCO VICINO
-				//MODIFICARE LE CASISTICHE DELLA WHITECANBECAP
-				/*if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+ this.VALUE_BLACK_PAWN;
 				if(common.checkNeighbourTop(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga-1, colonna, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+ this.VALUE_BLACK_PAWN;
 				if(common.checkNeighbourLeft(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna-1, s))
-						value =+ this.VALUE_BLACK_PAWN*10;
+						value =+ this.VALUE_BLACK_PAWN;
 				if(common.checkNeighbourRight(riga, colonna, s).equals("W") )
 					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
-						value =+ this.VALUE_BLACK_PAWN*10;*/
+						value =+ this.VALUE_BLACK_PAWN;
 				
 				//controllo se possono arrivare pedine bianche da dx-sx e up-down
 				if(common.checkWhiteCanArriveFromBottom(riga, colonna, s) && common.checkWhiteCanArriveFromTop(riga, colonna, s))
-					value =- this.VALUE_WHITE_PAWN;
+					value -= this.VALUE_WHITE_PAWN;
 				if(common.checkWhiteCanArriveFromLeft(riga, colonna, s) && common.checkWhiteCanArriveFromRight(riga, colonna, s))
-					value =- this.VALUE_WHITE_PAWN;
+					value -= this.VALUE_WHITE_PAWN;
 				
 				//controllo se mi viene mangiato il nero
-				//DA MODIFICARE NELLA COMMON
 				if(common.checkBlackCanBeCaptured(riga, colonna, s))
-					value =- this.VALUE_BLACK_PAWN*7;
+					value -=  this.VALUE_BLACK_PAWN*7;
 
 				
 				}
 			}
-		//System.out.println("valore"+value);
+		System.out.println("valore"+value);
 		return value;
+	}
+	
+	private final int WHITE_OBSTACLE = 100;
+	private final int BLACK_OBSTACLE = 200;
+	private final int CITADEL_OBSTACLE = 1000;
+	//Il trono non è considerato perché si trova sullo stesso asse delle cittadelle
+	
+	
+	/**
+	 * Controlla se nella posizione passata come parametro è presente un ostacolo
+	 * @param riga Riga della posizione da controllare
+	 * @param colonna Colonna della posizione da controllare
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return un intero che rappresenta il valore dell'ostacolo presente nella posizione
+	 */
+	
+	private int getObstacleValue(int riga, int colonna, StateTablut s) {
+		//Controlla se è una cittadella
+		if(common.isCitadel(s.getBox(riga, colonna))) {
+			return CITADEL_OBSTACLE;
+		}
+		//Controlla se è una pedina nera
+		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+			return BLACK_OBSTACLE;
+		}
+		//Controlla se è una pedina bianca
+		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+			return WHITE_OBSTACLE;
+		}
+		return 0;
 	}
 
 	

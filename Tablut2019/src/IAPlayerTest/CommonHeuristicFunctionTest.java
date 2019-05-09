@@ -1500,7 +1500,7 @@ class CommonHeuristicFunctionTest {
 		//Varianti del particolare caso in osservazione
 		board[1][5] = Pawn.WHITE;
 		board[0][5] = Pawn.BLACK;
-		board[2][5] = Pawn.BLACK;
+		board[5][5] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
@@ -1509,7 +1509,7 @@ class CommonHeuristicFunctionTest {
 		 * OOOOOBOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
-		 * OOOOOOOOO
+		 * OOOOOBOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
@@ -1555,35 +1555,6 @@ class CommonHeuristicFunctionTest {
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
-	@Test
-	void checkWhiteCanBeCapturedTest_3() {
-		//Varianti del particolare caso in osservazione
-		board[1][5] = Pawn.WHITE;
-		board[1][6] = Pawn.BLACK;
-		board[1][4] = Pawn.BLACK;
-				
-		/* Rappresentazione tavola
-		 * 
-		 * OOOOOOOOO
-		 * OOOOBWBOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * OOOOOOOOO
-		 * 
-		 * */
-		
-		
-		//Creazione dello stato con la precedente disposizione delle pedine
-		s.setBoard(board);
-		s.setTurn(Turn.WHITE);
-		
-		//Esecuzione Test
-		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
-	}
 	
 	@Test
 	void checkWhiteCanBeCapturedTest_4() {
@@ -1612,7 +1583,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
+		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
 	@Test
@@ -3394,6 +3365,7 @@ class CommonHeuristicFunctionTest {
 		board[7][3] = Pawn.WHITE;
 		board[7][2] = Pawn.BLACK;
 		board[6][3] = Pawn.BLACK;
+		board[7][4] = Pawn.THRONE;//non c'è citadel
 		
 		
 		/* Rappresentazione tavola
@@ -3405,7 +3377,7 @@ class CommonHeuristicFunctionTest {
 		 * OOOOOOOOO     
 		 * OOOOOOOOO
 		 * OOOBOOOOO
-		 * OOBWOOOOO
+		 * OOBWCOOOO
 		 * OOOOOOOOO
 		 * 
 		 * */
