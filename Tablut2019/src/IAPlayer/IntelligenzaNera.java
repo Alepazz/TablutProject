@@ -187,7 +187,23 @@ public class IntelligenzaNera implements IA {
 			
 			
 			
+			 //controllo che possa andare in una delle posizioni buone
+			if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s)) {
+				//System.out.println("va in alto a sinistra");
+				value += 100;
+			}
+			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s)) {
+				//System.out.println("va in basso a sinistra");
+				value += 101;
+			}
 			
+			if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s)) {
+				value += 102;
+			}
+			if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s)){
+				
+				value += 103;
+			}	
 			
 			
 			for(int i=0; i<indexNeri; i++ ) {
@@ -201,31 +217,15 @@ public class IntelligenzaNera implements IA {
 				//System.out.println("posizione" + riga + " "+ colonna);
 			
 				
-				 //controllo che possa andare in una delle posizioni buone
-				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(1, 1, s)) {
-					//System.out.println("va in alto a sinistra");
-					value += 100;
-				}
-				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 1, s) || common.checkBlackCanArriveAdjacentInRightPosition(7, 1, s)) {
-					//System.out.println("va in basso a sinistra");
-					value += 101;
-				}
-				
-				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 7, s) || common.checkBlackCanArriveAdjacentInLeftPosition(7, 7, s)) {
-					value += 102;
-				}
-				if(common.checkBlackCanArriveAdjacentInLeftPosition(1, 7, s) || common.checkBlackCanArriveAdjacentInBottomPosition(1, 7, s)){
-					
-					value += 103;
-				}
-				/*if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
+
+				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
 					value += VALUE_BLACK_PAWN*3;
 				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
 					value += VALUE_BLACK_PAWN*3;
 				if(common.checkNeighbourTopLeft(riga, colonna, s).equals("B"))
 					value += VALUE_BLACK_PAWN*3;
 				if(	common.checkNeighbourTopRight(riga, colonna, s).equals("B"))
-					value += VALUE_BLACK_PAWN*3;*/
+					value += VALUE_BLACK_PAWN*3;
 				
 				//controllo pedine vicine sugli assi (� preferibile che siano in diagonale)
 				if( common.checkNeighbourBottom(riga, colonna, s).equals("B"))
