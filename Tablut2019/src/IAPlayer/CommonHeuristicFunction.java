@@ -630,6 +630,24 @@ public class CommonHeuristicFunction {
 			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
 		}
 
+		//mancano i casi ai bordi
+		if(riga == 0 || riga == 8) {
+			if((this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("O") ||  this.checkNeighbourLeft(riga, colonna, s).equals("B")) && this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s) )
+				return true;
+			if((this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("B") ||  this.checkNeighbourRight(riga, colonna, s).equals("O")) && this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s) )
+				return true;
+			if(this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s) || this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s))
+				return false;
+		}
+		
+		if(colonna == 0 || colonna == 8) {
+			if((this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("O") ||  this.checkNeighbourTop(riga, colonna, s).equals("B")) && this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s) )
+				return true;
+			if((this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("B") ||  this.checkNeighbourBottom(riga, colonna, s).equals("O")) && this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s) )
+				return true;
+			if(this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s) || this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s))
+				return false;
+		}
 		return false;
 	}
 	
@@ -1137,7 +1155,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInTopPosition(int riga, int  colonna, StateTablut s) {
-		if(riga!=0) {
+		if(riga>0) {
 			if(checkBlackCanArriveFromTop(riga-1, colonna, s) || checkBlackCanArriveFromRight(riga-1, colonna, s) || checkBlackCanArriveFromLeft(riga-1, colonna, s)) {
 				return true;
 			}
@@ -1153,7 +1171,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
-		if(colonna!=8) {
+		if(colonna<8) {
 			if(checkBlackCanArriveFromTop(riga, colonna+1, s) || checkBlackCanArriveFromRight(riga, colonna+1, s) || checkBlackCanArriveFromBottom(riga, colonna+1, s)) {
 				return true;
 			}
@@ -1169,7 +1187,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
-		if(riga!=8) {
+		if(riga<8) {
 			if(checkBlackCanArriveFromBottom(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
 				return true;
 			}
@@ -1185,7 +1203,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
-		if(colonna!=0) {
+		if(colonna>0) {
 			if(checkBlackCanArriveFromTop(riga, colonna-1, s) || checkBlackCanArriveFromLeft(riga, colonna-1, s) || checkBlackCanArriveFromBottom(riga, colonna-1, s)) {
 				return true;
 			}
