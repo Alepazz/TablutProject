@@ -482,6 +482,7 @@ public class IntelligenzaNera implements IA {
 	
 	/**se un bianco si trova dietro a dei neri (inteso nelle posizioni dietro la diagonale perfetta) lui deve essere mangiato. 
 	*se ci si trova ma non può essere mangiato devo restituire un valore molto negativo(ovvero evito di finire in questo stato)
+	*
 	**/
 	private int getValueOfBianchiScappano(List<String> posBianchi, StateTablut s) {
 		int value=0;
