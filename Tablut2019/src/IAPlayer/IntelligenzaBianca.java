@@ -138,7 +138,7 @@ public class IntelligenzaBianca implements IA {
 		
 		//Controlla se il re si può muovere, se si, riassegna il valore value
 		if(common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
-			value= getKingPositionValue(rigaRe, colonnaRe, s);
+			value = getKingPositionValue(rigaRe, colonnaRe, s);
 		}
 		
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
@@ -179,6 +179,16 @@ public class IntelligenzaBianca implements IA {
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
 			return this.MAX_VALUE;
+		}
+		
+		/*
+		 * Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
+		 */
+		if((this.common.enemyOnTheBottom(rigaRe, colonnaRe, s) || 
+				this.common.enemyOnTheLeft(rigaRe, colonnaRe, s) ||
+				this.common.enemyOnTheRight(rigaRe, colonnaRe, s) ||
+				this.common.enemyOnTheTop(rigaRe, colonnaRe, s )) && rigaRe!=4 && colonnaRe !=4) {
+			return this.MIN_VALUE+1;
 		}
 			
 				
