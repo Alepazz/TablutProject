@@ -137,6 +137,11 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		// cerco di far uscire dal trono il re il prima possibile
+		if(this.checkKingCanComeOutFromThrone(s)) {
+			return this.MAX_VALUE - 2;
+		}
+		
 		if(common.getNumberStarFree(s) < 4) {
 			
 			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera
@@ -178,7 +183,7 @@ public class IntelligenzaBianca implements IA {
 			{
 				return this.MAX_VALUE-1;
 			}
-		}		
+		}
 		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
@@ -205,6 +210,59 @@ public class IntelligenzaBianca implements IA {
 		}
 				
 		return value;	
+	}
+	
+	/**
+	 * Controlla se il re, che si trova sul trono, può fare un passo o due verso l'alto (o verso il basso, o verso sinistra, o verso destra)
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se il re può uscire dal trono, false in caso contrario
+	 */
+	private boolean checkKingCanComeOutFromThrone(StateTablut s) {
+		
+		if(common.canMoveWhite(4, 4, "T", s) != -1) {
+			
+			if(common.canMoveWhite(4, 4, "T", s) == 1) {
+				if(!common.kingCanBeCaptured(3, 4, s)) {
+					return true;
+				}
+			} else if(common.canMoveWhite(4, 4, "T", s) == 2) {
+				if(!common.kingCanBeCaptured(2, 4, s)) {
+					return true;
+				}
+			}
+			
+			if(common.canMoveWhite(4, 4, "B", s) == 1) {
+				if(!common.kingCanBeCaptured(5, 4, s)) {
+					return true;
+				}
+			} else if(common.canMoveWhite(4, 4, "B", s) == 2) {
+				if(!common.kingCanBeCaptured(6, 4, s)) {
+					return true;
+				}
+			}
+			
+			if(common.canMoveWhite(4, 4, "L", s) == 1) {
+				if(!common.kingCanBeCaptured(4, 3, s)) {
+					return true;
+				}
+			} else if(common.canMoveWhite(4, 4, "L", s) == 2) {
+				if(!common.kingCanBeCaptured(4, 2, s)) {
+					return true;
+				}
+			}
+			
+			if(common.canMoveWhite(4, 4, "R", s) == 1) {
+				if(!common.kingCanBeCaptured(4, 5, s)) {
+					return true;
+				}
+			} else if(common.canMoveWhite(4, 4, "R", s) == 2) {
+				if(!common.kingCanBeCaptured(4, 6, s)) {
+					return true;
+				}
+			}
+		}
+		return false;
+		
 	}
 	
 	/**
@@ -453,7 +511,7 @@ public class IntelligenzaBianca implements IA {
 			/*for(Livello l: albero)
 			{
 				l.getNodi().clear();
-			}*/
+			}
 			
 			for(Nodo nodo : albero.get(1).getNodi())
 			{
@@ -463,7 +521,7 @@ public class IntelligenzaBianca implements IA {
 				System.out.println();
 				System.out.println();
 				System.out.println();
-			}
+			}*/
 			albero.clear();
 			System.out.println("Albero ripulito: " + albero.size());
 			System.out.println("Thread heuristicValuator terminato");
@@ -1439,12 +1497,12 @@ public class IntelligenzaBianca implements IA {
 						    });
 							for(Nodo nodo : albero.get(1).getNodi())
 							{
-								System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
+								/*System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
 								//System.out.println("Stato: \n"+nodo.getStato().toString());
 								System.out.println("VALORE STATO: "+nodo.getValue());
 								System.out.println();
 								System.out.println();
-								System.out.println();
+								System.out.println();*/
 								if(nodo.getValue()!=10000 && nodo.getValue()!=-10000 && !nodo.getTurn().equalsTurn("D"))
 								{
 									nodo.setValue(Float.NaN);

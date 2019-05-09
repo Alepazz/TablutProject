@@ -7,7 +7,7 @@ import it.unibo.ai.didattica.competition.tablut.client.TablutClient;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
-//NON TOCCHIAMO PIù QUESTA CLASSE, LE STAMPE METTIAMOLE NEI METODI
+//NON TOCCHIAMO PIï¿½ QUESTA CLASSE, LE STAMPE METTIAMOLE NEI METODI
 public class GiocatoreArtificiale extends TablutClient {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
