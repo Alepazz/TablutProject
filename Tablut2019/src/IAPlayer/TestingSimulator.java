@@ -1,6 +1,7 @@
 package IAPlayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.*;
+import it.unibo.ai.didattica.competition.tablut.domain.State.Pawn;
 import it.unibo.ai.didattica.competition.tablut.exceptions.*;
 
 import java.io.IOException;
@@ -14,44 +15,29 @@ public class TestingSimulator {
 			
 		
         StateTablut state = new StateTablut();
-		state.setTurn(State.Turn.BLACK);
+		state.setTurn(State.Turn.WHITE);
 		Simulator sim = new Simulator();
+		IntelligenzaBianca ia = new IntelligenzaBianca();
 		int cont = 0;
 		int c = 1;
-		long t1 = System.currentTimeMillis();
-		state.getBoard()[0][3] = State.Pawn.EMPTY;
-		state.getBoard()[1][3] = State.Pawn.BLACK;
-		state.getBoard()[2][4] = State.Pawn.EMPTY;
-		state.getBoard()[3][3] = State.Pawn.WHITE;
-		System.out.println(state.toString());
-		//sim.mossePossibiliComplete(new Nodo(state));
-		/*for(Nodo n : sim.mossePossibiliComplete(new Nodo(state)))
+		//long t1 = System.currentTimeMillis();
+		for(int x=0; x<9; x++)
 		{
-			System.out.println(c);	
-			c++;
-			//System.out.println(n.getStato().toString());
-			System.out.println(n.getAzione());			
-		}*/
-		
-		/*System.out.println("E' simmetrico orrizontalmente? "+ sim.statoSimmetricoOrizontalmente(state));
-		System.out.println("E' simmetrico verticalmente? "+ sim.statoSimmetricoVerticalmente(state));
-		*/
-		
-		//IntelligenzaBianca ia = new IntelligenzaBianca();
-		for(Nodo n : sim.mossePossibiliComplete(new Nodo(state)))
-		{
-			System.out.println(n.getAzione().toString());
+			for(int y=0; y<9; y++)
+			{
+				state.removePawn(x, y);
+			}
 		}
-		//Action a = ia.getBetterMove(state);
-		/*System.out.println(a.toString());
-		long t2 = System.currentTimeMillis();
-        //System.out.println(t2);
-        System.out.println("Tempo trascorso: "+(t2-t1)+" millisecondi");*/
-		System.out.println(state.toString());
-    
-        
-        
-		
+		state.getBoard()[2][4] = Pawn.KING;
+		state.getBoard()[2][8] = Pawn.BLACK;
+		state.getBoard()[3][7] = Pawn.BLACK;  
+		state.getBoard()[4][4] = Pawn.THRONE;
+  		System.out.println(state.toString());
+  		System.out.println();
+  		System.out.println();
+  		System.out.println();
+  		System.out.println(ia.getBetterMove(state).toString());
+  		
 	}
 	
 }

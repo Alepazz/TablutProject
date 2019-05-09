@@ -2,6 +2,7 @@ package IAPlayer;
 
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.State;
+import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 import it.unibo.ai.didattica.competition.tablut.exceptions.ActionException;
 import it.unibo.ai.didattica.competition.tablut.exceptions.BoardException;
@@ -16,9 +17,14 @@ import it.unibo.ai.didattica.competition.tablut.exceptions.ThroneException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class IntelligenzaBianca implements IA {
@@ -33,13 +39,13 @@ public class IntelligenzaBianca implements IA {
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
 	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
-	//private Simulator simulatore;
+	private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	private List<StateTablut> listState; 
 	
 	public IntelligenzaBianca() {
 		albero = new ArrayList<Livello>();
-		//this.simulatore = new Simulator();
+		this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
 		this.listState = new ArrayList<StateTablut>();
 		this.citadels = common.getCitadels();
@@ -322,18 +328,18 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private class HeuristicValuator implements Runnable {
 		private IntelligenzaBianca ia;
-		private boolean isRunning;
+		//private boolean !Thread.currentThread().isInterrupted();
 		private int timeToStopHeuristicValuator;
 		
 		public HeuristicValuator(IntelligenzaBianca ia, int timeToStopHeuristicValuator){
 			this.ia = ia;
-			this.isRunning=true;
+			//this.!Thread.currentThread().isInterrupted()=true;
 			this.timeToStopHeuristicValuator = timeToStopHeuristicValuator;
 		}
 		
 		public void stopThread()
 		{
-			this.isRunning=false;
+			//this.!Thread.currentThread().isInterrupted()=false;
 		}
 		
 		public void run() {
@@ -342,7 +348,7 @@ public class IntelligenzaBianca implements IA {
 			//inizializzato per non avere errori di tempo
 			a=albero.get(1).getNodi().get(0).getAzione();
 			//ciclo sull'ultimo livello
-			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && isRunning; i++)
+			for(int i = 0; i<albero.get(albero.size()-1).getNodi().size() && !!Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(albero.size()-1).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
@@ -368,7 +374,7 @@ public class IntelligenzaBianca implements IA {
 							
 			}
 			//ciclo il penultimo livello
-			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && isRunning; i++)
+			for(int i = 0; i<albero.get(albero.size()-2).getNodi().size() && !!Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(albero.size()-2).getNodi().get(i);
 				if(!Float.isNaN(n.getPadre().getValue()) 
@@ -402,7 +408,7 @@ public class IntelligenzaBianca implements IA {
 					n.getPadre().setValue(n.getValue());
 				}
 			}*/
-			for(int i = 0; i<albero.get(2).getNodi().size() && isRunning; i++)
+			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(2).getNodi().get(i);
 				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
@@ -410,7 +416,7 @@ public class IntelligenzaBianca implements IA {
 					n.getPadre().setValue(n.getValue());
 				}
 			}
-			for(int i = 0; i<albero.get(1).getNodi().size() && isRunning; i++)
+			for(int i = 0; i<albero.get(1).getNodi().size() && !Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(1).getNodi().get(i);
 				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
@@ -435,18 +441,20 @@ public class IntelligenzaBianca implements IA {
 	/*
 	 * thread che crea l'albero di gioco
 	 */
-	private class TreeGenerator extends TimerTask {
+	private class TreeGenerator implements Runnable {
 		private Nodo nodoAttuale;
 		//private Simulator simulatore;
-		private boolean isRunning;
+		//private boolean !Thread.currentThread().isInterrupted();
 		//private CommonHeuristicFunction iaB;
 		private List<String> citadels;
 		private int timeToStopTreeGenerator;
+		private IntelligenzaBianca ia;
 		
-		public TreeGenerator(Nodo n, List<String> cit, int timeToStopTreeGenerator) {
+		public TreeGenerator(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
+			this.ia = i;
 			//this.simulatore = s;
-			this.isRunning=true;
+			//this.!Thread.currentThread().isInterrupted()=true;
 			//this.iaB = ia;
 			this.citadels = cit;
 			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
@@ -454,7 +462,7 @@ public class IntelligenzaBianca implements IA {
 
 		public void stopThread()
 		{
-			this.isRunning=false;
+			//this.!Thread.currentThread().isInterrupted()=false;
 		}
 
 		public boolean assiSimmetrici(StateTablut s)
@@ -528,13 +536,13 @@ public class IntelligenzaBianca implements IA {
 			
 			
 			//prima le righe
-			for(int i=0; i<righeDaControllare && isRunning; i++)
+			for(int i=0; i<righeDaControllare && !Thread.currentThread().isInterrupted(); i++)
 			{
 				//poi le colonne
-				for(int j=0; j<colonneDaControllare && isRunning; j++)
+				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
 				{
 					//se è il turno nero conto le mosse delle pedine nere
-					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && isRunning)
+					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
 					{
 						if(statiSimm && j==4)
 						{
@@ -584,9 +592,9 @@ public class IntelligenzaBianca implements IA {
 					}
 					
 					//se è il turno bianco conto le mosse delle pedine bianche
-					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && isRunning) 
+					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && !Thread.currentThread().isInterrupted()) 
 					{
-						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && isRunning)
+						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && !Thread.currentThread().isInterrupted())
 						{
 							if(statiSimm && j==4)
 							{
@@ -647,14 +655,14 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveDown(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -662,14 +670,14 @@ public class IntelligenzaBianca implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveRight(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -682,7 +690,7 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
@@ -702,7 +710,7 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -715,14 +723,14 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveDown(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveDown(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				
 				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
@@ -730,7 +738,7 @@ public class IntelligenzaBianca implements IA {
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
@@ -743,21 +751,21 @@ public class IntelligenzaBianca implements IA {
 		private List<Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
-			if(canMoveUp(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveLeft(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
 				{
 					listaMossePossibili.add(nod);
 				}
 			}
-			if(canMoveRight(node.getStato(), riga, colonna) && isRunning)
+			if(canMoveRight(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
 				{
@@ -773,7 +781,7 @@ public class IntelligenzaBianca implements IA {
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
-			while(canMoveUp(node.getStato(), riga-c, colonna) && isRunning)
+			while(canMoveUp(node.getStato(), riga-c, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				c++;
 				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga-c, colonna), node.getTurn());
@@ -792,7 +800,7 @@ public class IntelligenzaBianca implements IA {
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
-			while(canMoveDown(node.getStato(), riga+c, colonna) && isRunning)
+			while(canMoveDown(node.getStato(), riga+c, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				c++;
 				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga+c, colonna), node.getTurn());
@@ -810,7 +818,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 			int c = 0;
-			while(canMoveRight(node.getStato(), riga, colonna+c) && isRunning)
+			while(canMoveRight(node.getStato(), riga, colonna+c) && !Thread.currentThread().isInterrupted())
 			{
 				c++;
 				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna+c), node.getTurn());
@@ -828,7 +836,7 @@ public class IntelligenzaBianca implements IA {
 		{
 			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
 			int c = 0;
-			while(canMoveLeft(node.getStato(), riga, colonna-c) && isRunning)
+			while(canMoveLeft(node.getStato(), riga, colonna-c) && !Thread.currentThread().isInterrupted())
 			{
 				c++;
 				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna-c), node.getTurn());
@@ -1096,21 +1104,21 @@ public class IntelligenzaBianca implements IA {
 		return state;
 	}
 	
-	private State checkCaptureBlackKingRight(State state, Action a){
+		private State checkCaptureBlackKingRight(State state, Action a){
 		//ho il re sulla destra
-		if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
-		{
-			//re sul trono
-			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
+			if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
 			{
-				if(state.getPawn(3, 4).equalsPawn("B")
-						&& state.getPawn(4, 5).equalsPawn("B")
-						&& state.getPawn(5, 4).equalsPawn("B"))
+				//re sul trono
+				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
 				{
-					state.setTurn(State.Turn.BLACKWIN);
+					if(state.getPawn(3, 4).equalsPawn("B")
+							&& state.getPawn(4, 5).equalsPawn("B")
+							&& state.getPawn(5, 4).equalsPawn("B"))
+					{
+						state.setTurn(State.Turn.BLACKWIN);
+					}
 				}
-			}
-			//re adiacente al trono
+				//re adiacente al trono
 			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4"))
 			{
 				if(state.getPawn(2, 4).equalsPawn("B")
@@ -1151,11 +1159,11 @@ public class IntelligenzaBianca implements IA {
 		return state;
 	}
 	
-	private State checkCaptureBlackKingDown(State state, Action a){
+		private State checkCaptureBlackKingDown(State state, Action a){
 		//ho il re sotto
 		if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
 		{
-			System.out.println("Ho il re sotto");
+			//System.out.println("Ho il re sotto");
 			//re sul trono
 			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
 			{
@@ -1207,7 +1215,7 @@ public class IntelligenzaBianca implements IA {
 		return state;
 	}
 	
-	private State checkCaptureBlackKingUp(State state, Action a){
+		private State checkCaptureBlackKingUp(State state, Action a){
 		//ho il re sopra
 		if (a.getRowTo()>1&&state.getPawn(a.getRowTo()-1, a.getColumnTo()).equalsPawn("K"))
 		{
@@ -1339,26 +1347,75 @@ public class IntelligenzaBianca implements IA {
 				liv.add(this.nodoAttuale);
 				albero.add(liv);
 				Livello livEspanso = null;
-				for(int livelloDaEspandere=0; isRunning ;livelloDaEspandere++)
+				for(int livelloDaEspandere=0; !Thread.currentThread().isInterrupted() ;livelloDaEspandere++)
 				{
 					livEspanso = new Livello();
 					albero.add(livEspanso);
-					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && isRunning; x++)
+					for(int x=0; x<albero.get(livelloDaEspandere).getNodi().size() && !Thread.currentThread().isInterrupted(); x++)
 					{
 						Nodo n = albero.get(livelloDaEspandere).getNodi().get(x);
 						long x1 = System.currentTimeMillis();
 						List<Nodo> mosse = this.mossePossibiliComplete(n);
-						long x2 = System.currentTimeMillis();
-						System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
-						for(int y=0; y<mosse.size() && isRunning; y++)
+						for(int y=0; y<mosse.size() && !Thread.currentThread().isInterrupted(); y++)
 						{
 							Nodo nodo = mosse.get(y);
+							if(nodo.getStato().getTurn().equalsTurn("WW"))
+							{
+								nodo.setValue(10000);
+							}
+							if(nodo.getStato().getTurn().equalsTurn("BW"))
+							{
+								nodo.setValue(-10000);
+							}
+							if(this.ia.checkDraw(nodo.getStato()))
+							{
+								nodo.setValue(-5000);
+								nodo.getStato().setTurn(Turn.DRAW);
+							}
 							livEspanso.add(nodo);
 						}
-						if(!isRunning)
+						if(Thread.currentThread().isInterrupted())
 						{
-							//long x2 = System.currentTimeMillis();
+							long x2 = System.currentTimeMillis();
 							System.out.println("Tempo utilizzato: " + (x2-x1) + " Numero mosse trovate: "+ mosse.size());
+						}
+						if(livelloDaEspandere==0)
+						{
+							for(Nodo nodo : albero.get(1).getNodi())
+							{
+								/*if(nodo.getStato().getTurn().equalsTurn("WW"))
+								{
+									nodo.setValue(10000);
+								}
+								if(nodo.getStato().getTurn().equalsTurn("BW"))
+								{
+									nodo.setValue(10000);
+								}*/								
+								if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+								{
+									nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+								}
+							}
+							Collections.sort(albero.get(1).getNodi(), new Comparator<Nodo>() {
+								@Override
+						    	public int compare(Nodo n2, Nodo n1)
+								{
+									return  (int) (n1.getValue()-n2.getValue());
+								}
+						    });
+							for(Nodo nodo : albero.get(1).getNodi())
+							{
+								/*System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
+								System.out.println("Stato: \n"+nodo.getStato().toString());
+								System.out.println("VALORE STATO: "+nodo.getValue());
+								System.out.println();
+								System.out.println();
+								System.out.println();*/
+								if(nodo.getValue()!=10000 && nodo.getValue()!=-10000 && !nodo.getTurn().equalsTurn("D"))
+								{
+									nodo.setValue(Float.NaN);
+								}
+							}
 						}
 					}
 				}
@@ -1369,9 +1426,27 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 
-	}
-	
+		private float setSimpleHeuristic(StateTablut s) {
+			int nBianchi = 1;
+			int nNeri=0;
+			for(int x =0 ; x<9; x++)
+			{
+				for(int y=0; y<9; y++)
+				{
+					if(s.getPawn(x, y).equalsPawn("B"))
+					{
+						nNeri++;
+					}
+					if(s.getPawn(x, y).equalsPawn("W"))
+					{
+						nBianchi++;
+					}
+				}
+			}
+			return 2*nBianchi-nNeri;				
+		}
 
+	}
 	
 	@SuppressWarnings("static-access")
 	@Override
@@ -1383,14 +1458,14 @@ public class IntelligenzaBianca implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels, TIMETOSTOPTREEGENERATOR);
+			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels, TIMETOSTOPTREEGENERATOR, this);
 			Thread t = new Thread(treeGenerator);
 			t.start();
 			//this.wait(30000);
 			Thread.sleep(5000);
 			//System.out.println("Lancio l'interruzione");
-			treeGenerator.stopThread();
-			//t.interrupt();
+			//treeGenerator.stopThread();
+			t.interrupt();
 			//t.stop();
 			//System.out.println("Finito sviluppo albero");
 			t3 = System.currentTimeMillis();
