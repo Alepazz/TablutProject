@@ -56,6 +56,26 @@ public class CommonHeuristicFunction {
 		return this.citadels.contains(position);
 	}
 	
+	/**
+	 * Controlla se il re si trova sul trono
+	 * @param rigaRe Riga dove si trova il re
+	 * @param colonnaRe Colonna dove si trova il re
+	 * @return true se il re si trova sul trono, false in caso contrario
+	 */
+	public boolean kingOnTheThrone(int rigaRe, int colonnaRe) {
+		return (rigaRe==4 && colonnaRe==4);
+	}
+	
+	/**
+	 * Controlla se il re si trova adiacente al trono
+	 * @param rigaRe Riga dove si trova il re
+	 * @param colonnaRe Colonna dove si trova il re
+	 * @return true se il re si trova adiacente al trono, false in caso contrario
+	 */
+	public boolean kingAdjacentToTheThrone(int rigaRe, int colonnaRe) {
+		return (rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3);
+	}
+	
 	//TODO: Commentare cosa fa questa funzione
 	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 			
@@ -348,182 +368,68 @@ public class CommonHeuristicFunction {
 		//Se e' il turno del bianco ritorna false se no controlla i 3 casi
 		if(s.getTurn().equalsTurn("B"))
 		{
-			//Controllo di cattura con il re sul trono
-			if(rigaRe==4 && colonnaRe==4)
+			//Controllo di cattura con il re sul trono oppure adiacente al trono
+			if(this.kingOnTheThrone(rigaRe, colonnaRe) || this.kingAdjacentToTheThrone(rigaRe, colonnaRe))
 			{
-				//bloccato sopra, destra e sinistra
+				//Bloccato sopra, destra e sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(5, 4, s))
+					if(this.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
-				//bloccato sotto, destra, sinistra
+				//Bloccato sotto, destra, sinistra
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(3, 4, s))
+					if(this.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
-				//bloccato sopra, sotto, destra
+				//Bloccato sopra, sotto, destra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(4, 3, s))
+					if(this.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
-				//bloccato sopra, sotto, sinistra
+				//Bloccato sopra, sotto, sinistra
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(this.checkBlackCanArrive(4, 5, s))
+					if(this.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
-			} //Controllo di cattura con il re adiacente al trono
-			else if(rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3) 
-			{
-				//controllo casella adiacente sopra
-				if(rigaRe==3 && colonnaRe==4)
-				{
-					//bloccato sopra e a destra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 3, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sinistra e destra
-					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(2, 4, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e a sinistra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 5, s))
-						{
-							return true;
-						}
-					}
-				}
-				//controllo casella adiacente sotto
-				if(rigaRe==5 && colonnaRe==4)
-				{
-					//bloccato destra e sinistra
-					if(this.enemyOnTheLeft(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(6, 4, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sotto e a destra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 3, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sotto e a sinistra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 5, s))
-						{
-							return true;
-						}
-					}
-				}
-				//controllo casella adiacente destra
-				if(rigaRe==4 && colonnaRe==5)
-				{
-					//bloccato sotto e a destra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 5, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e a destra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheRight(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 5, s))
-						{
-							return true;
-						}
-					}
-					//bloccato sopra e sotto
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(4, 6, s))
-						{
-							return true;
-						}
-					}			
-				}
-				//controllo casella adiacente sinistra
-				if(rigaRe==4 && colonnaRe==3)
-				{
-					//bloccato sopra e sotto
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheBottom(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(4, 2, s))
-						{
-							return true;
-						}
-					}	
-					//bloccato sotto e a sinistra
-					if(this.enemyOnTheBottom(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(3, 3, s))
-						{
-							return true;
-						}
-					}//bloccato sopra e a sinistra
-					if(this.enemyOnTheTop(rigaRe, colonnaRe, s) && this.enemyOnTheLeft(rigaRe, colonnaRe, s))
-					{
-						if(this.checkBlackCanArrive(5, 3, s))
-						{
-							return true;
-						}
-					}			
-				}
-			} //Controllo di cattura con il re lontano dal trono
+			}//Controllo di cattura con il re lontano dal trono
 			else
 			{
 				if(this.enemyOnTheRight(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe, colonnaRe-1, s))
+					if(this.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheLeft(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe, colonnaRe+1, s))
+					if(this.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheTop(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe+1, colonnaRe, s))
+					if(this.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
 				}
 				if(this.enemyOnTheBottom(rigaRe, colonnaRe, s))
 				{
-					if(checkBlackCanArrive(rigaRe-1, colonnaRe, s))
+					if(this.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s))
 					{
 						return true;
 					}
@@ -782,7 +688,7 @@ public class CommonHeuristicFunction {
 	 */
 	public String checkNeighbourRight(int riga, int colonna, StateTablut s) {
 		if(colonna!=8) {
-			if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna-1))) {
+			if(s.getPawn(riga, colonna+1).equalsPawn("O") && !this.citadels.contains(s.getBox(riga, colonna+1))) {
 				return "O"; //c'� una cella libera
 			} else {
 				if(s.getPawn(riga, colonna+1).equalsPawn("K")) {
@@ -1203,8 +1109,8 @@ public class CommonHeuristicFunction {
 			}
 			//Se trova una cittadella ritorna risposta negativa
 			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-			if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a6") 
-					&& !this.citadels.contains("e2") && !this.citadels.contains("i6"))
+			if(this.citadels.contains(s.getBox(i, colonna)) && !s.getBox(i, colonna).equals("a6") && !s.getBox(i, colonna).equals("a5")
+					&& !s.getBox(i, colonna).equals("e2") && !s.getBox(i, colonna).equals("i6") && !s.getBox(i, colonna).equals("i5"))
 			{
 				return false;
 			}
@@ -1240,8 +1146,8 @@ public class CommonHeuristicFunction {
 			}
 			//Se trova una cittadella ritorna risposta negativa
 			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-			if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("d1") 
-					&& !this.citadels.contains("d9") && !this.citadels.contains("h5"))
+			if(this.citadels.contains(s.getBox(riga, i)) && !s.getBox(riga, i).equals("d1") && !s.getBox(riga, i).equals("e1")
+					&& !s.getBox(riga, i).equals("d9") && !s.getBox(riga, i).equals("e9") && !s.getBox(riga, i).equals("h5"))
 			{
 				return false;
 			}			
@@ -1277,8 +1183,8 @@ public class CommonHeuristicFunction {
 			}
 			//Se trova una cittadella ritorna risposta negativa
 			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-			if(this.citadels.contains(s.getBox(i, colonna)) && !this.citadels.contains("a4") 
-					&& !this.citadels.contains("i4") && !this.citadels.contains("e8"))
+			if(this.citadels.contains(s.getBox(i, colonna)) && !s.getBox(i, colonna).equals("a4") && !s.getBox(i, colonna).equals("a5")
+					&& !s.getBox(i, colonna).equals("i4") && !s.getBox(i, colonna).equals("i5") && !s.getBox(i, colonna).equals("e8"))
 			{
 				return false;
 			}			
@@ -1312,8 +1218,8 @@ public class CommonHeuristicFunction {
 			}
 			//Se trova una cittadella ritorna risposta negativa
 			//Tranne nel caso particolare delle cittadelle che permettono il passaggio della pedina nera
-			if(this.citadels.contains(s.getBox(riga, i)) && !this.citadels.contains("b5") 
-					&& !this.citadels.contains("f1") && !this.citadels.contains("f9"))
+			if(this.citadels.contains(s.getBox(riga, i)) && !s.getBox(riga, i).equals("b5")&& !s.getBox(riga, i).equals("f1") 
+					&& !s.getBox(riga, i).equals("e1") && !s.getBox(riga, i).equals("f9") && !s.getBox(riga, i).equals("e9"))
 			{
 				return false;
 			}			
@@ -1432,7 +1338,8 @@ public class CommonHeuristicFunction {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=riga; i>=0;i--) {
+		for(int i=riga; i>=0;i--)
+		{
 			//Se trova la pedina bianca ritorna risposta positiva
 			if(s.getPawn(i, colonna).equalsPawn("W"))
 			{
