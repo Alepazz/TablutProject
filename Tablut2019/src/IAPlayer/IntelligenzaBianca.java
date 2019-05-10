@@ -1319,6 +1319,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		public void run() {
+			long t1 = System.currentTimeMillis();
 			System.out.println("Attivazione thread treeGenerator");
 			taglioLivello1 = false;
 			taglioLivello2 = false;
@@ -1489,7 +1490,7 @@ public class IntelligenzaBianca implements IA {
 				taglioLivello2=false;
 			}
 			System.out.println("Terminazione thread treeGenerator");
-			
+			System.out.println("Tempo utilizzato: "+(System.currentTimeMillis()-t1));
 		}
 
 		
