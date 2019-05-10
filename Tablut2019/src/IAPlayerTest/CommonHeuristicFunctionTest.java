@@ -1943,9 +1943,9 @@ class CommonHeuristicFunctionTest {
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
-		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO     <----- X = Pedina passata alla funzione
 		 * OOOOOOOOO
-		 * OOOOOOOOO
+		 * OOXOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * 
@@ -1957,7 +1957,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test 
-		Assert.assertTrue(c.checkPedinaIsolata(4, 3, s));
+		Assert.assertTrue(c.checkPedinaIsolata(6, 3, s));
 			
 	}
 	
