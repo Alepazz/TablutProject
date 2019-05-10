@@ -1956,7 +1956,7 @@ class CommonHeuristicFunctionTest {
 		s.setBoard(board);
 		s.setTurn(Turn.BLACK);
 		
-		//Esecuzione Test
+		//Esecuzione Test 
 		Assert.assertTrue(c.checkPedinaIsolata(4, 3, s));
 			
 	}
