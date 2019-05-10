@@ -137,11 +137,6 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
-		// cerco di far uscire dal trono il re il prima possibile
-		if(this.checkKingCanComeOutFromThrone(s)) {
-			return this.MAX_VALUE - 2;
-		}
-		
 		if(common.getNumberStarFree(s) < 4) {
 			
 			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera
@@ -183,7 +178,7 @@ public class IntelligenzaBianca implements IA {
 			{
 				return this.MAX_VALUE-1;
 			}
-		}
+		}		
 		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
@@ -210,59 +205,6 @@ public class IntelligenzaBianca implements IA {
 		}
 				
 		return value;	
-	}
-	
-	/**
-	 * Controlla se il re, che si trova sul trono, può fare un passo o due verso l'alto (o verso il basso, o verso sinistra, o verso destra)
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se il re può uscire dal trono, false in caso contrario
-	 */
-	private boolean checkKingCanComeOutFromThrone(StateTablut s) {
-		
-		if(common.canMoveWhite(4, 4, "T", s) != -1) {
-			
-			if(common.canMoveWhite(4, 4, "T", s) == 1) {
-				if(!common.kingCanBeCaptured(3, 4, s)) {
-					return true;
-				}
-			} else if(common.canMoveWhite(4, 4, "T", s) == 2) {
-				if(!common.kingCanBeCaptured(2, 4, s)) {
-					return true;
-				}
-			}
-			
-			if(common.canMoveWhite(4, 4, "B", s) == 1) {
-				if(!common.kingCanBeCaptured(5, 4, s)) {
-					return true;
-				}
-			} else if(common.canMoveWhite(4, 4, "B", s) == 2) {
-				if(!common.kingCanBeCaptured(6, 4, s)) {
-					return true;
-				}
-			}
-			
-			if(common.canMoveWhite(4, 4, "L", s) == 1) {
-				if(!common.kingCanBeCaptured(4, 3, s)) {
-					return true;
-				}
-			} else if(common.canMoveWhite(4, 4, "L", s) == 2) {
-				if(!common.kingCanBeCaptured(4, 2, s)) {
-					return true;
-				}
-			}
-			
-			if(common.canMoveWhite(4, 4, "R", s) == 1) {
-				if(!common.kingCanBeCaptured(4, 5, s)) {
-					return true;
-				}
-			} else if(common.canMoveWhite(4, 4, "R", s) == 2) {
-				if(!common.kingCanBeCaptured(4, 6, s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-		
 	}
 	
 	/**
@@ -401,6 +343,1223 @@ public class IntelligenzaBianca implements IA {
 		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 	}
 	
+	
+	private class TreeGenerator2 implements Runnable {
+		private Nodo nodoAttuale;
+		//private Simulator simulatore;
+		//private boolean !Thread.currentThread().isInterrupted();
+		//private CommonHeuristicFunction iaB;
+		private List<String> citadels;
+		private int timeToStopTreeGenerator;
+		private IntelligenzaBianca ia;
+		private boolean taglioLivello1;
+		private boolean taglioLivello2;
+		private boolean taglioLivello3;
+		private boolean taglioLivello4;
+		private boolean taglioLivello5;
+		
+		public TreeGenerator2(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
+			this.nodoAttuale = n;
+			this.ia = i;
+			//this.simulatore = s;
+			//this.!Thread.currentThread().isInterrupted()=true;
+			//this.iaB = ia;
+			this.citadels = cit;
+			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
+		}
+
+		public void stopThread()
+		{
+			//this.!Thread.currentThread().isInterrupted()=false;
+		}
+
+		public boolean assiSimmetrici(StateTablut s)
+		{
+			for(int i=0; i<8; i++)
+			{
+				if(!s.getPawn(i, 4).equalsPawn(s.getPawn(4, i).toString()))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		//controllo che lo stato sia simmetrico Verticalmente(asse di simmetrica colonna e)
+		public boolean statoSimmetricoVerticalmente(StateTablut s)
+		{
+			//ciclo ogni riga
+			for(int i=0; i<9; i++)
+			{
+				for(int j=0; j<4; j++)
+				{
+					if(!s.getPawn(i, j).equalsPawn(s.getPawn(i, 8-j).toString()))
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		
+		//controllo che lo stato sia simmetrico Orizontalmente(asse di simmetrica riga 5)
+		public boolean statoSimmetricoOrizontalmente(StateTablut s)
+			{
+				//ciclo righe
+				for(int i=0; i<4; i++)
+				{
+					for(int j=0; j<9; j++)
+					{
+						if(!s.getPawn(i, j).equalsPawn(s.getPawn(8-i, j).toString()))
+						{
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+		
+		//metodo che ritorna il numero di mosse possibili 
+		/*private int numeroMossePossibiliComplete(StateTablut s) {
+			int mossePossibili = 0;
+			boolean simmV = this.statoSimmetricoVerticalmente(s);
+			boolean simmO = this.statoSimmetricoOrizontalmente(s);
+			boolean statiSimm = this.assiSimmetrici(s);
+			int righeDaControllare = 9;
+			int colonneDaControllare = 9;
+			if(simmV)
+			{
+				colonneDaControllare = 5;
+			}
+			if(simmO)
+			{
+				righeDaControllare = 5;
+			}
+			if(simmV && simmO && statiSimm)
+			{
+				righeDaControllare = 4;
+			}
+			//prima le righe
+			for(int i=0; i<righeDaControllare && !Thread.currentThread().isInterrupted(); i++)
+			{		
+				//poi le colonne
+				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
+				{
+					//se è il turno nero conto le mosse delle pedine nere
+					if(s.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(s.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
+					{
+						if(statiSimm && j==4)
+						{
+							mossePossibili = mossePossibili + mossePossibiliPedinaCS(i, j);
+						}
+						else
+						{
+							if(simmV && simmO && j==4)
+							{
+								mossePossibili = mossePossibili + mossePossibiliPedinaCCS(i, j);
+							}
+							else
+							{
+								if(simmV && j==4)
+								{
+									mossePossibili = mossePossibili + mossePossibiliPedinaSV(i, j);
+								}
+								else
+								{
+									if(simmO && i==4)
+									{
+										mossePossibili = mossePossibili + mossePossibiliPedinaSO(i, j);
+									}
+									else
+									{
+										for(Nodo nod: mossePossibiliPedina(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+								}	
+							}	
+						}
+								
+					}
+					
+				}					
+			}	
+			return mossePossibili;
+		}
+		*/
+		
+		//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
+		public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
+			
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			boolean simmV = this.statoSimmetricoVerticalmente(node.getStato());
+			boolean simmO = this.statoSimmetricoOrizontalmente(node.getStato());
+			boolean statiSimm = this.assiSimmetrici(node.getStato());
+			//itero su tutta la scacchiera
+			int righeDaControllare = 9;
+			int colonneDaControllare = 9;
+			if(simmV)
+			{
+				colonneDaControllare = 5;
+			}
+			if(simmO)
+			{
+				righeDaControllare = 5;
+			}
+			if(simmV && simmO && statiSimm)
+			{
+				righeDaControllare = 4;
+			}
+			
+			
+			//prima le righe
+			for(int i=0; i<righeDaControllare && !Thread.currentThread().isInterrupted(); i++)
+			{
+				//poi le colonne
+				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
+				{
+					//se è il turno nero conto le mosse delle pedine nere
+					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
+					{
+						if(statiSimm && j==4)
+						{
+							for(Nodo nod: mossePossibiliPedinaCS(node, i, j))
+							{
+								listaMossePossibili.add(nod);
+							}
+						}
+						else
+						{
+							if(simmV && simmO && j==4)
+							{
+								for(Nodo nod: mossePossibiliPedinaCCS(node, i, j))
+								{
+									listaMossePossibili.add(nod);
+								}
+							}
+							else
+							{
+								if(simmV && j==4)
+								{
+									for(Nodo nod: mossePossibiliPedinaSV(node, i, j))
+									{
+										listaMossePossibili.add(nod);
+									}
+								}
+								else
+								{
+									if(simmO && i==4)
+									{
+										for(Nodo nod: mossePossibiliPedinaSO(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+									else
+									{
+										for(Nodo nod: mossePossibiliPedina(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+								}	
+							}	
+						}
+								
+					}
+					
+					//se è il turno bianco conto le mosse delle pedine bianche
+					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && !Thread.currentThread().isInterrupted()) 
+					{
+						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && !Thread.currentThread().isInterrupted())
+						{
+							if(statiSimm && j==4)
+							{
+								for(Nodo nod: mossePossibiliPedinaCS(node, i, j))
+								{
+									listaMossePossibili.add(nod);
+								}
+							}
+							else
+							{
+								if(simmV && simmO && j==4)
+								{
+									for(Nodo nod: mossePossibiliPedinaCCS(node, i, j))
+									{
+										listaMossePossibili.add(nod);
+									}
+								}
+								else
+								{
+									if(simmV && j==4)
+									{
+										for(Nodo nod: mossePossibiliPedinaSV(node, i, j))
+										{
+											listaMossePossibili.add(nod);
+										}
+									}
+									else
+									{
+										if(simmO && i==4)
+										{
+											for(Nodo nod: mossePossibiliPedinaSO(node, i, j))
+											{
+												listaMossePossibili.add(nod);
+											}
+										}
+										else
+										{
+											for(Nodo nod: mossePossibiliPedina(node, i, j))
+											{
+												listaMossePossibili.add(nod);
+											}
+										}
+									}	
+								}		
+							}	
+						}
+					}
+				}
+			}
+			for(Nodo n : listaMossePossibili)
+			{
+				n.setPadre(node);
+			}
+			return listaMossePossibili;
+		}
+		
+		//ritorna i nodi nei quali è possibile trovarsi col movimento della pedina bianca indicata
+		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveDown(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				
+				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveRight(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			return listaMossePossibili;
+		}
+		
+		private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveLeft(node.getStato(), riga, colonna))
+			{
+				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			return listaMossePossibili;
+		}
+		
+		private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			return listaMossePossibili;
+		}
+		
+		private List<Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveDown(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				
+				for(Nodo nod: mossePossibiliPedinaSotto(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			return listaMossePossibili;
+		}
+		
+		private List<Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			if(canMoveRight(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				for(Nodo nod: mossePossibiliPedinaDestra(node, riga, colonna))
+				{
+					listaMossePossibili.add(nod);
+				}
+			}
+			return listaMossePossibili;
+		}
+		
+		//ritorna i nodi nei quali è possibile trovarsi col movimento verso l'alto della pedina indicata
+		private List<Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			int c = 0;
+			//stato.setTurn(turno);
+			while(canMoveUp(node.getStato(), riga-c, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				c++;
+				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga-c, colonna), node.getTurn());
+				StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
+				Nodo nodo2 = new Nodo(nuovoStato);
+				nodo2.setAzione(ac);
+				listaMossePossibili.add(nodo2);
+				//System.out.println(ac);
+			}
+			return listaMossePossibili;
+		}
+		
+		//ritorna i nodi nei quali è possibile trovarsi col movimento verso il basso della pedina indicata
+		private List<Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			int c = 0;
+			//stato.setTurn(turno);
+			while(canMoveDown(node.getStato(), riga+c, colonna) && !Thread.currentThread().isInterrupted())
+			{
+				c++;
+				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga+c, colonna), node.getTurn());
+				StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
+				Nodo nodo2 = new Nodo(nuovoStato);
+				nodo2.setAzione(ac);
+				listaMossePossibili.add(nodo2);
+				//System.out.println(ac);
+			}		
+			return listaMossePossibili;
+		}
+		
+		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		private List<Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			int c = 0;
+			while(canMoveRight(node.getStato(), riga, colonna+c) && !Thread.currentThread().isInterrupted())
+			{
+				c++;
+				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna+c), node.getTurn());
+				StateTablut nuovoStato = (StateTablut) this.checkMove(node.getStato(), ac);
+				Nodo nodo2 = new Nodo(nuovoStato);
+				nodo2.setAzione(ac);
+				listaMossePossibili.add(nodo2);
+				//System.out.println(ac);
+			}		
+			return listaMossePossibili;
+		}
+		
+		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		private List<Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
+		{
+			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			int c = 0;
+			while(canMoveLeft(node.getStato(), riga, colonna-c) && !Thread.currentThread().isInterrupted())
+			{
+				c++;
+				Action ac = new Action(node.getStato().getBox(riga, colonna), node.getStato().getBox(riga, colonna-c), node.getTurn());
+				StateTablut nuovoStato =  (StateTablut) this.checkMove(node.getStato(), ac);
+				/*System.out.println("AAAAA");
+				System.out.println(nuovoStato);*/
+				Nodo nodo2 = new Nodo(nuovoStato);
+				nodo2.setAzione(ac);
+				listaMossePossibili.add(nodo2);
+				//System.out.println(ac);
+			}			
+			return listaMossePossibili;
+		}
+		
+		//dice se una data pedina può muoversi verso l'alto
+		private boolean canMoveUp(State state, int row, int column) {
+			if(row==0)
+			{
+				return false;
+			}
+			if(!state.getPawn(row-1, column).equalsPawn(State.Pawn.EMPTY.toString()) || (this.citadels.contains(state.getBox(row-1, column))&& !this.citadels.contains(state.getBox(row, column))))
+			{
+				return false;
+			}
+			return true;		
+		}
+		
+		//dice se una data pedina può muoversi verso il basso
+		private boolean canMoveDown(State state, int row, int column) {
+			if(row==state.getBoard().length-1)
+			{
+				return false;
+			}
+			if(!state.getPawn(row+1, column).equalsPawn(State.Pawn.EMPTY.toString()) || (this.citadels.contains(state.getBox(row+1, column))&& !this.citadels.contains(state.getBox(row, column))))
+			{
+				return false;
+			}
+			return true;	
+		}
+		
+		//dice se una data pedina può muoversi verso sinistra
+		private boolean canMoveLeft(State state, int row, int column) {
+			if(column==0)
+			{
+				return false;
+			}
+			if(!state.getPawn(row, column-1).equalsPawn(State.Pawn.EMPTY.toString()) || (this.citadels.contains(state.getBox(row, column-1)) && !this.citadels.contains(state.getBox(row, column))))
+			{
+				return false;
+			}
+			return true;	
+		}
+		
+		//dice se una data pedina può muoversi verso destra
+		private boolean canMoveRight(State state, int row, int column) {
+			if(column==state.getBoard().length-1)
+			{
+				return false;
+			}
+			if(!state.getPawn(row, column+1).equalsPawn(State.Pawn.EMPTY.toString()) || (this.citadels.contains(state.getBox(row, column+1)) && !this.citadels.contains(state.getBox(row, column))))
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		//applico la mossa
+		private State checkMove(State state, Action a) throws BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException {
+			
+			// se sono arrivato qui, muovo la pedina
+			StateTablut newState = (StateTablut) this.movePawn(state, a);
+
+			// a questo punto controllo lo stato per eventuali catture
+			if (newState.getTurn().equalsTurn("W")) {
+				newState = this.checkCaptureBlack(newState, a);
+			} else if (newState.getTurn().equalsTurn("B")) {
+				newState = this.checkCaptureWhite(newState, a);
+			}
+
+			// if something has been captured, clear cache for draws
+			/*if (this.movesWithutCapturing == 0) {
+				this.drawConditions.clear();
+			}
+
+			// controllo pareggio
+			int trovati = 0;
+			for (State s : drawConditions) {
+
+				//System.out.println(s.toString());
+
+				if (s.equals(state)) {
+						trovati++;
+					if (trovati > repeated_moves_allowed) {
+						//state.setTurn(State.Turn.DRAW);
+						break;
+					}
+				}
+			}
+			if (cache_size >= 0 && this.drawConditions.size() > cache_size) {
+				this.drawConditions.remove(0);
+			}*/
+			//this.drawConditions.add(state.clone());
+
+
+			return newState;
+		}
+		
+		private State movePawn(State state, Action a) {
+			StateTablut newState = new StateTablut();
+			
+			State.Pawn pawn = state.getPawn(a.getRowFrom(), a.getColumnFrom());
+			State.Pawn[][] newBoard = new State.Pawn[9][9];
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					newBoard[i][j] = state.getPawn(i, j);
+				}
+			}
+			//libero il trono o una casella qualunque
+			if(a.getColumnFrom()==4 && a.getRowFrom()==4)
+			{
+				newBoard[a.getRowFrom()][a.getColumnFrom()]= State.Pawn.THRONE;
+			}
+			else
+			{
+				newBoard[a.getRowFrom()][a.getColumnFrom()]= State.Pawn.EMPTY;
+			}
+			
+			//metto nel nuovo tabellone la pedina mossa
+			newBoard[a.getRowTo()][a.getColumnTo()]=pawn;
+			//aggiorno il tabellone
+			newState.setBoard(newBoard);
+			
+			//cambio il turno
+			if(state.getTurn().equalsTurn(State.Turn.WHITE.toString()))
+			{
+				newState.setTurn(State.Turn.BLACK);
+			}
+			else
+			{
+				newState.setTurn(State.Turn.WHITE);
+			}
+			
+			
+			return newState;
+		}
+
+		private StateTablut checkCaptureWhite(StateTablut state, Action a) {
+			// controllo se mangio a destra
+			if (a.getColumnTo() < state.getBoard().length - 2
+					&& state.getPawn(a.getRowTo(), a.getColumnTo() + 1).equalsPawn("B")
+					&& (state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("W")
+							|| state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("T")
+							|| state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("K")
+							|| (this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo() + 2)) &&!(a.getColumnTo()+2==8&&a.getRowTo()==4)&&!(a.getColumnTo()+2==4&&a.getRowTo()==0)&&!(a.getColumnTo()+2==4&&a.getRowTo()==8)&&!(a.getColumnTo()+2==0&&a.getRowTo()==4)))) {
+				state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
+				//this.movesWithutCapturing = -1;
+			}
+			// controllo se mangio a sinistra
+			if (a.getColumnTo() > 1 && state.getPawn(a.getRowTo(), a.getColumnTo() - 1).equalsPawn("B")
+					&& (state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("W")
+							|| state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("T")
+							|| state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("K")
+							|| (this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo() - 2)) &&!(a.getColumnTo()-2==8&&a.getRowTo()==4)&&!(a.getColumnTo()-2==4&&a.getRowTo()==0)&&!(a.getColumnTo()-2==4&&a.getRowTo()==8)&&!(a.getColumnTo()-2==0&&a.getRowTo()==4)))) {
+				state.removePawn(a.getRowTo(), a.getColumnTo() - 1);
+				//this.movesWithutCapturing = -1;
+			}
+			// controllo se mangio sopra
+			if (a.getRowTo() > 1 && state.getPawn(a.getRowTo() - 1, a.getColumnTo()).equalsPawn("B")
+					&& (state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("W")
+							|| state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("T")
+							|| state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("K")
+							|| (this.citadels.contains(state.getBox(a.getRowTo() - 2, a.getColumnTo()))&&!(a.getColumnTo()==8&&a.getRowTo()-2==4)&&!(a.getColumnTo()==4&&a.getRowTo()-2==0)&&!(a.getColumnTo()==4&&a.getRowTo()-2==8)&&!(a.getColumnTo()==0&&a.getRowTo()-2==4)) )) {
+				state.removePawn(a.getRowTo() - 1, a.getColumnTo());
+				//this.movesWithutCapturing = -1;
+			}
+			// controllo se mangio sotto
+			if (a.getRowTo() < state.getBoard().length - 2
+					&& state.getPawn(a.getRowTo() + 1, a.getColumnTo()).equalsPawn("B")
+					&& (state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("W")
+							|| state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("T")
+							|| state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("K")
+							|| (this.citadels.contains(state.getBox(a.getRowTo() + 2, a.getColumnTo()))&&!(a.getColumnTo()==8&&a.getRowTo()+2==4)&&!(a.getColumnTo()==4&&a.getRowTo()+2==0)&&!(a.getColumnTo()==4&&a.getRowTo()+2==8)&&!(a.getColumnTo()==0&&a.getRowTo()+2==4)))) {
+				state.removePawn(a.getRowTo() + 1, a.getColumnTo());
+				//this.movesWithutCapturing = -1;
+			}
+			// controllo se ho vinto
+			if (a.getRowTo() == 0 || a.getRowTo() == state.getBoard().length - 1 || a.getColumnTo() == 0
+					|| a.getColumnTo() == state.getBoard().length - 1) {
+				if (state.getPawn(a.getRowTo(), a.getColumnTo()).equalsPawn("K")) {
+					state.setTurn(State.Turn.WHITEWIN);
+				}
+			}
+
+			//this.movesWithutCapturing++;
+			return state;
+		}
+
+		private StateTablut checkCaptureBlack(StateTablut state, Action a) {
+			
+			this.checkCaptureBlackPawnRight(state, a);
+			this.checkCaptureBlackPawnLeft(state, a);
+			this.checkCaptureBlackPawnUp(state, a);
+			this.checkCaptureBlackPawnDown(state, a);
+			this.checkCaptureBlackKingRight(state, a);
+			this.checkCaptureBlackKingLeft(state, a);
+			this.checkCaptureBlackKingDown(state, a);
+			this.checkCaptureBlackKingUp(state, a);
+
+			//this.movesWithutCapturing++;
+			return state;
+		}
+
+		private State checkCaptureBlackKingLeft(State state, Action a){
+		//ho il re sulla sinistra
+		if (a.getColumnTo()>1&&state.getPawn(a.getRowTo(), a.getColumnTo()-1).equalsPawn("K"))
+		{
+			//re sul trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5"))
+			{
+				if(state.getPawn(3, 4).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B")
+						&& state.getPawn(5, 4).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4"))
+			{		
+				if(state.getPawn(2, 4).equalsPawn("B")
+						&& state.getPawn(3, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
+			{
+				if(state.getPawn(5, 5).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6"))
+			{
+				if(state.getPawn(6, 4).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e5")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e6")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("e4")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()-1).equals("f5"))
+			{
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()-2)))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}
+		}		
+		return state;
+	}
+	
+		private State checkCaptureBlackKingRight(State state, Action a){
+		//ho il re sulla destra
+			if (a.getColumnTo()<state.getBoard().length-2&&(state.getPawn(a.getRowTo(),a.getColumnTo()+1).equalsPawn("K")))				
+			{
+				//re sul trono
+				if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
+				{
+					if(state.getPawn(3, 4).equalsPawn("B")
+							&& state.getPawn(4, 5).equalsPawn("B")
+							&& state.getPawn(5, 4).equalsPawn("B"))
+					{
+						state.setTurn(State.Turn.BLACKWIN);
+					}
+				}
+				//re adiacente al trono
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4"))
+			{
+				if(state.getPawn(2, 4).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6"))
+			{
+				if(state.getPawn(5, 5).equalsPawn("B")
+						&& state.getPawn(6, 4).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5"))
+			{
+				if(state.getPawn(3, 3).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("d5")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e6")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e4")
+					&& !state.getBox(a.getRowTo(), a.getColumnTo()+1).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo()+2)))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}
+		}
+		return state;
+	}
+	
+		private State checkCaptureBlackKingDown(State state, Action a){
+		//ho il re sotto
+		if (a.getRowTo()<state.getBoard().length-2&&state.getPawn(a.getRowTo()+1,a.getColumnTo()).equalsPawn("K"))
+		{
+			//System.out.println("Ho il re sotto");
+			//re sul trono
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(5, 4).equalsPawn("B")
+						&& state.getPawn(4, 5).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4"))
+			{
+				if(state.getPawn(3, 3).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5"))
+			{
+				if(state.getPawn(4, 2).equalsPawn("B")
+						&& state.getPawn(5, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5"))
+			{
+				if(state.getPawn(4, 6).equalsPawn("B")
+						&& state.getPawn(5, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("d5")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e4")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("f5")
+					&& !state.getBox(a.getRowTo()+1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo()+2, a.getColumnTo()).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo()+2, a.getColumnTo())))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}			
+		}		
+		return state;
+	}
+	
+		private State checkCaptureBlackKingUp(State state, Action a){
+		//ho il re sopra
+		if (a.getRowTo()>1&&state.getPawn(a.getRowTo()-1, a.getColumnTo()).equalsPawn("K"))
+		{
+			//re sul trono
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(3, 4).equalsPawn("B")
+						&& state.getPawn(4, 5).equalsPawn("B")
+						&& state.getPawn(4, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//re adiacente al trono
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e6"))
+			{
+				if(state.getPawn(5, 3).equalsPawn("B")
+						&& state.getPawn(5, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5"))
+			{
+				if(state.getPawn(4, 2).equalsPawn("B")
+						&& state.getPawn(3, 3).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			if(state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5"))
+			{
+				if(state.getPawn(4, 6).equalsPawn("B")
+						&& state.getPawn(3, 5).equalsPawn("B"))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}
+			}
+			//sono fuori dalle zone del trono
+			if(!state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("d5")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e4")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("f5")
+					&& !state.getBox(a.getRowTo()-1, a.getColumnTo()).equals("e5"))
+			{
+				if(state.getPawn(a.getRowTo()-2, a.getColumnTo()).equalsPawn("B")
+						|| this.citadels.contains(state.getBox(a.getRowTo()-2, a.getColumnTo())))
+				{
+					state.setTurn(State.Turn.BLACKWIN);
+				}					
+			}	
+		}
+		return state;
+	}
+	
+		private void checkCaptureBlackPawnRight(State state, Action a)	{
+			//mangio a destra
+			if (a.getColumnTo() < state.getBoard().length - 2 && state.getPawn(a.getRowTo(), a.getColumnTo() + 1).equalsPawn("W"))
+			{
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("B"))
+				{
+					state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
+					//this.movesWithutCapturing = -1;
+				}
+				if(state.getPawn(a.getRowTo(), a.getColumnTo() + 2).equalsPawn("T"))
+				{
+					state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
+					//this.movesWithutCapturing = -1;
+				}
+				if(this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo() + 2)))
+				{
+					state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
+					//this.movesWithutCapturing = -1;
+				}
+				if(state.getBox(a.getRowTo(), a.getColumnTo()+2).equals("e5"))
+				{
+					state.removePawn(a.getRowTo(), a.getColumnTo() + 1);
+					//this.movesWithutCapturing = -1;
+				}
+				
+			}
+		}
+		
+		private void checkCaptureBlackPawnLeft(State state, Action a){
+			//mangio a sinistra
+			if (a.getColumnTo() > 1
+					&& state.getPawn(a.getRowTo(), a.getColumnTo() - 1).equalsPawn("W")
+					&& (state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("B")
+							|| state.getPawn(a.getRowTo(), a.getColumnTo() - 2).equalsPawn("T")
+							|| this.citadels.contains(state.getBox(a.getRowTo(), a.getColumnTo() - 2))
+							|| (state.getBox(a.getRowTo(), a.getColumnTo()-2).equals("e5"))))
+			{
+				state.removePawn(a.getRowTo(), a.getColumnTo() - 1);
+				//this.movesWithutCapturing = -1;
+			}
+		}
+		
+		private void checkCaptureBlackPawnUp(State state, Action a){
+			// controllo se mangio sopra
+			if (a.getRowTo() > 1
+					&& state.getPawn(a.getRowTo() - 1, a.getColumnTo()).equalsPawn("W")
+					&& (state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("B")
+							|| state.getPawn(a.getRowTo() - 2, a.getColumnTo()).equalsPawn("T")
+							|| this.citadels.contains(state.getBox(a.getRowTo() - 2, a.getColumnTo()))
+							|| (state.getBox(a.getRowTo()-2, a.getColumnTo()).equals("e5"))))
+			{
+				state.removePawn(a.getRowTo()-1, a.getColumnTo());
+				//this.movesWithutCapturing = -1;
+			}
+		}
+		
+		private void checkCaptureBlackPawnDown(State state, Action a){
+			// controllo se mangio sotto
+			if (a.getRowTo() < state.getBoard().length - 2
+					&& state.getPawn(a.getRowTo() + 1, a.getColumnTo()).equalsPawn("W")
+					&& (state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("B")
+							|| state.getPawn(a.getRowTo() + 2, a.getColumnTo()).equalsPawn("T")
+							|| this.citadels.contains(state.getBox(a.getRowTo() + 2, a.getColumnTo()))
+							|| (state.getBox(a.getRowTo()+2, a.getColumnTo()).equals("e5"))))
+			{
+				state.removePawn(a.getRowTo()+1, a.getColumnTo());
+				//this.movesWithutCapturing = -1;
+			}
+		}
+		
+		public void run() {
+			System.out.println("Attivazione thread treeGenerator");
+			taglioLivello1 = false;
+			taglioLivello2 = false;
+			taglioLivello3 = false;
+			taglioLivello4 = false;
+			taglioLivello5 = false;
+
+			//aggiungo il livello 0
+			Livello liv0 = new Livello();
+			liv0.add(this.nodoAttuale);
+			albero.add(liv0);
+			Livello liv1 = new Livello();
+			albero.add(liv1);
+			Livello liv2 = new Livello();
+			albero.add(liv2);
+			Livello liv3 = new Livello();
+			albero.add(liv3);
+			Livello liv4 = new Livello();
+			albero.add(liv4);
+			Livello liv5 = new Livello();
+			albero.add(liv5);
+			Livello liv6 = new Livello();
+			albero.add(liv6);
+			Nodo nodoLiv0 = liv0.getNodi().get(0);
+			//calcolo TUTTE le mosse possibili al livello 1 (le mosse effettive che posso fare)
+			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho già vinto
+			try 
+			{
+				liv1.add(this.mossePossibiliComplete(this.nodoAttuale));
+				this.sortLiv1(liv1);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			
+			
+			//ciclo liv1
+			//calcolo NODO PER NODO le mosse del livello 2(altrimenti non avrei vantaggi)
+			for(int i1 = 0; i1<albero.get(1).getNodi().size() && !taglioLivello1 && !Thread.currentThread().isInterrupted(); i1++)
+			{
+				Nodo nodoLiv1 = albero.get(1).getNodi().get(i1);
+				try 
+				{
+					liv2.add(this.mossePossibiliComplete(nodoLiv1));
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+				//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 2?
+				//ciclo secondo livello
+				//calcolo NODO PER NODO le mosse del livello 3(altrimenti non avrei vantaggi)
+				for(int i2=0; i2<albero.get(2).getNodi().size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i2++)
+				{
+					if(albero.get(2).getNodi().get(i2).getPadre() == nodoLiv1)
+					{
+						Nodo nodoLiv2 = albero.get(2).getNodi().get(i2);
+						try 
+						{
+							liv3.add(this.mossePossibiliComplete(nodoLiv2));
+						} 
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+						//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 3?
+						//calcolo NODO PER NODO le mosse del livello 4(altrimenti non avrei vantaggi)
+						for(int i3=0; i3<albero.get(3).getNodi().size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i3++)
+						{
+							if(albero.get(3).getNodi().get(i3).getPadre() == nodoLiv2)
+							{
+								Nodo nodoLiv3 = albero.get(3).getNodi().get(i3);
+								try 
+								{
+									liv4.add(this.mossePossibiliComplete(nodoLiv3));
+								} 
+								catch (Exception e) 
+								{
+									e.printStackTrace();
+								}
+								//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 4?
+								//calcolo NODO PER NODO le mosse del livello 5(altrimenti non avrei vantaggi)
+								for(int i4=0; i4<albero.get(4).getNodi().size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i4++)
+								{
+									if(albero.get(4).getNodi().get(i4).getPadre() == nodoLiv3)
+									{
+										Nodo nodoLiv4 = albero.get(4).getNodi().get(i4);
+										try 
+										{
+											liv5.add(this.mossePossibiliComplete(nodoLiv4));
+										} 
+										catch (Exception e) 
+										{
+											e.printStackTrace();
+										}
+										//CALCOLARE ORA IL VALORE DEI NODI AL LIVELLO 5 e implementare i tagli alfa beta
+										for(int i5=0; i5<albero.get(5).getNodi().size() && !taglioLivello5 && !Thread.currentThread().isInterrupted(); i5++)
+										{
+											if(albero.get(5).getNodi().get(i5).getPadre() == nodoLiv4)
+											{
+												Nodo nodoLiv5 = albero.get(5).getNodi().get(i5);
+												nodoLiv5.setValue(this.ia.getHeuristicValue(nodoLiv5.getStato()));
+												if(Float.isNaN(nodoLiv4.getValue()) || nodoLiv4.getValue()<nodoLiv5.getValue())
+												{
+													nodoLiv4.setValue(nodoLiv5.getValue());
+												}
+												if(Float.isNaN(nodoLiv3.getValue()) || nodoLiv3.getValue()>nodoLiv4.getValue())
+												{
+													nodoLiv3.setValue(nodoLiv4.getValue());
+												}
+												if(Float.isNaN(nodoLiv2.getValue()) || nodoLiv2.getValue()<nodoLiv3.getValue())
+												{
+													nodoLiv2.setValue(nodoLiv3.getValue());
+												}
+												if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
+												{
+													nodoLiv1.setValue(nodoLiv2.getValue());
+												}
+												if(Float.isNaN(nodoLiv0.getValue()) || nodoLiv0.getValue()<nodoLiv1.getValue())
+												{
+													nodoLiv0.setValue(nodoLiv1.getValue());
+													a = nodoLiv1.getAzione();
+													for(Nodo n : albero.get(1).getNodi())
+													{
+														n.setValue(nodoLiv0.getValue());
+													}
+													for(Nodo n : albero.get(2).getNodi())
+													{
+														n.setValue(nodoLiv0.getValue());
+													}
+													for(Nodo n : albero.get(3).getNodi())
+													{
+														n.setValue(nodoLiv0.getValue());
+													}
+													for(Nodo n : albero.get(4).getNodi())
+													{
+														n.setValue(nodoLiv0.getValue());
+													}
+												}	
+												if(nodoLiv4.getValue()>=nodoLiv3.getValue())
+												{
+													taglioLivello5=true;
+												}
+											}
+										}
+										taglioLivello5=false;
+										if(nodoLiv3.getValue()<=nodoLiv2.getValue())
+										{
+											taglioLivello4=true;
+										}
+									}
+								}
+								taglioLivello4=false;
+								if(nodoLiv2.getValue()>=nodoLiv1.getValue())
+								{
+									taglioLivello3=true;
+								}								
+							}
+						}
+						taglioLivello3=false;
+						if(nodoLiv1.getValue()<=nodoLiv0.getValue())
+						{
+							taglioLivello2=true;
+						}
+					}
+				}
+				taglioLivello2=false;
+			}
+			System.out.println("Terminazione thread treeGenerator");
+			
+		}
+
+		
+		
+
+		//metodo di sort del livello 1
+		private void sortLiv1(Livello liv1)
+		{
+			for(int x=0; x<liv1.getNodi().size(); x++)
+			{
+				Nodo nodo = liv1.getNodi().get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+				}
+				Collections.sort(liv1.getNodi(), new Comparator<Nodo>() {
+					@Override
+			    	public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n1.getValue()-n2.getValue());
+					}
+			    });
+			}
+			//imposto la mossa migliore
+			a=albero.get(1).getNodi().get(0).getAzione();
+			for(Nodo nodo : albero.get(1).getNodi())
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(Float.NaN);
+				}
+			}
+			albero.get(0).getNodi().get(0).setValue(albero.get(1).getNodi().get(0).getValue());
+		}
+		
+		//metodo per il riordinamento livello 1, da cambiare
+		private float setSimpleHeuristic(StateTablut s) {
+			int nBianchi = 1;
+			int nNeri=0;
+			for(int x =0 ; x<9; x++)
+			{
+				for(int y=0; y<9; y++)
+				{
+					if(s.getPawn(x, y).equalsPawn("B"))
+					{
+						nNeri++;
+					}
+					if(s.getPawn(x, y).equalsPawn("W"))
+					{
+						nBianchi++;
+					}
+				}
+			}
+			return 2*nBianchi-nNeri;				
+		}
+
+	}
+	
 
 	/*
 	 * valuta gli ultimi rami dell'albero
@@ -492,7 +1651,7 @@ public class IntelligenzaBianca implements IA {
 			for(int i = 0; i<albero.get(2).getNodi().size() && !Thread.currentThread().isInterrupted(); i++)
 			{
 				Nodo n = albero.get(2).getNodi().get(i);
-				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()>n.getPadre().getValue())
+				if(Float.isNaN(n.getPadre().getValue()) || n.getValue()<n.getPadre().getValue())
 				{
 					n.getPadre().setValue(n.getValue());
 				}
@@ -511,7 +1670,7 @@ public class IntelligenzaBianca implements IA {
 			/*for(Livello l: albero)
 			{
 				l.getNodi().clear();
-			}
+			}*/
 			
 			for(Nodo nodo : albero.get(1).getNodi())
 			{
@@ -521,7 +1680,7 @@ public class IntelligenzaBianca implements IA {
 				System.out.println();
 				System.out.println();
 				System.out.println();
-			}*/
+			}
 			albero.clear();
 			System.out.println("Albero ripulito: " + albero.size());
 			System.out.println("Thread heuristicValuator terminato");
@@ -1497,12 +2656,12 @@ public class IntelligenzaBianca implements IA {
 						    });
 							for(Nodo nodo : albero.get(1).getNodi())
 							{
-								/*System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
+								System.out.println("STATO ARRIVABILE ATTRAVERSO MOSSA "+nodo.getAzione());
 								//System.out.println("Stato: \n"+nodo.getStato().toString());
 								System.out.println("VALORE STATO: "+nodo.getValue());
 								System.out.println();
 								System.out.println();
-								System.out.println();*/
+								System.out.println();
 								if(nodo.getValue()!=10000 && nodo.getValue()!=-10000 && !nodo.getTurn().equalsTurn("D"))
 								{
 									nodo.setValue(Float.NaN);
@@ -1550,11 +2709,11 @@ public class IntelligenzaBianca implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels, TIMETOSTOPTREEGENERATOR, this);
-			Thread t = new Thread(treeGenerator);
+			TreeGenerator2 treeGenerator2 = new TreeGenerator2(node, this.citadels, TIMETOSTOPTREEGENERATOR, this);
+			Thread t = new Thread(treeGenerator2);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(3000);
+			Thread.sleep(20000);
 			//System.out.println("Lancio l'interruzione");
 			//treeGenerator.stopThread();
 			t.interrupt();
@@ -1566,9 +2725,9 @@ public class IntelligenzaBianca implements IA {
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
+			albero.clear();
 			
-			
-			HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
+			/*HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
 			t = new Thread(heuristicValuator);
 			t.start();
 			//this.wait(10000);
@@ -1578,7 +2737,7 @@ public class IntelligenzaBianca implements IA {
 			//heuristicValuator.stopThread();
 			//System.out.println("Finito sviluppo euristica");
 			//t.stop();
-			
+			*/
 
 			
 			//System.out.println("Livello 3 espanso");
@@ -1589,7 +2748,7 @@ public class IntelligenzaBianca implements IA {
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
+		//System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
 		return a;

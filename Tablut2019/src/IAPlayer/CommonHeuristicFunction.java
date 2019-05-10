@@ -76,145 +76,6 @@ public class CommonHeuristicFunction {
 		return (rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3);
 	}
 	
-	//TODO: CONTROLLO CHE FUNZIONI!!
-	/**
-	 * Controlla se una pedina BIANCA può andare in una direzione specifica
-	 * @param riga Riga in cui si trova la pedina
-	 * @param colonna Colonna in cui si trova la pedina
-	 * @direzione Direzioni valide: "T" = Top; "B" = Bottom; "L" = Left; "R" = right;
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return -1 se la pedina in quella direzione è bloccata, altrimenti il numero di caselle che ha libere in quella direzione
-	 */
-	public int canMoveWhite(int riga, int colonna, String direzione, StateTablut s) {
-		
-		int counter=0;
-		
-		if(!direzione.equals("T") && !direzione.equals("B") && !direzione.equals("L") && !direzione.equals("R")) {
-			return -1; //direzione sbagliata
-		}
-		
-		if(direzione.equals("T")) { //controlla se la pedina può muoversi verso l'alto
-			if(colonna != 4) { // se la colonna è diversa da 4, allora gli unici ostacoli sono le cittadelle e le nere
-				for(int i=riga-1; i>0 || !this.citadels.contains(s.getBox(i, colonna)); i--) {
-					if((s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) && i == riga-1) {
-						return -1; //c'è una bianca o una nera a bloccare la strada
-					} else counter++;
-				}
-				return counter;
-			} else {
-				if(riga>4) {
-					counter=0;
-					for(int i=riga-1; i>4; i--) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1; //c'è una bianca o una nera a bloccare la strada
-						} else counter++;
-					}
-					return counter;
-				} else {
-					counter=0;
-					for(int i=riga-1; i>0 || !this.citadels.contains(s.getBox(i, colonna)); i--) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1; //c'è una bianca o una nera a bloccare la strada
-						}
-					}
-					return counter++;
-				}
-			}
-		}//T
-		else if(direzione.equals("B")) { //controlla se la pedina può muoversi verso il basso
-			if(colonna != 4) {
-				counter=0;
-				for(int i=riga+1; i<9 || !this.citadels.contains(s.getBox(i, colonna)); i++) {
-					if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-						return -1;
-					} else counter++;
-				}
-				return counter;
-			}//colonna != 4
-			else { //colonna == 4
-				if(riga >4) {
-					counter=0;
-					for(int i=riga+1; i<9 || this.citadels.contains(s.getBox(i, colonna)); i++) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				} //riga > 4
-				else { //riga < 4
-					counter=0;
-					for(int i=riga+1; i<4; i++) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				}
-			}
-		} //B
-		else if(direzione.equals("L")) { //controlla se la pedina può muoversi verso sinistra
-			if(riga != 4) {
-				counter=0;
-				for(int i=colonna-1; i>0 || this.citadels.contains(s.getBox(riga, i)); i--) {
-					if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-						return -1;
-					} else counter++;
-				}
-				return counter;
-			} // riga != 4
-			else { //riga == 4
-				if(colonna<4) {
-					counter=0;
-					for(int i=colonna-1; i>0 || this.citadels.contains(s.getBox(riga, i)); i--) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				} else { //colonna > 4
-					counter=0;
-					for(int i=colonna-1; i>4; i--) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				}
-			}
-		} //L
-		else if(direzione.equals("R")) { //controlla se la pedina può muoversi verso destra
-			if(riga != 4) {
-				counter=0;
-				for(int i=colonna+1; i<9 || this.citadels.contains(s.getBox(riga, i)); i++) {
-					if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-						return -1;
-					} else counter++;
-				}
-				return counter;
-			} //riga != 4
-			else { //riga == 4
-				if(colonna > 4) {
-					counter=0;
-					for(int i=colonna+1; i<9 || this.citadels.contains(s.getBox(riga, i)); i++) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				} else { //colonna <4
-					counter=0;
-					for(int i=colonna+1; i<4; i++) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
-					}
-					return counter;
-				}
-			}
-		} else 
-			return -1; //direzione non lecita
-	}
-	
 	//TODO: Commentare cosa fa questa funzione
 	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
 			
@@ -641,24 +502,6 @@ public class CommonHeuristicFunction {
 			return true; // se la pedina ha due pedine nere sopra e sotto, allora non pu� essere catturata
 		}
 
-		//mancano i casi ai bordi
-		if(riga == 0 || riga == 8) {
-			if((this.checkNeighbourLeft(riga, colonna, s).equals("C") || this.checkNeighbourLeft(riga, colonna, s).equals("O") ||  this.checkNeighbourLeft(riga, colonna, s).equals("B")) && this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s) )
-				return true;
-			if((this.checkNeighbourRight(riga, colonna, s).equals("C") || this.checkNeighbourRight(riga, colonna, s).equals("B") ||  this.checkNeighbourRight(riga, colonna, s).equals("O")) && this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s) )
-				return true;
-			if(this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s) || this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s))
-				return false;
-		}
-		
-		if(colonna == 0 || colonna == 8) {
-			if((this.checkNeighbourTop(riga, colonna, s).equals("C") || this.checkNeighbourTop(riga, colonna, s).equals("O") ||  this.checkNeighbourTop(riga, colonna, s).equals("B")) && this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s) )
-				return true;
-			if((this.checkNeighbourBottom(riga, colonna, s).equals("C") || this.checkNeighbourBottom(riga, colonna, s).equals("B") ||  this.checkNeighbourBottom(riga, colonna, s).equals("O")) && this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s) )
-				return true;
-			if(this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s) || this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s))
-				return false;
-		}
 		return false;
 	}
 	
@@ -1166,7 +1009,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInTopPosition(int riga, int  colonna, StateTablut s) {
-		if(riga>0) {
+		if(riga!=0) {
 			if(checkBlackCanArriveFromTop(riga-1, colonna, s) || checkBlackCanArriveFromRight(riga-1, colonna, s) || checkBlackCanArriveFromLeft(riga-1, colonna, s)) {
 				return true;
 			}
@@ -1182,7 +1025,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInRightPosition(int riga, int  colonna, StateTablut s) {
-		if(colonna<8) {
+		if(colonna!=8) {
 			if(checkBlackCanArriveFromTop(riga, colonna+1, s) || checkBlackCanArriveFromRight(riga, colonna+1, s) || checkBlackCanArriveFromBottom(riga, colonna+1, s)) {
 				return true;
 			}
@@ -1198,7 +1041,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInBottomPosition(int riga, int  colonna, StateTablut s) {
-		if(riga<8) {
+		if(riga!=8) {
 			if(checkBlackCanArriveFromBottom(riga+1, colonna, s) || checkBlackCanArriveFromRight(riga+1, colonna, s) || checkBlackCanArriveFromLeft(riga+1, colonna, s)) {
 				return true;
 			}
@@ -1214,7 +1057,7 @@ public class CommonHeuristicFunction {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveAdjacentInLeftPosition(int riga, int  colonna, StateTablut s) {
-		if(colonna>0) {
+		if(colonna!=0) {
 			if(checkBlackCanArriveFromTop(riga, colonna-1, s) || checkBlackCanArriveFromLeft(riga, colonna-1, s) || checkBlackCanArriveFromBottom(riga, colonna-1, s)) {
 				return true;
 			}

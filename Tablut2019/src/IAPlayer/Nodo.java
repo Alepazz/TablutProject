@@ -20,6 +20,11 @@ public class Nodo {
 	public StateTablut getStato() {
 		return stato;
 	}
+	public boolean equals(Nodo n)
+	{
+		return this.stato.toString().equals(n.getStato().toString());
+	}
+	
 	public void setStato(StateTablut stato) {
 		this.stato = stato;
 	}

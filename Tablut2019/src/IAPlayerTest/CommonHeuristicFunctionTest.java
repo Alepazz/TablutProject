@@ -1850,7 +1850,7 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * OOOOOBOOO
 		 * OOOOOWOOO
-		 * OOOOOOOOO
+		 * OOOOOBOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOBOOO
@@ -1866,7 +1866,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.WHITE);
 		
 		//Esecuzione Test
-		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
 	@Test
@@ -1903,14 +1903,14 @@ class CommonHeuristicFunctionTest {
 	@Test
 	void checkWhiteCanBeCapturedTest_4() {
 		//Varianti del particolare caso in osservazione
-		board[0][5] = Pawn.WHITE;
-		board[0][4] = Pawn.BLACK;
+		board[1][5] = Pawn.WHITE;
 		board[1][6] = Pawn.BLACK;
+		board[1][3] = Pawn.BLACK;
 				
 		/* Rappresentazione tavola
 		 * 
-		 * OOOOBWOOO
-		 * OOOOOOBOO
+		 * OOOOOOOOO
+		 * OOBOOWBOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOOOOOOO
@@ -1927,7 +1927,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
 	@Test
