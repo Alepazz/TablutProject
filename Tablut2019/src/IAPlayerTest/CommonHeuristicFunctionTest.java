@@ -1930,6 +1930,38 @@ class CommonHeuristicFunctionTest {
 		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
 	}
 	
+
+	@Test
+	void checkPedinaIsolataTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkPedinaIsolata(4, 3, s));
+			
+	}
+	
+	
 	@Test
 	void checkBlackCanArriveAdjacentInTopPositionTest_1() {	
 		
@@ -2186,6 +2218,7 @@ class CommonHeuristicFunctionTest {
 		
 		//Varianti del particolare caso in osservazione
 		board[7][3] = Pawn.BLACK;
+		board[5][3] = Pawn.WHITE;
 		
 		
 		/* Rappresentazione tavola
@@ -2195,7 +2228,7 @@ class CommonHeuristicFunctionTest {
 		 * OOOOOOOOO
 		 * OOOOOOOOO
 		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
-		 * OOOOOOOOO
+		 * OOOWOOOOO
 		 * OOOOOOOOO
 		 * OOOBOOOOO
 		 * OOOOOOOOO
@@ -2208,7 +2241,7 @@ class CommonHeuristicFunctionTest {
 		s.setTurn(Turn.BLACK);
 		
 		//Esecuzione Test
-		Assert.assertTrue(c.checkBlackCanArriveAdjacentInBottomPosition(4, 3, s));
+		Assert.assertFalse(c.checkBlackCanArriveAdjacentInBottomPosition(4, 3, s));
 			
 	}
 
