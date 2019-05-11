@@ -137,6 +137,13 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
+				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
+				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
+				|| common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
+			return this.MAX_VALUE-1;
+		}
+		
 		if(common.getNumberStarFree(s) < 4) {
 			
 			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera)
