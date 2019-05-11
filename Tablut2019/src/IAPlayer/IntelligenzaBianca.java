@@ -1365,6 +1365,10 @@ public class IntelligenzaBianca implements IA {
 				try 
 				{
 					liv2.add(this.mossePossibiliComplete(nodoLiv1));
+					for(Nodo n : liv2.getNodi())
+					{
+						n.setValue(liv0.getNodi().get(0).getValue());
+					}
 				} 
 				catch (Exception e) 
 				{
@@ -1381,6 +1385,10 @@ public class IntelligenzaBianca implements IA {
 						try 
 						{
 							liv3.add(this.mossePossibiliComplete(nodoLiv2));
+							for(Nodo n : liv3.getNodi())
+							{
+								n.setValue(liv0.getNodi().get(0).getValue());
+							}
 						} 
 						catch (Exception e) 
 						{
@@ -1396,6 +1404,10 @@ public class IntelligenzaBianca implements IA {
 								try 
 								{
 									liv4.add(this.mossePossibiliComplete(nodoLiv3));
+									for(Nodo n : liv4.getNodi())
+									{
+										n.setValue(liv0.getNodi().get(0).getValue());
+									}
 								} 
 								catch (Exception e) 
 								{
@@ -1508,7 +1520,7 @@ public class IntelligenzaBianca implements IA {
 				}
 				if(nodo.getStato().getTurn().equalsTurn("BW"))
 				{
-					nodo.setValue(10000);
+					nodo.setValue(-10000);
 				}
 				if(this.ia.checkDraw(nodo.getStato()))
 				{
@@ -2714,7 +2726,7 @@ public class IntelligenzaBianca implements IA {
 			Thread t = new Thread(treeGenerator2);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(20000);
+			Thread.sleep(5000);
 			//System.out.println("Lancio l'interruzione");
 			//treeGenerator.stopThread();
 			t.interrupt();
