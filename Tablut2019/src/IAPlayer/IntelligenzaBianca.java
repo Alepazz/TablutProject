@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class IntelligenzaBianca implements IA {
@@ -506,7 +507,7 @@ public class IntelligenzaBianca implements IA {
 				//poi le colonne
 				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
 				{
-					//se è il turno nero conto le mosse delle pedine nere
+					//se ï¿½ il turno nero conto le mosse delle pedine nere
 					if(s.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(s.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
 					{
 						if(statiSimm && j==4)
@@ -550,7 +551,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		*/
 		
-		//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
+		//restituisce tutti i nodi a cui ï¿½ possibile arrivare a partire dal nodo passato
 		public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
 			
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -580,7 +581,7 @@ public class IntelligenzaBianca implements IA {
 				//poi le colonne
 				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
 				{
-					//se è il turno nero conto le mosse delle pedine nere
+					//se ï¿½ il turno nero conto le mosse delle pedine nere
 					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
 					{
 						if(statiSimm && j==4)
@@ -630,7 +631,7 @@ public class IntelligenzaBianca implements IA {
 								
 					}
 					
-					//se è il turno bianco conto le mosse delle pedine bianche
+					//se ï¿½ il turno bianco conto le mosse delle pedine bianche
 					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && !Thread.currentThread().isInterrupted()) 
 					{
 						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && !Thread.currentThread().isInterrupted())
@@ -690,7 +691,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento della pedina bianca indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento della pedina bianca indicata
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -814,7 +815,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso l'alto della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso l'alto della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -833,7 +834,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso il basso della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso il basso della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -852,7 +853,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -870,7 +871,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali è possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali ï¿½ possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
 			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
@@ -890,7 +891,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//dice se una data pedina può muoversi verso l'alto
+		//dice se una data pedina puï¿½ muoversi verso l'alto
 		private boolean canMoveUp(State state, int row, int column) {
 			if(row==0)
 			{
@@ -903,7 +904,7 @@ public class IntelligenzaBianca implements IA {
 			return true;		
 		}
 		
-		//dice se una data pedina può muoversi verso il basso
+		//dice se una data pedina puï¿½ muoversi verso il basso
 		private boolean canMoveDown(State state, int row, int column) {
 			if(row==state.getBoard().length-1)
 			{
@@ -916,7 +917,7 @@ public class IntelligenzaBianca implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina può muoversi verso sinistra
+		//dice se una data pedina puï¿½ muoversi verso sinistra
 		private boolean canMoveLeft(State state, int row, int column) {
 			if(column==0)
 			{
@@ -929,7 +930,7 @@ public class IntelligenzaBianca implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina può muoversi verso destra
+		//dice se una data pedina puï¿½ muoversi verso destra
 		private boolean canMoveRight(State state, int row, int column) {
 			if(column==state.getBoard().length-1)
 			{
@@ -1406,7 +1407,7 @@ public class IntelligenzaBianca implements IA {
 			albero.add(liv6);
 			Nodo nodoLiv0 = liv0.getNodi().get(0);
 			//calcolo TUTTE le mosse possibili al livello 1 (le mosse effettive che posso fare)
-			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho già vinto
+			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho giï¿½ vinto
 			try 
 			{
 				liv1.add(this.mossePossibiliComplete(this.nodoAttuale));
