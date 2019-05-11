@@ -145,7 +145,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		
-		// cerco di far uscire dal trono il re il prima possibile
+		// cerco di creare uno stato in cui il re possa uscire dal trono
 		if(rigaRe == 4  && colonnaRe == 4) {
 			if(this.checkKingCanComeOutFromThrone(s)) {
 				return this.MAX_VALUE - 2;
