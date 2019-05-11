@@ -139,7 +139,7 @@ public class IntelligenzaBianca implements IA {
 		
 		if(common.getNumberStarFree(s) < 4) {
 			
-			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera
+			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera)
 			
 		} else {
 			value += 2*common.getNumberStarFree(s);
