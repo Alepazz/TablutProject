@@ -723,10 +723,10 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		//sottointeso turno nero
 	
-		if((this.enemyOnTheTop(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInBottomPosition(riga, colonna, s))
-				|| (this.enemyOnTheRight(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInLeftPosition(riga, colonna, s))
-				|| (this.enemyOnTheBottom(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInTopPosition(riga, colonna, s))
-				|| (this.enemyOnTheLeft(riga, colonna, s) && this.checkWhiteCanArriveAdjacentInRightPosition(riga, colonna, s))) {
+		if((this.enemyOnTheTop(riga, colonna, s) && this.checkBlackCanArriveAdjacentInBottomPosition(riga, colonna, s))
+				|| (this.enemyOnTheRight(riga, colonna, s) && this.checkBlackCanArriveAdjacentInLeftPosition(riga, colonna, s))
+				|| (this.enemyOnTheBottom(riga, colonna, s) && this.checkBlackCanArriveAdjacentInTopPosition(riga, colonna, s))
+				|| (this.enemyOnTheLeft(riga, colonna, s) && this.checkBlackCanArriveAdjacentInRightPosition(riga, colonna, s))) {
 			return true;
 		}
 		return false;
