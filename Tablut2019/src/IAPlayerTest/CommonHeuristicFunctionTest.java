@@ -1960,6 +1960,98 @@ class CommonHeuristicFunctionTest {
 		Assert.assertTrue(c.checkWhiteCanBeCaptured(3, 4, s));
 	}
 	
+	@Test
+	void checkWhiteCanBeCapturedTest_6() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[0][5] = Pawn.BLACK;
+		board[2][5] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOBOOO
+		 * OOOOOWOOO
+		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova gi� in mezzo a due neri
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
+	
+	@Test
+	void checkWhiteCanBeCapturedTest_7() {
+		//Varianti del particolare caso in osservazione
+		board[1][5] = Pawn.WHITE;
+		board[0][5] = Pawn.BLACK;
+		board[2][5] = Pawn.BLACK;
+		board[4][6] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOBOOO
+		 * OOOOOWOOO
+		 * OOOOOBOOO
+		 * OOOOOOOOO
+		 * OOOOOOBOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		//IMPORTANTE: In teoria questa non dovrebbe essere catturabile visto che si trova gi� in mezzo a due neri
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanBeCaptured(1, 5, s));
+	}
+	
+	@Test
+	void checkWhiteCanBeCapturedTest_8() {
+		//Varianti del particolare caso in osservazione
+		board[3][4] = Pawn.WHITE;
+		board[4][4] = Pawn.KING;
+		board[2][6] = Pawn.BLACK;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOBOO
+		 * OOOOWOOOO
+		 * OOOOKOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		//TODO: Caso particolare in cui il re copre il trono e la funzione checkNeighbour non lo individua
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanBeCaptured(3, 4, s));
+	}
+	
 
 	@Test
 	void checkPedinaIsolataTest_1() {	
@@ -4258,6 +4350,72 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertTrue(c.checkPawnBlocked(4, 2, s));
+		
+	}
+	
+	@Test
+	void checkPawnBlockedTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][0] = Pawn.BLACK;
+		board[3][0] = Pawn.BLACK;
+		board[5][0] = Pawn.BLACK;
+		board[4][1] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO
+		 * BBOOOOOOO     
+		 * BOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		//TODO: Problema con la checkNeighbour
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkPawnBlocked(4, 0, s));
+		
+	}
+	
+	@Test
+	void checkPawnBlockedTest_7() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][0] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * BOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkPawnBlocked(4, 0, s));
 		
 	}
 	

@@ -791,7 +791,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina è circondata, false in caso contrario
 	 */
-	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { //TODO: DA MODIFICARE QUESTA PARTE
+	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { 
 		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
 		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
 				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
@@ -801,7 +801,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 					(!this.checkNeighbourRight(riga, colonna, s).equals("O"));
 		}
 		//La pedina passata è una pedina nera dentro una cittadella
-		if(s.getPawn(riga, colonna).equalsPawn("B") && this.citadels.contains(s.getBox(riga, colonna))) {
+		if(s.getPawn(riga, colonna).equalsPawn("B") && this.citadels.contains(s.getBox(riga, colonna))) { //Parte da correggere dopo aver corrette le checkNeighbour
 			return (!this.checkNeighbourTop(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
 					(!this.checkNeighbourBottom(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
 					(!this.checkNeighbourLeft(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
