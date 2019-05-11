@@ -141,14 +141,20 @@ public class IntelligenzaBianca implements IA {
 				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
-			return this.MAX_VALUE-1;
+			value += 4000;
 		}
 		
+		//valuto molto il fatto che il re sia fuori dal trono
+		if(!common.kingOnTheThrone(rigaRe, colonnaRe)) {
+			value += 3000;
+		}
+		
+		//TODO: Aggiungere caso in cui il re, fuori dal trono, può essere mangiato: tolgo 3000
 		
 		// cerco di creare uno stato in cui il re possa uscire dal trono
 		if(rigaRe == 4  && colonnaRe == 4) {
 			if(this.checkKingCanComeOutFromThrone(s)) {
-				return this.MAX_VALUE - 2;
+				value += 1000;
 			}
 		}
 				
@@ -172,7 +178,7 @@ public class IntelligenzaBianca implements IA {
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
 		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
 		{
-			return this.MIN_VALUE+1;
+			value -= 10000;
 		}
 		
 		//controllo vie di fuga re
@@ -181,33 +187,20 @@ public class IntelligenzaBianca implements IA {
 		//controllo se nella mossa del nero mi mangia il re
 		if(viedifuga>1)
 		{
-			return this.MAX_VALUE-1;			
+			value += 4000;			
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
-			return this.MAX_VALUE-1;
+			value += 4000;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
 			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
 			{
-				return this.MAX_VALUE-1;
+				value += 4000;
 			}
 		}		
 		
-		/*
-		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
-		 */
-		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
-			return this.MAX_VALUE-1;
-		}
-		
-		/*
-		 * Funzione che controlla se, eseguita una mossa del re in verticale, esso ha liberato un'intera riga (2 oppure 6), in cui vincere (al 100%) il turno successivo
-		 */
-		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
-			return this.MAX_VALUE-1;
-		}
 		
 		/*
 		 * Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
@@ -216,7 +209,7 @@ public class IntelligenzaBianca implements IA {
 				this.common.enemyOnTheLeft(rigaRe, colonnaRe, s) ||
 				this.common.enemyOnTheRight(rigaRe, colonnaRe, s) ||
 				this.common.enemyOnTheTop(rigaRe, colonnaRe, s )) && rigaRe!=4 && colonnaRe !=4) {
-			return this.MIN_VALUE+1;
+			value -= 5000;
 		}
 				
 		return value;	
