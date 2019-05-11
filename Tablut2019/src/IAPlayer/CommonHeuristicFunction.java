@@ -76,9 +76,8 @@ public class CommonHeuristicFunction {
 		return (rigaRe==3 && colonnaRe==4 || rigaRe==5 && colonnaRe==4 || rigaRe==4 && colonnaRe==5 || rigaRe==4 && colonnaRe==3);
 	}
 	
-	//TODO: CONTROLLO CHE FUNZIONI!!
 	/**
-	 * Controlla se una pedina BIANCA può andare in una direzione specifica
+	 * Controlla se una pedina BIANCA/RE può andare in una direzione specifica
 	 * @param riga Riga in cui si trova la pedina
 	 * @param colonna Colonna in cui si trova la pedina
 	 * @direzione Direzioni valide: "T" = Top; "B" = Bottom; "L" = Left; "R" = Right;
@@ -770,7 +769,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se la pedina è circondata, false in caso contrario
 	 */
-	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { //DA MODIFICARE QUESTA PARTE
+	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { //TODO: DA MODIFICARE QUESTA PARTE
 		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
 		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
 				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
