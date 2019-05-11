@@ -506,7 +506,7 @@ public class IntelligenzaBianca implements IA {
 				//poi le colonne
 				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
 				{
-					//se √® il turno nero conto le mosse delle pedine nere
+					//se Ë il turno nero conto le mosse delle pedine nere
 					if(s.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(s.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
 					{
 						if(statiSimm && j==4)
@@ -550,10 +550,10 @@ public class IntelligenzaBianca implements IA {
 		}
 		*/
 		
-		//restituisce tutti i nodi a cui √® possibile arrivare a partire dal nodo passato
+		//restituisce tutti i nodi a cui Ë possibile arrivare a partire dal nodo passato
 		public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
 			
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			boolean simmV = this.statoSimmetricoVerticalmente(node.getStato());
 			boolean simmO = this.statoSimmetricoOrizontalmente(node.getStato());
 			boolean statiSimm = this.assiSimmetrici(node.getStato());
@@ -580,7 +580,7 @@ public class IntelligenzaBianca implements IA {
 				//poi le colonne
 				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
 				{
-					//se √® il turno nero conto le mosse delle pedine nere
+					//se Ë il turno nero conto le mosse delle pedine nere
 					if(node.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(node.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
 					{
 						if(statiSimm && j==4)
@@ -630,7 +630,7 @@ public class IntelligenzaBianca implements IA {
 								
 					}
 					
-					//se √® il turno bianco conto le mosse delle pedine bianche
+					//se Ë il turno bianco conto le mosse delle pedine bianche
 					if(node.getTurn().equalsTurn(State.Turn.WHITE.toString()) && !Thread.currentThread().isInterrupted()) 
 					{
 						if((node.getStato().getPawn(i, j).equalsPawn("W") || node.getStato().getPawn(i, j).equalsPawn("K")) && !Thread.currentThread().isInterrupted())
@@ -690,10 +690,10 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali √® possibile trovarsi col movimento della pedina bianca indicata
+		//ritorna i nodi nei quali Ë possibile trovarsi col movimento della pedina bianca indicata
 		private List<Nodo> mossePossibiliPedina(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
@@ -728,7 +728,7 @@ public class IntelligenzaBianca implements IA {
 		
 		private List<Nodo> mossePossibiliPedinaCCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
@@ -748,7 +748,7 @@ public class IntelligenzaBianca implements IA {
 		
 		private List<Nodo> mossePossibiliPedinaCS(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			if(canMoveLeft(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSinistra(node, riga, colonna))
@@ -761,7 +761,7 @@ public class IntelligenzaBianca implements IA {
 		
 		private List<Nodo> mossePossibiliPedinaSV(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
@@ -789,7 +789,7 @@ public class IntelligenzaBianca implements IA {
 		
 		private List<Nodo> mossePossibiliPedinaSO(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			if(canMoveUp(node.getStato(), riga, colonna) && !Thread.currentThread().isInterrupted())
 			{
 				for(Nodo nod: mossePossibiliPedinaSopra(node, riga, colonna))
@@ -814,10 +814,10 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali √® possibile trovarsi col movimento verso l'alto della pedina indicata
+		//ritorna i nodi nei quali Ë possibile trovarsi col movimento verso l'alto della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSopra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
 			while(canMoveUp(node.getStato(), riga-c, colonna) && !Thread.currentThread().isInterrupted())
@@ -833,10 +833,10 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali √® possibile trovarsi col movimento verso il basso della pedina indicata
+		//ritorna i nodi nei quali Ë possibile trovarsi col movimento verso il basso della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSotto(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			int c = 0;
 			//stato.setTurn(turno);
 			while(canMoveDown(node.getStato(), riga+c, colonna) && !Thread.currentThread().isInterrupted())
@@ -852,10 +852,10 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali √® possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali Ë possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaDestra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			int c = 0;
 			while(canMoveRight(node.getStato(), riga, colonna+c) && !Thread.currentThread().isInterrupted())
 			{
@@ -870,10 +870,10 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//ritorna i nodi nei quali √® possibile trovarsi col movimento verso destra della pedina indicata
+		//ritorna i nodi nei quali Ë possibile trovarsi col movimento verso destra della pedina indicata
 		private List<Nodo> mossePossibiliPedinaSinistra(Nodo node, int riga, int colonna) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException
 		{
-			List<Nodo> listaMossePossibili = new ArrayList<Nodo>();
+			List<Nodo> listaMossePossibili = new LinkedList<Nodo>();
 			int c = 0;
 			while(canMoveLeft(node.getStato(), riga, colonna-c) && !Thread.currentThread().isInterrupted())
 			{
@@ -890,7 +890,7 @@ public class IntelligenzaBianca implements IA {
 			return listaMossePossibili;
 		}
 		
-		//dice se una data pedina pu√≤ muoversi verso l'alto
+		//dice se una data pedina puÚ muoversi verso l'alto
 		private boolean canMoveUp(State state, int row, int column) {
 			if(row==0)
 			{
@@ -903,7 +903,7 @@ public class IntelligenzaBianca implements IA {
 			return true;		
 		}
 		
-		//dice se una data pedina pu√≤ muoversi verso il basso
+		//dice se una data pedina puÚ muoversi verso il basso
 		private boolean canMoveDown(State state, int row, int column) {
 			if(row==state.getBoard().length-1)
 			{
@@ -916,7 +916,7 @@ public class IntelligenzaBianca implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina pu√≤ muoversi verso sinistra
+		//dice se una data pedina puÚ muoversi verso sinistra
 		private boolean canMoveLeft(State state, int row, int column) {
 			if(column==0)
 			{
@@ -929,7 +929,7 @@ public class IntelligenzaBianca implements IA {
 			return true;	
 		}
 		
-		//dice se una data pedina pu√≤ muoversi verso destra
+		//dice se una data pedina puÚ muoversi verso destra
 		private boolean canMoveRight(State state, int row, int column) {
 			if(column==state.getBoard().length-1)
 			{
@@ -1406,7 +1406,7 @@ public class IntelligenzaBianca implements IA {
 			albero.add(liv6);
 			Nodo nodoLiv0 = liv0.getNodi().get(0);
 			//calcolo TUTTE le mosse possibili al livello 1 (le mosse effettive che posso fare)
-			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho gi√† vinto
+			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho gi‡ vinto
 			try 
 			{
 				liv1.add(this.mossePossibiliComplete(this.nodoAttuale));
@@ -1416,8 +1416,18 @@ public class IntelligenzaBianca implements IA {
 			{
 				e.printStackTrace();
 			}
+			if(!liv1.getNodi().get(0).getTurn().equalsTurn("WW"))
+			{
+				this.calcoloEspLiv1(nodoLiv0, liv2, liv3, liv4, liv5);
+			}
 			
 			
+			System.out.println("Terminazione thread treeGenerator");
+			System.out.println("Tempo utilizzato: "+(System.currentTimeMillis()-t1));
+		}
+
+		private void calcoloEspLiv1(Nodo nodoLiv0, Livello liv2, Livello liv3, Livello liv4, Livello liv5)
+		{
 			//ciclo liv1
 			//calcolo NODO PER NODO le mosse del livello 2(altrimenti non avrei vantaggi)
 			for(int i1 = 0; i1<albero.get(1).getNodi().size() && !taglioLivello1 && !Thread.currentThread().isInterrupted(); i1++)
@@ -1425,150 +1435,427 @@ public class IntelligenzaBianca implements IA {
 				Nodo nodoLiv1 = albero.get(1).getNodi().get(i1);
 				try 
 				{
-					liv2.add(this.mossePossibiliComplete(nodoLiv1));
+					List<Nodo> daAggiungere = this.mossePossibiliComplete(nodoLiv1);
+					this.sortLivGenC(daAggiungere);
+					liv2.add(daAggiungere);
 					for(Nodo n : liv2.getNodi())
 					{
-						n.setValue(liv0.getNodi().get(0).getValue());
+						if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+						{
+							n.setValue(albero.get(0).getNodi().get(0).getValue());
+						}
+						if(n.getTurn().equalsTurn("BW"))
+						{
+							nodoLiv1.setValue(-10000);
+						}
+						if(n.getTurn().equalsTurn("WW") && daAggiungere.size()==1)
+						{
+							nodoLiv1.setValue(10000);
+						}
+						if(Float.isNaN(nodoLiv0.getValue()) || albero.get(0).getNodi().get(0).getValue()<nodoLiv1.getValue())
+						{
+							albero.get(0).getNodi().get(0).setValue(nodoLiv1.getValue());
+							a = nodoLiv1.getAzione();
+							for(Nodo nodo : albero.get(1).getNodi())
+							{
+								nodo.setValue(albero.get(0).getNodi().get(0).getValue());
+							}
+							for(Nodo nodo : albero.get(2).getNodi())
+							{
+								nodo.setValue(albero.get(0).getNodi().get(0).getValue());
+							}
+						}
+						if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+						{
+							n.setValue(albero.get(0).getNodi().get(0).getValue());
+						}
 					}
+					this.calcoloEspLiv2(nodoLiv1, nodoLiv0, liv3, liv4, liv5);
 				} 
 				catch (Exception e) 
 				{
 					e.printStackTrace();
 				}
-				//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 2?
-				//ciclo secondo livello
-				//calcolo NODO PER NODO le mosse del livello 3(altrimenti non avrei vantaggi)
-				for(int i2=0; i2<albero.get(2).getNodi().size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i2++)
+				
+			}
+		}
+		
+		private void calcoloEspLiv2(Nodo nodoLiv1, Nodo nodoLiv0, Livello liv3, Livello liv4, Livello liv5)
+		{
+			//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 2?
+			//ciclo secondo livello
+			//calcolo NODO PER NODO le mosse del livello 3(altrimenti non avrei vantaggi)
+			for(int i2=0; i2<albero.get(2).getNodi().size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i2++)
+			{
+				if(albero.get(2).getNodi().get(i2).getPadre() == nodoLiv1)
 				{
-					if(albero.get(2).getNodi().get(i2).getPadre() == nodoLiv1)
+					Nodo nodoLiv2 = albero.get(2).getNodi().get(i2);
+					if(!nodoLiv2.getTurn().equals("WW") && !nodoLiv2.getTurn().equals("BW"));
 					{
-						Nodo nodoLiv2 = albero.get(2).getNodi().get(i2);
 						try 
 						{
-							liv3.add(this.mossePossibiliComplete(nodoLiv2));
+							List<Nodo> daAggiungere = this.mossePossibiliComplete(nodoLiv2);
+							this.sortLivGenD(daAggiungere);
+							liv3.add(daAggiungere);
 							for(Nodo n : liv3.getNodi())
 							{
-								n.setValue(liv0.getNodi().get(0).getValue());
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+								}
+								if(Float.isNaN(nodoLiv2.getValue()) || (n.getTurn().equalsTurn("BW")  && daAggiungere.size()==1))
+								{
+									nodoLiv2.setValue(-10000);
+								}
+								if(Float.isNaN(nodoLiv2.getValue()) || n.getTurn().equalsTurn("WW"))
+								{
+									nodoLiv2.setValue(10000);
+								}
+								if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
+								{
+									nodoLiv1.setValue(nodoLiv2.getValue());
+								}
+								if(Float.isNaN(nodoLiv0.getValue()) || albero.get(0).getNodi().get(0).getValue()<nodoLiv1.getValue())
+								{
+									albero.get(0).getNodi().get(0).setValue(nodoLiv1.getValue());
+									a = nodoLiv1.getAzione();
+									for(Nodo nodoo : albero.get(1).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(2).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(3).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+								}
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+									
+								}
 							}
 						} 
 						catch (Exception e) 
 						{
 							e.printStackTrace();
 						}
-						//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 3?
-						//calcolo NODO PER NODO le mosse del livello 4(altrimenti non avrei vantaggi)
-						for(int i3=0; i3<albero.get(3).getNodi().size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i3++)
-						{
-							if(albero.get(3).getNodi().get(i3).getPadre() == nodoLiv2)
-							{
-								Nodo nodoLiv3 = albero.get(3).getNodi().get(i3);
-								try 
-								{
-									liv4.add(this.mossePossibiliComplete(nodoLiv3));
-									for(Nodo n : liv4.getNodi())
-									{
-										n.setValue(liv0.getNodi().get(0).getValue());
-									}
-								} 
-								catch (Exception e) 
-								{
-									e.printStackTrace();
-								}
-								//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 4?
-								//calcolo NODO PER NODO le mosse del livello 5(altrimenti non avrei vantaggi)
-								for(int i4=0; i4<albero.get(4).getNodi().size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i4++)
-								{
-									if(albero.get(4).getNodi().get(i4).getPadre() == nodoLiv3)
-									{
-										Nodo nodoLiv4 = albero.get(4).getNodi().get(i4);
-										try 
-										{
-											liv5.add(this.mossePossibiliComplete(nodoLiv4));
-										} 
-										catch (Exception e) 
-										{
-											e.printStackTrace();
-										}
-										//CALCOLARE ORA IL VALORE DEI NODI AL LIVELLO 5 e implementare i tagli alfa beta
-										for(int i5=0; i5<albero.get(5).getNodi().size() && !taglioLivello5 && !Thread.currentThread().isInterrupted(); i5++)
-										{
-											if(albero.get(5).getNodi().get(i5).getPadre() == nodoLiv4)
-											{
-												Nodo nodoLiv5 = albero.get(5).getNodi().get(i5);
-												nodoLiv5.setValue(this.ia.getHeuristicValue(nodoLiv5.getStato()));
-												if(Float.isNaN(nodoLiv4.getValue()) || nodoLiv4.getValue()<nodoLiv5.getValue())
-												{
-													nodoLiv4.setValue(nodoLiv5.getValue());
-												}
-												if(Float.isNaN(nodoLiv3.getValue()) || nodoLiv3.getValue()>nodoLiv4.getValue())
-												{
-													nodoLiv3.setValue(nodoLiv4.getValue());
-												}
-												if(Float.isNaN(nodoLiv2.getValue()) || nodoLiv2.getValue()<nodoLiv3.getValue())
-												{
-													nodoLiv2.setValue(nodoLiv3.getValue());
-												}
-												if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
-												{
-													nodoLiv1.setValue(nodoLiv2.getValue());
-												}
-												if(Float.isNaN(nodoLiv0.getValue()) || nodoLiv0.getValue()<nodoLiv1.getValue())
-												{
-													nodoLiv0.setValue(nodoLiv1.getValue());
-													a = nodoLiv1.getAzione();
-													for(Nodo n : albero.get(1).getNodi())
-													{
-														n.setValue(nodoLiv0.getValue());
-													}
-													for(Nodo n : albero.get(2).getNodi())
-													{
-														n.setValue(nodoLiv0.getValue());
-													}
-													for(Nodo n : albero.get(3).getNodi())
-													{
-														n.setValue(nodoLiv0.getValue());
-													}
-													for(Nodo n : albero.get(4).getNodi())
-													{
-														n.setValue(nodoLiv0.getValue());
-													}
-												}	
-												if(nodoLiv4.getValue()>=nodoLiv3.getValue())
-												{
-													taglioLivello5=true;
-												}
-											}
-										}
-										taglioLivello5=false;
-										if(nodoLiv3.getValue()<=nodoLiv2.getValue())
-										{
-											taglioLivello4=true;
-										}
-									}
-								}
-								taglioLivello4=false;
-								if(nodoLiv2.getValue()>=nodoLiv1.getValue())
-								{
-									taglioLivello3=true;
-								}								
-							}
-						}
-						taglioLivello3=false;
+						this.calcoloEspLiv3(nodoLiv2, nodoLiv1, nodoLiv0, liv4, liv5);
 						if(nodoLiv1.getValue()<=nodoLiv0.getValue())
 						{
 							taglioLivello2=true;
 						}
 					}
+					
 				}
-				taglioLivello2=false;
 			}
-			System.out.println("Terminazione thread treeGenerator");
-			System.out.println("Tempo utilizzato: "+(System.currentTimeMillis()-t1));
+			taglioLivello2=false;
+		}
+		
+		private void calcoloEspLiv3(Nodo nodoLiv2, Nodo nodoLiv1, Nodo nodoLiv0, Livello liv4, Livello liv5)
+		{
+			//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 3?
+			//calcolo NODO PER NODO le mosse del livello 4(altrimenti non avrei vantaggi)
+			for(int i3=0; i3<albero.get(3).getNodi().size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i3++)
+			{
+				if(albero.get(3).getNodi().get(i3).getPadre() == nodoLiv2)
+				{
+					Nodo nodoLiv3 = albero.get(3).getNodi().get(i3);
+					if(!nodoLiv3.getTurn().equals("WW") && !nodoLiv3.getTurn().equals("BW"));
+					{
+						try 
+						{
+							List<Nodo> daAggiungere = this.mossePossibiliComplete(nodoLiv3);
+							this.sortLivGenC(daAggiungere);
+							liv4.add(daAggiungere);
+							for(Nodo n : liv4.getNodi())
+							{
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+								}
+								if(Float.isNaN(nodoLiv3.getValue()) || n.getTurn().equalsTurn("BW")  )
+								{
+									nodoLiv3.setValue(-10000);
+								}
+								if(Float.isNaN(nodoLiv3.getValue()) || (n.getTurn().equalsTurn("WW") && daAggiungere.size()==1))
+								{
+									nodoLiv3.setValue(10000);
+								}
+								if(Float.isNaN(nodoLiv2.getValue()) || nodoLiv2.getValue()<nodoLiv3.getValue())
+								{
+									nodoLiv2.setValue(nodoLiv3.getValue());
+								}
+								if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
+								{
+									nodoLiv1.setValue(nodoLiv2.getValue());
+								}
+								if(Float.isNaN(nodoLiv0.getValue()) || albero.get(0).getNodi().get(0).getValue()<nodoLiv1.getValue())
+								{
+									albero.get(0).getNodi().get(0).setValue(nodoLiv1.getValue());
+									a = nodoLiv1.getAzione();
+									for(Nodo nodoo : albero.get(1).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(2).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(3).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(4).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+								}
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+								}
+							}
+						}	 
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+						this.calcoloEspLiv4(nodoLiv3, nodoLiv2, nodoLiv1, nodoLiv0, liv5);
+						if(nodoLiv2.getValue()>=nodoLiv1.getValue())
+						{
+							taglioLivello3=true;
+						}	
+					}
+				}
+			}
+			taglioLivello3=false;
+		}
+		
+		private void calcoloEspLiv4(Nodo nodoLiv3, Nodo nodoLiv2, Nodo nodoLiv1, Nodo nodoLiv0, Livello liv5)
+		{
+			//DA IMPLEMENTARE UNA SORT PER IL LIVELLO 4?
+			//calcolo NODO PER NODO le mosse del livello 5(altrimenti non avrei vantaggi)
+			for(int i4=0; i4<albero.get(4).getNodi().size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i4++)
+			{
+				if(albero.get(4).getNodi().get(i4).getPadre() == nodoLiv3)
+				{
+					Nodo nodoLiv4 = albero.get(4).getNodi().get(i4);
+					if(!nodoLiv4.getTurn().equals("WW") && !nodoLiv4.getTurn().equals("BW"));
+					{
+						try 
+						{
+							List<Nodo> daAggiungere = this.mossePossibiliComplete(nodoLiv4);
+							this.sortLivGenD(daAggiungere);
+							liv5.add(daAggiungere);
+							for(Nodo n : liv5.getNodi())
+							{
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+								}
+								if(Float.isNaN(nodoLiv4.getValue()) || (n.getTurn().equalsTurn("BW")  && daAggiungere.size()==1))
+								{
+									nodoLiv4.setValue(-10000);
+								}
+								if(Float.isNaN(nodoLiv4.getValue()) || n.getTurn().equalsTurn("WW"))
+								{
+									nodoLiv4.setValue(10000);
+								}
+								if(Float.isNaN(nodoLiv3.getValue()) || nodoLiv3.getValue()>nodoLiv4.getValue())
+								{
+									nodoLiv3.setValue(nodoLiv4.getValue());
+								}
+								if(Float.isNaN(nodoLiv2.getValue()) || nodoLiv2.getValue()<nodoLiv3.getValue())
+								{
+									nodoLiv2.setValue(nodoLiv3.getValue());
+								}
+								if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
+								{
+									nodoLiv1.setValue(nodoLiv2.getValue());
+								}
+								if(Float.isNaN(nodoLiv0.getValue()) || albero.get(0).getNodi().get(0).getValue()<nodoLiv1.getValue())
+								{
+									nodoLiv0.setValue(nodoLiv1.getValue());
+									a = nodoLiv1.getAzione();
+									for(Nodo nodoo : albero.get(1).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(2).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(3).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(4).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+									for(Nodo nodoo : albero.get(5).getNodi())
+									{
+										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
+									}
+								}
+								if(!n.getTurn().equalsTurn("WW") && !n.getTurn().equalsTurn("BW"))
+								{
+									n.setValue(albero.get(0).getNodi().get(0).getValue());
+								}
+							}
+						}	 
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+						this.calcoloEspLiv5(nodoLiv4, nodoLiv3, nodoLiv2, nodoLiv1, nodoLiv0);
+						if(nodoLiv3.getValue()<=nodoLiv2.getValue())
+						{
+							taglioLivello4=true;
+						}
+					}
+				}
+			}
+			taglioLivello4=false;
+		}
+		
+		private void calcoloEspLiv5(Nodo nodoLiv4, Nodo nodoLiv3, Nodo nodoLiv2, Nodo nodoLiv1, Nodo nodoLiv0)
+		{
+			//CALCOLARE ORA IL VALORE DEI NODI AL LIVELLO 5 e implementare i tagli alfa beta
+			for(int i5=0; i5<albero.get(5).getNodi().size() && !taglioLivello5 && !Thread.currentThread().isInterrupted(); i5++)
+			{
+				if(albero.get(5).getNodi().get(i5).getPadre() == nodoLiv4)
+				{
+					Nodo nodoLiv5 = albero.get(5).getNodi().get(i5);
+					nodoLiv5.setValue(this.ia.getHeuristicValue(nodoLiv5.getStato()));
+					if(Float.isNaN(nodoLiv4.getValue()) || nodoLiv4.getValue()<nodoLiv5.getValue())
+					{
+						nodoLiv4.setValue(nodoLiv5.getValue());
+					}
+					if(Float.isNaN(nodoLiv3.getValue()) || nodoLiv3.getValue()>nodoLiv4.getValue())
+					{
+						nodoLiv3.setValue(nodoLiv4.getValue());
+					}
+					if(Float.isNaN(nodoLiv2.getValue()) || nodoLiv2.getValue()<nodoLiv3.getValue())
+					{
+						nodoLiv2.setValue(nodoLiv3.getValue());
+					}
+					if(Float.isNaN(nodoLiv1.getValue()) || nodoLiv1.getValue()>nodoLiv2.getValue())
+					{
+						nodoLiv1.setValue(nodoLiv2.getValue());
+					}
+					if(Float.isNaN(nodoLiv0.getValue()) || nodoLiv0.getValue()<nodoLiv1.getValue())
+					{
+						nodoLiv0.setValue(nodoLiv1.getValue());
+						a = nodoLiv1.getAzione();
+						for(Nodo n : albero.get(1).getNodi())
+						{
+							n.setValue(nodoLiv0.getValue());
+						}
+						for(Nodo n : albero.get(2).getNodi())
+						{
+							n.setValue(nodoLiv0.getValue());
+						}
+						for(Nodo n : albero.get(3).getNodi())
+						{
+							n.setValue(nodoLiv0.getValue());
+						}
+						for(Nodo n : albero.get(4).getNodi())
+						{
+							n.setValue(nodoLiv0.getValue());
+						}
+					}	
+					if(nodoLiv4.getValue()>=nodoLiv3.getValue())
+					{
+						taglioLivello5=true;
+					}
+				}
+			}
+			taglioLivello5=false;
+		}
+		
+		private void sortLivGenD(List<Nodo> lista)
+		{
+			for(int x=0; x<lista.size(); x++)
+			{
+				Nodo nodo = lista.get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(-10000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+				}
+				
+				Collections.sort(lista, new Comparator<Nodo>() {
+					@Override
+			    	public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n1.getValue()-n2.getValue());
+					}
+			    });
+			}
+			for(Nodo nodo : lista)
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(Float.NaN);
+				}
+			}
 		}
 
+		private void sortLivGenC(List<Nodo> lista)
+		{
+			for(int x=0; x<lista.size(); x++)
+			{
+				Nodo nodo = lista.get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(-10000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+				}
+				
+				Collections.sort(lista, new Comparator<Nodo>() {
+					@Override
+			    	public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n2.getValue()-n1.getValue());
+					}
+			    });
+			}
+			for(Nodo nodo : lista)
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(Float.NaN);
+				}
+			}
+		}
 		
-		
-
 		//metodo di sort del livello 1
 		private void sortLiv1(Livello liv1)
 		{
@@ -1634,7 +1921,6 @@ public class IntelligenzaBianca implements IA {
 
 	}
 	
-
 	/*
 	 * valuta gli ultimi rami dell'albero
 	 * da implementare i tagli ecc...
