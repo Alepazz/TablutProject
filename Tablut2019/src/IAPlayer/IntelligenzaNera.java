@@ -54,6 +54,21 @@ public class IntelligenzaNera implements IA {
 		this.perfectPos.add("26");
 		this.perfectPos.add("15");
 		
+		/*altra possibile diagonale buona
+		 * basta solo scommentarla
+		 * 
+		 this.perfectPos.add("23");
+		 this.perfectPos.add("32");
+		 this.perfectPos.add("25");
+		 this.perfectPos.add("36");
+		 this.perfectPos.add("62");
+		 this.perfectPos.add("56");
+		 this.perfectPos.add("65");
+		 this.perfectPos.add("52");
+		 this.perfectPos.add("63");
+		 *
+		 */
+		
 	}
 
 	private int getHeuristicValue(StateTablut s) {
@@ -458,22 +473,22 @@ public class IntelligenzaNera implements IA {
 		int value=0;
 		//controllo che le pedine possano arrivare al re senza essere mangiate
 		if(common.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
-			value+= 110;
+			value+= 1100;
 		if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
-			value+= 110;
+			value+= 1100;
 		if(common.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
-			value+= 110;
+			value+= 1100;
 		if(common.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
-			value+= 110;
+			value+= 1100;
 		//se una pedina è già vicino al re e non rischia di essere mangiata deve rimanere lì
 		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
-			value+=500;
+			value+=5000;
 		if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
-			value+=500;
+			value+=5000;
 		if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
-			value+=500;
+			value+=5000;
 		if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
-			value+=500;
+			value+=5000;
 		
 		
 		return value;
