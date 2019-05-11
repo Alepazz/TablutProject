@@ -146,8 +146,10 @@ public class IntelligenzaBianca implements IA {
 		
 		
 		// cerco di far uscire dal trono il re il prima possibile
-		if(this.checkKingCanComeOutFromThrone(s)) {
-			return this.MAX_VALUE - 2;
+		if(rigaRe == 4  && colonnaRe == 4) {
+			if(this.checkKingCanComeOutFromThrone(s)) {
+				return this.MAX_VALUE - 2;
+			}
 		}
 				
 		if(common.getNumberStarFree(s) < 4) {

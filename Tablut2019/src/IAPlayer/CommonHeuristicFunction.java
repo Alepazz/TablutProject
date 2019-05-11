@@ -81,7 +81,7 @@ public class CommonHeuristicFunction {
 	 * Controlla se una pedina BIANCA può andare in una direzione specifica
 	 * @param riga Riga in cui si trova la pedina
 	 * @param colonna Colonna in cui si trova la pedina
-	 * @direzione Direzioni valide: "T" = Top; "B" = Bottom; "L" = Left; "R" = right;
+	 * @direzione Direzioni valide: "T" = Top; "B" = Bottom; "L" = Left; "R" = Right;
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return -1 se la pedina in quella direzione è bloccata, altrimenti il numero di caselle che ha libere in quella direzione
 	 */
@@ -94,59 +94,91 @@ public class CommonHeuristicFunction {
 		}
 		
 		if(direzione.equals("T")) { //controlla se la pedina può muoversi verso l'alto
-			if(colonna != 4) { // se la colonna è diversa da 4, allora gli unici ostacoli sono le cittadelle e le nere
-				for(int i=riga-1; i>0 || !this.citadels.contains(s.getBox(i, colonna)); i--) {
-					if((s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) && i == riga-1) {
-						return -1; //c'è una bianca o una nera a bloccare la strada
-					} else counter++;
+			if(colonna != 4) { // se la colonna è diversa da 4, allora gli unici ostacoli sono le cittadelle, le nere e altre pedine bianche
+				for(int i=riga-1; i>0 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) {
+					counter++;
+				}
+				//System.out.println("T: Mosse disponibili verso l'alto: " + counter);
+				if(counter == 0) { //caso in cui non entra nel ciclo for
+					return -1;
 				}
 				return counter;
-			} else {
+			} else { //la colonna è esattamente la 4
 				if(riga>4) {
 					counter=0;
-					for(int i=riga-1; i>4; i--) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1; //c'è una bianca o una nera a bloccare la strada
-						} else counter++;
+					for(int i=riga-1; i>4 && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) { //il ciclo finisce con i = 4, perchè vuol dire che siamo arrivati al trono
+						counter++;
+					}
+					//System.out.println("T: Mosse disponibili verso l'alto nella colonna 4, se ci troviamo sotto il trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
-				} else {
+				} else if(riga <4){ //riga < 4, quindi siamo sopra il trono
 					counter=0;
-					for(int i=riga-1; i>0 || !this.citadels.contains(s.getBox(i, colonna)); i--) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1; //c'è una bianca o una nera a bloccare la strada
-						}
+					for(int i=riga-1; i>0 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) {
+						counter++;
 					}
-					return counter++;
+					//System.out.println("T: Mosse disponibili verso l'alto nella colonna 4, se ci troviamo sopra il trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
+					}
+					return counter;
+				} else { //re sul trono
+					counter=0;
+					for(int i=riga-1; i>0 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W"); i--) {
+						counter++;
+					}
+					//System.out.println("T: Mosse disponibili verso l'alto nella colonna 4, se il re è sul trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
+					}
+					return counter;
 				}
 			}
 		}//T
 		else if(direzione.equals("B")) { //controlla se la pedina può muoversi verso il basso
 			if(colonna != 4) {
 				counter=0;
-				for(int i=riga+1; i<9 || !this.citadels.contains(s.getBox(i, colonna)); i++) {
-					if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-						return -1;
-					} else counter++;
+				for(int i=riga+1; i<9 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+					counter++;
+				}
+				//System.out.println("B: Mosse disponibili verso il basso: " + counter);
+				if(counter == 0) { //caso in cui non entra nel ciclo for
+					return -1;
 				}
 				return counter;
 			}//colonna != 4
 			else { //colonna == 4
-				if(riga >4) {
+				if(riga >4) { //siamo sotto il trono
 					counter=0;
-					for(int i=riga+1; i<9 || this.citadels.contains(s.getBox(i, colonna)); i++) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=riga+1; i<9 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+						counter++;
+					}
+					//System.out.println("B: Mosse disponibili verso il basso nella colonna 4, se ci troviamo sotto il trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
 				} //riga > 4
-				else { //riga < 4
+				else if(riga <4){ //riga < 4
 					counter=0;
-					for(int i=riga+1; i<4; i++) {
-						if(s.getPawn(i, colonna).equalsPawn("B") || s.getPawn(i, colonna).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=riga+1; i<4 && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+						counter++;
+					}
+					//System.out.println("B: Mosse disponibili verso il basso nella colonna 4, se ci troviamo sopra il trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
+					}
+					return counter;
+				} else { //re sul trono 
+					counter=0;
+					for(int i=riga+1; i<9 && !this.citadels.contains(s.getBox(i, colonna)) && !s.getPawn(i, colonna).equalsPawn("B") && !s.getPawn(i, colonna).equalsPawn("W"); i++) {
+						counter++;
+					}
+					//System.out.println("B: Mosse disponibili verso il basso nella colonna 4, se il re si trova sul trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
 				}
@@ -155,28 +187,44 @@ public class CommonHeuristicFunction {
 		else if(direzione.equals("L")) { //controlla se la pedina può muoversi verso sinistra
 			if(riga != 4) {
 				counter=0;
-				for(int i=colonna-1; i>0 || this.citadels.contains(s.getBox(riga, i)); i--) {
-					if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-						return -1;
-					} else counter++;
+				for(int i=colonna-1; i>0 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) {
+					counter++;
+				}
+				//System.out.println("L: Mosse disponibili verso sinistra: " + counter);
+				if(counter == 0) { //caso in cui non entra nel ciclo for
+					return -1;
 				}
 				return counter;
 			} // riga != 4
 			else { //riga == 4
 				if(colonna<4) {
 					counter=0;
-					for(int i=colonna-1; i>0 || this.citadels.contains(s.getBox(riga, i)); i--) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=colonna-1; i>0 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) {
+						counter++;
+					}
+					//System.out.println("L: Mosse disponibili verso sinistra nella riga 4, se ci troviamo a sinistra del trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
-				} else { //colonna > 4
+				} else if(colonna>4){ //colonna > 4
 					counter=0;
-					for(int i=colonna-1; i>4; i--) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=colonna-1; i>4 && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i--) {
+						counter++;
+					}
+					//System.out.println("L: Mosse disponibili verso sinistra nella riga 4, se ci troviamo a destra del trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
+					}
+					return counter;
+				} else { //re sul trono
+					counter=0;
+					for(int i=colonna-1; i>0 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W"); i--) {
+						counter++;
+					}
+					//System.out.println("L: Mosse disponibili verso sinistra nella riga 4, se il re si trova sul trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
 				}
@@ -185,34 +233,50 @@ public class CommonHeuristicFunction {
 		else if(direzione.equals("R")) { //controlla se la pedina può muoversi verso destra
 			if(riga != 4) {
 				counter=0;
-				for(int i=colonna+1; i<9 || this.citadels.contains(s.getBox(riga, i)); i++) {
-					if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-						return -1;
-					} else counter++;
+				for(int i=colonna+1; i<9 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+					counter++;
+				}
+				//System.out.println("R Mosse disponibili verso destra: " + counter);
+				if(counter == 0) { //caso in cui non entra nel ciclo for
+					return -1;
 				}
 				return counter;
 			} //riga != 4
 			else { //riga == 4
 				if(colonna > 4) {
 					counter=0;
-					for(int i=colonna+1; i<9 || this.citadels.contains(s.getBox(riga, i)); i++) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=colonna+1; i<9 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+						counter++;
+					}
+					//System.out.println("R: Mosse disponibili verso destra nella riga 4, se ci troviamo a destra del trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
-				} else { //colonna <4
+				} else if(colonna<4){ //colonna <4
 					counter=0;
-					for(int i=colonna+1; i<4; i++) {
-						if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W")) {
-							return -1;
-						} else counter++;
+					for(int i=colonna+1; i<4 && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+						counter++;
+					}
+					//System.out.println("R: Mosse disponibili verso destra nella riga 4, se ci troviamo a sinistra del trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
+					}
+					return counter;
+				} else { //re sul trono
+					counter=0;
+					for(int i=colonna+1; i<9 && !this.citadels.contains(s.getBox(riga, i)) && !s.getPawn(riga, i).equalsPawn("B") && !s.getPawn(riga, i).equalsPawn("W") && !s.getPawn(riga, i).equalsPawn("K"); i++) {
+						counter++;
+					}
+					//System.out.println("R: Mosse disponibili verso destra nella riga 4, se il re si trova sul trono: " + counter);
+					if(counter == 0) { //caso in cui non entra nel ciclo for
+						return -1;
 					}
 					return counter;
 				}
 			}
-		} else 
-			return -1; //direzione non lecita
+		}
+		return -1;
 	}
 	
 	//TODO: Commentare cosa fa questa funzione
