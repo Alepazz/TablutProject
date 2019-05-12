@@ -1738,8 +1738,8 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in alto
 			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
-				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
-				if(this.citadels.contains(s.getBox(riga,  colonna))){
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate da altre cittadelle
+				if(this.citadels.contains(s.getBox(riga,  colonna)) && this.citadels.contains(s.getBox(riga-1,  colonna))){
 					return false;
 				}
 				//Controlla se in alto c'è una pedina bianca, il re, il trono o una cittadella
@@ -1771,8 +1771,8 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
 			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
-				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
-				if(this.citadels.contains(s.getBox(riga,  colonna))){
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate da altre cittadelle
+				if(this.citadels.contains(s.getBox(riga,  colonna)) && this.citadels.contains(s.getBox(riga,  colonna+1))){
 					return false;
 				}
 				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
@@ -1804,8 +1804,8 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in basso
 			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
-				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
-				if(this.citadels.contains(s.getBox(riga,  colonna))){
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate da altre cittadelle
+				if(this.citadels.contains(s.getBox(riga,  colonna)) && this.citadels.contains(s.getBox(riga+1,  colonna))){
 					return false;
 				}
 				//Controlla se in basso c'è una pedina bianca, il re, il trono o una cittadella
@@ -1837,8 +1837,8 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
 			} else if(s.getPawn(riga, colonna).equalsPawn("B")) {
-				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate
-				if(this.citadels.contains(s.getBox(riga,  colonna))){
+				//Caso particolare in cui le pedine nere dentro alle cittadelle non possono essere catturate da altre cittadelle
+				if(this.citadels.contains(s.getBox(riga,  colonna)) && this.citadels.contains(s.getBox(riga,  colonna-1))){
 					return false;
 				}
 				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella

@@ -137,6 +137,13 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		/*
+		//Controlla se il re si può muovere, se si, riassegna il valore value
+		if(!common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
+			value = 20000 + getKingPositionValue(rigaRe, colonnaRe, s);
+		}
+		*/
+		
 		if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
 				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
@@ -169,11 +176,6 @@ public class IntelligenzaBianca implements IA {
 		if(common.getNumberOfColor("W", s)*3 < common.getNumberOfColor("B", s)) {
 			value -= 900 - (common.getNumberOfColor("W", s) * 50); //per ogni pedina bianca tolgo 50
 		}
-				
-		//Controlla se il re si può muovere, se si, riassegna il valore value
-		if(common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
-			value = getKingPositionValue(rigaRe, colonnaRe, s);
-		}
 		
 		//Controllo se il re viene mangiato in qualsiasi posizione sia
 		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
@@ -202,9 +204,8 @@ public class IntelligenzaBianca implements IA {
 		}		
 		
 		
-		/*
-		 * Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
-		 */
+
+		//Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
 		if((this.common.enemyOnTheBottom(rigaRe, colonnaRe, s) || 
 				this.common.enemyOnTheLeft(rigaRe, colonnaRe, s) ||
 				this.common.enemyOnTheRight(rigaRe, colonnaRe, s) ||
