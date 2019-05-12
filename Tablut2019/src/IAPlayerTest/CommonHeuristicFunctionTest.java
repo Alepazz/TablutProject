@@ -3532,6 +3532,37 @@ class CommonHeuristicFunctionTest {
 		Assert.assertFalse(c.checkWhiteCanArriveFromTop(6, 1, s));
 			
 	}
+	
+	@Test
+	void checkWhiteCanArriveFromTopTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[1][3] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOKOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanArriveFromTop(4, 3, s));
+			
+	}
 
 	@Test
 	void checkWhiteCanArriveFromRightTest_1() {	
@@ -3682,6 +3713,37 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanArriveFromRight(1, 2, s));
+			
+	}
+	
+	@Test
+	void checkWhiteCanArriveFromRightTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][6] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOXOOOKOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanArriveFromRight(2, 2, s));
 			
 	}
 	
@@ -3838,6 +3900,37 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void checkWhiteCanArriveFromBottomTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[7][3] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOXOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOKOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanArriveFromBottom(4, 3, s));
+			
+	}
+	
+	@Test
 	void checkWhiteCanArriveFromLeftTest_1() {	
 		
 		//Varianti del particolare caso in osservazione
@@ -3986,6 +4079,37 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertFalse(c.checkWhiteCanArriveFromLeft(1, 6, s));
+			
+	}
+	
+	@Test
+	void checkWhiteCanArriveFromLeftTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[2][2] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOKOOOXOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     <----- X = Pedina passata alla funzione
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkWhiteCanArriveFromLeft(2, 6, s));
 			
 	}
 	

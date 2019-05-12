@@ -792,6 +792,23 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return true se la pedina è circondata, false in caso contrario
 	 */
 	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { 
+		/*
+		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
+		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
+			return (!this.checkWhiteCanArriveFromTop(riga+1, colonna, s)) &&
+					(!this.checkWhiteCanArriveFromBottom(riga-1, colonna, s)) &&
+					(!this.checkWhiteCanArriveFromLeft(riga, colonna+1, s)) &&
+					(!this.checkWhiteCanArriveFromRight(riga, colonna-1, s));
+		}
+		//La pedina passata è una pedina nera dentro una cittadella
+		if(s.getPawn(riga, colonna).equalsPawn("B")) { //Parte da correggere dopo aver corrette le checkNeighbour
+			return (!this.checkBlackCanArriveFromTop(riga+1, colonna, s)) &&
+					(!this.checkBlackCanArriveFromBottom(riga-1, colonna, s)) &&
+					(!this.checkBlackCanArriveFromLeft(riga, colonna+1, s)) &&
+					(!this.checkBlackCanArriveFromRight(riga, colonna-1, s));
+		}
+		return false;
+		*/
 		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
 		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
 				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
@@ -808,6 +825,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 					(!this.checkNeighbourRight(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna)));
 		}
 		return false;
+		
 	}
 	
 	
@@ -1373,11 +1391,11 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	public boolean checkBlackCanArriveFromTop(int riga, int  colonna, StateTablut s) {
 		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
 		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
-		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=riga; i>=0;i--) {
+		for(int i=riga; i>=0 && i<9;i--) {
 			//Se trova la pedina nera ritorna risposta positiva
 			if(s.getPawn(i, colonna).equalsPawn("B"))
 			{
@@ -1409,11 +1427,11 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	public boolean checkBlackCanArriveFromRight(int riga, int colonna, StateTablut s) {
 		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
 		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
-		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=colonna; i<9;i++)
+		for(int i=colonna; i>=0 && i<9;i++)
 		{
 			//Se trova la pedina nera ritorna risposta positiva
 			if(s.getPawn(riga, i).equalsPawn("B"))
@@ -1444,13 +1462,12 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		//Domanda: Se e' gia' presente una pedina nera in quella posizione ritorna true o false?
 		//Controlla la posizione corrente e se e' gia' presente una pedina nera ritorna false
-		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=riga; i<9;i++)
+		for(int i=riga; i>=0 && i<9;i++)
 		{
 			//Se trova la pedina nera ritorna risposta positiva
 			if(s.getPawn(i, colonna).equalsPawn("B"))
@@ -1481,11 +1498,11 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina nera puo' arrivare, false in caso contrario
 	 */
 	public boolean checkBlackCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna).equalsPawn("B")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=colonna; i>=0;i--)
+		for(int i=colonna; i>=0 && i<9;i--)
 		{
 			//Se trova la pedina nera ritorna risposta positiva
 			if(s.getPawn(riga, i).equalsPawn("B"))
@@ -1615,14 +1632,14 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromTop(int riga, int  colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=riga; i>=0;i--)
+		for(int i=riga; i>=0 && i<9;i--)
 		{
 			//Se trova la pedina bianca ritorna risposta positiva
-			if(s.getPawn(i, colonna).equalsPawn("W"))
+			if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("K"))
 			{
 				return true;
 			}
@@ -1643,14 +1660,14 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromRight(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=colonna; i<9;i++)
+		for(int i=colonna; i>=0 && i<9;i++)
 		{
 			//Se trova la pedina bianca ritorna risposta positiva
-			if(s.getPawn(riga, i).equalsPawn("W"))
+			if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("K"))
 			{
 				return true;
 			}
@@ -1671,14 +1688,14 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromBottom(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=riga; i<9;i++)
+		for(int i=riga; i>=0 && i<9;i++)
 		{
 			//Se trova la pedina bianca ritorna risposta positiva
-			if(s.getPawn(i, colonna).equalsPawn("W"))
+			if(s.getPawn(i, colonna).equalsPawn("W") || s.getPawn(i, colonna).equalsPawn("K"))
 			{
 				return true;
 			}
@@ -1699,14 +1716,14 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return True se una pedina bianca puo' arrivare, false in caso contrario
 	 */
 	public boolean checkWhiteCanArriveFromLeft(int riga, int colonna, StateTablut s) {
-		if(s.getPawn(riga, colonna).equalsPawn("W")) {
+		if(!s.getPawn(riga, colonna).equalsPawn("O")) {
 			return false;
 		}
 		//Ciclo di controllo ostacoli partendo dalla posizione passata fino al bordo
-		for(int i=colonna-1; i>=0;i--)
+		for(int i=colonna; i>=0 && i<9;i--)
 		{
 			//Se trova la pedina bianca ritorna risposta positiva
-			if(s.getPawn(riga, i).equalsPawn("W"))
+			if(s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("K"))
 			{
 				return true;
 			}
