@@ -185,7 +185,7 @@ public class IntelligenzaNera implements IA {
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
-			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
+			if(common.blackCannotBlockEscape(rigaRe, colonnaRe, s))
 			{
 				
 				return this.MIN_VALUE+1;

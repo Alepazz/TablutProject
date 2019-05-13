@@ -197,7 +197,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
-			if(common.blackCannotBlockEscape(s, rigaRe, colonnaRe))
+			if(common.blackCannotBlockEscape(rigaRe, colonnaRe, s))
 			{
 				value += 4000;
 			}

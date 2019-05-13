@@ -291,89 +291,98 @@ public class CommonHeuristicFunction {
 		return -1;
 	}
 	
-	//TODO: Commentare cosa fa questa funzione
-	public boolean blackCannotBlockEscape(StateTablut s, int rigaRe, int colonnaRe) {
+	/**
+	 * Controlla se dato un re con SOLO una via di fuga, quella via di fuga non può essere chiusa dalle pedine nere
+	 * @param riga Riga in cui si trova il re
+	 * @param colonna Colonna in cui si il re
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se esiste almeno una via di fuga del re che non può essere chiusa dalle pedine nere, false in caso contrario
+	 */
+	public boolean blackCannotBlockEscape(int rigaRe, int colonnaRe, StateTablut s) { //DA CORREGGERE
 			
-			int i;
+		boolean escapeBlocked=false;
 			
-			//via di fuga sotto
-			for(i=rigaRe+1; i<9; i++)
+		//Via di fuga sotto
+		for(int i=rigaRe+1; i<9 && !escapeBlocked; i++)
+		{
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
-				if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
-				{
-					i=20;
-				}
+				escapeBlocked=true;
 			}
-			if(i!=20)
-			{
-				for(i=rigaRe+1; i<9; i++)
-				{
-					if(this.checkBlackCanArrive(i, colonnaRe, s))
-					{
-						return false;
-					}
-				}
-			}
-			
-			//via di fuga sopra
-			for(i=rigaRe-1; i>=0; i--)
-			{
-				if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
-				{
-					i=-1;
-				}
-			}
-			if(i!=20)
-			{
-				for(i=rigaRe-1; i>=0; i--)
-				{
-					if(this.checkBlackCanArrive(i, colonnaRe, s))
-					{
-						return false;
-					}
-				}
-			}
-			
-			//via di fuga a destra
-			for(i=colonnaRe+1; i<9; i++)
-			{
-				if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
-				{
-					i=20;
-				}
-			}
-			if(i!=20)
-			{
-				for(i=colonnaRe+1; i<9; i++)
-				{
-					if(this.checkBlackCanArrive(rigaRe, i, s))
-					{
-						return false;
-					}
-				}
-			}
-			
-			//via di fuga a sinistra
-			for(i=colonnaRe-1; i>=0; i--)
-			{
-				if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
-				{
-					i=-1;
-				}
-			}
-			if(i!=20)
-			{
-				for(i=colonnaRe-1; i>=0; i--)
-				{
-					if(this.checkBlackCanArrive(rigaRe, i, s))
-					{
-						return false;
-					}
-				}
-			}
-			
-			return true;
 		}
+		if(!escapeBlocked)
+		{
+			for(int i=rigaRe+1; i<9; i++)
+			{
+				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				{
+					return false;
+				}
+			}
+		}
+		escapeBlocked=false;
+		
+		//Via di fuga sopra
+		for(int i=rigaRe-1; i>=0 && !escapeBlocked; i--)
+		{
+			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
+			{
+				escapeBlocked=true;
+			}
+		}
+		if(!escapeBlocked)
+		{
+			for(int i=rigaRe-1; i>=0; i--)
+			{
+				if(this.checkBlackCanArrive(i, colonnaRe, s))
+				{
+					return false;
+				}
+			}
+		}
+		escapeBlocked=false;
+		
+		//Via di fuga a destra
+		for(int i=colonnaRe+1; i<9 && !escapeBlocked; i++)
+		{
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
+			{
+				escapeBlocked=true;
+			}
+		}
+		if(!escapeBlocked)
+		{
+			for(int i=colonnaRe+1; i<9; i++)
+			{
+				if(this.checkBlackCanArrive(rigaRe, i, s))
+				{
+					return false;
+				}
+			}
+		}
+		escapeBlocked=false;
+		
+		//Via di fuga a sinistra
+		for(int i=colonnaRe-1; i>=0 && !escapeBlocked; i--)
+		{
+			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
+			{
+				escapeBlocked=true;
+			}
+		}
+		if(!escapeBlocked)
+		{
+			for(int i=colonnaRe-1; i>=0; i--)
+			{
+				if(this.checkBlackCanArrive(rigaRe, i, s))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 		
 	/**
 	 * Restituisce il numero di pedine bianche/nere presenti sul tabellone, dato lo stato s

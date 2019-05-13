@@ -4825,6 +4825,182 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void blackCannotBlockEscapeTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[7][1] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+		board[4][3] = Pawn.WHITE;
+		board[4][2] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOKWOOOOO     
+		 * OOOOOOOOO
+		 * OOOWOOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.blackCannotBlockEscape(4, 2, s));
+		
+	}
+	
+	@Test
+	void blackCannotBlockEscapeTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[7][1] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+		board[4][3] = Pawn.WHITE;
+		board[4][2] = Pawn.KING;
+		board[5][4] = Pawn.BLACK;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOKWOOOOO     
+		 * OOOOBOOOO
+		 * OOOWOOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.blackCannotBlockEscape(4, 2, s));
+		
+	}
+	
+	@Test
+	void blackCannotBlockEscapeTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[7][1] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+		board[4][3] = Pawn.WHITE;
+		board[4][2] = Pawn.KING;
+		board[6][4] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOKWOOOOO     
+		 * OOOOOOOOO
+		 * OOOWBOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.blackCannotBlockEscape(4, 2, s));
+		
+	}
+	
+	@Test
+	void blackCannotBlockEscapeTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[7][1] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+		board[4][3] = Pawn.WHITE;
+		board[4][2] = Pawn.KING;
+		board[5][0] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOKWOOOOO     
+		 * BOOOOOOOO
+		 * OOOWOOOOO
+		 * OWOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.blackCannotBlockEscape(4, 2, s));
+		
+	}
+	
+	@Test
+	void blackCannotBlockEscapeTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][2] = Pawn.BLACK;
+		board[7][1] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+		board[4][3] = Pawn.WHITE;
+		board[4][2] = Pawn.KING;
+		board[8][2] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * OOKWOOOOO     
+		 * OOOOOOOOO
+		 * OOOWOOOOO
+		 * OWOOOOOOO
+		 * OOBOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.blackCannotBlockEscape(4, 2, s));
+		
+	}
+	
+	@Test
 	void blackIsIsolatedTest_1() {
 	
 	
