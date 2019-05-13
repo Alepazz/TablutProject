@@ -1491,7 +1491,7 @@ public class IntelligenzaBianca implements IA {
 				if(albero.get(2).getNodi().get(i2).getPadre() == nodoLiv1)
 				{
 					Nodo nodoLiv2 = albero.get(2).getNodi().get(i2);
-					if(!nodoLiv2.getTurn().equals("WW") && !nodoLiv2.getTurn().equals("BW"));
+					if(!nodoLiv2.getTurn().equalsTurn("WW") && !nodoLiv2.getTurn().equalsTurn("BW"));
 					{
 						try 
 						{
@@ -1565,7 +1565,7 @@ public class IntelligenzaBianca implements IA {
 				if(albero.get(3).getNodi().get(i3).getPadre() == nodoLiv2)
 				{
 					Nodo nodoLiv3 = albero.get(3).getNodi().get(i3);
-					if(!nodoLiv3.getTurn().equals("WW") && !nodoLiv3.getTurn().equals("BW"));
+					if(!nodoLiv3.getTurn().equalsTurn("WW") && !nodoLiv3.getTurn().equalsTurn("BW"));
 					{
 						try 
 						{
@@ -1645,7 +1645,7 @@ public class IntelligenzaBianca implements IA {
 				if(albero.get(4).getNodi().get(i4).getPadre() == nodoLiv3)
 				{
 					Nodo nodoLiv4 = albero.get(4).getNodi().get(i4);
-					if(!nodoLiv4.getTurn().equals("WW") && !nodoLiv4.getTurn().equals("BW"));
+					if(!nodoLiv4.getTurn().equalsTurn("WW") && !nodoLiv4.getTurn().equalsTurn("BW"));
 					{
 						try 
 						{
