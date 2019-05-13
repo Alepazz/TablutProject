@@ -44,7 +44,9 @@ public class CommonHeuristicFunction {
 	 * @return true se la posizione passata corrisponde ad una cittadella, false in caso contrario
 	 */
 	public boolean isCitadel(int riga, int colonna, StateTablut s) {
-		return isCitadel(s.getBox(riga, colonna));
+		if(riga>=0 && riga<9 && colonna>=0 && colonna<9)
+			return isCitadel(s.getBox(riga, colonna));
+		return false;
 	}
 	
 	/**
@@ -54,6 +56,17 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean isCitadel(String position) {
 		return this.citadels.contains(position);
+	}
+	
+	/**
+	 * Controlla se la posizione passata come parametro(coordinate riga-colonna) corrisponde al trono
+	 * @param riga Riga della posizione passata
+	 * @param colonna Colonna della posizione passata
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se la posizione passata corrisponde al trono, false in caso contrario
+	 */
+	public boolean isTheThrone(int riga, int colonna) {
+		return riga==4 && colonna==4;
 	}
 	
 	/**
@@ -792,23 +805,6 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return true se la pedina è circondata, false in caso contrario
 	 */
 	public boolean checkPawnBlocked(int riga, int colonna, StateTablut s) { 
-		/*
-		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
-		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
-			return (!this.checkWhiteCanArriveFromTop(riga+1, colonna, s)) &&
-					(!this.checkWhiteCanArriveFromBottom(riga-1, colonna, s)) &&
-					(!this.checkWhiteCanArriveFromLeft(riga, colonna+1, s)) &&
-					(!this.checkWhiteCanArriveFromRight(riga, colonna-1, s));
-		}
-		//La pedina passata è una pedina nera dentro una cittadella
-		if(s.getPawn(riga, colonna).equalsPawn("B")) { //Parte da correggere dopo aver corrette le checkNeighbour
-			return (!this.checkBlackCanArriveFromTop(riga+1, colonna, s)) &&
-					(!this.checkBlackCanArriveFromBottom(riga-1, colonna, s)) &&
-					(!this.checkBlackCanArriveFromLeft(riga, colonna+1, s)) &&
-					(!this.checkBlackCanArriveFromRight(riga, colonna-1, s));
-		}
-		return false;
-		*/
 		//La pedina passata è una pedina bianca, il re oppure una pedina nera fuori dalla cittadella
 		if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")
 				|| (s.getPawn(riga, colonna).equalsPawn("B") && !this.citadels.contains(s.getBox(riga, colonna)))) {
@@ -818,11 +814,11 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 					(!this.checkNeighbourRight(riga, colonna, s).equals("O"));
 		}
 		//La pedina passata è una pedina nera dentro una cittadella
-		if(s.getPawn(riga, colonna).equalsPawn("B") && this.citadels.contains(s.getBox(riga, colonna))) { //Parte da correggere dopo aver corrette le checkNeighbour
-			return (!this.checkNeighbourTop(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
-					(!this.checkNeighbourBottom(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
-					(!this.checkNeighbourLeft(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna))) &&
-					(!this.checkNeighbourRight(riga, colonna, s).equals("O") && !this.citadels.contains(s.getBox(riga, colonna)));
+		if(s.getPawn(riga, colonna).equalsPawn("B") && this.citadels.contains(s.getBox(riga, colonna))) {
+			return (!(this.checkNeighbourTop(riga, colonna, s).equals("O") || this.checkNeighbourTop(riga, colonna, s).equals("C"))) &&
+					(!(this.checkNeighbourBottom(riga, colonna, s).equals("O") || this.checkNeighbourBottom(riga, colonna, s).equals("C") )) &&
+					(!(this.checkNeighbourLeft(riga, colonna, s).equals("O") || this.checkNeighbourLeft(riga, colonna, s).equals("C"))) &&
+					(!(this.checkNeighbourRight(riga, colonna, s).equals("O") || this.checkNeighbourRight(riga, colonna, s).equals("C")));
 		}
 		return false;
 		
@@ -1750,7 +1746,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in alto
 			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
 				//Controlla se in alto c'è una pedina nera, il trono o una cittadella
-				if(s.getPawn(riga-1, colonna).equalsPawn("B") || s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+				if(s.getPawn(riga-1, colonna).equalsPawn("B") || this.isTheThrone(riga-1, colonna) || this.citadels.contains(s.getBox(riga-1,  colonna))){
 					return true;
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in alto
@@ -1761,7 +1757,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 				//Controlla se in alto c'è una pedina bianca, il re, il trono o una cittadella
 				if(s.getPawn(riga-1, colonna).equalsPawn("W") || s.getPawn(riga-1, colonna).equalsPawn("K")
-						|| s.getPawn(riga-1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga-1,  colonna))){
+						|| this.isTheThrone(riga-1, colonna) || this.citadels.contains(s.getBox(riga-1,  colonna))){
 					return true;
 				}
 			}
@@ -1783,7 +1779,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
 			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
 				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
-				if(s.getPawn(riga, colonna+1).equalsPawn("B") || s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+				if(s.getPawn(riga, colonna+1).equalsPawn("B") || this.isTheThrone(riga, colonna+1) || this.citadels.contains(s.getBox(riga,  colonna+1))){
 					return true;
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
@@ -1794,7 +1790,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
 				if(s.getPawn(riga, colonna+1).equalsPawn("W") || s.getPawn(riga, colonna+1).equalsPawn("K")
-						|| s.getPawn(riga, colonna+1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna+1))){
+						|| this.isTheThrone(riga, colonna+1) || this.citadels.contains(s.getBox(riga,  colonna+1))){
 					return true;
 				}
 			}
@@ -1816,7 +1812,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) in basso
 			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
 				//Controlla se in basso c'è una pedina nera, il trono o una cittadella
-				if(s.getPawn(riga+1, colonna).equalsPawn("B") || s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+				if(s.getPawn(riga+1, colonna).equalsPawn("B") || this.isTheThrone(riga+1, colonna) || this.citadels.contains(s.getBox(riga+1,  colonna))){
 					return true;
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) in basso
@@ -1827,7 +1823,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 				//Controlla se in basso c'è una pedina bianca, il re, il trono o una cittadella
 				if(s.getPawn(riga+1, colonna).equalsPawn("W") || s.getPawn(riga+1, colonna).equalsPawn("K")
-						|| s.getPawn(riga+1, colonna).equalsPawn("T") || this.citadels.contains(s.getBox(riga+1,  colonna))){
+						|| this.isTheThrone(riga+1, colonna) || this.citadels.contains(s.getBox(riga+1,  colonna))){
 					return true;
 				}
 			}
@@ -1849,7 +1845,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 			//Nel caso la pedina passata come parametro sia una pedina bianca(o il re) allora controlla se c'è una pedina nera(o cittadella) a destra
 			if(s.getPawn(riga, colonna).equalsPawn("W") || s.getPawn(riga, colonna).equalsPawn("K")) {
 				//Controlla se a destra c'è una pedina nera, il trono o una cittadella
-				if(s.getPawn(riga, colonna-1).equalsPawn("B") || s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+				if(s.getPawn(riga, colonna-1).equalsPawn("B") || this.isTheThrone(riga, colonna-1) || this.citadels.contains(s.getBox(riga,  colonna-1))){
 					return true;
 				}
 			//Nel caso la pedina passata come parametro sia una pedina nera allora controlla se c'è una pedina bianca(o cittadella) a destra
@@ -1860,7 +1856,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 				}
 				//Controlla se a destra c'è una pedina bianca, il re, il trono o una cittadella
 				if(s.getPawn(riga, colonna-1).equalsPawn("W") || s.getPawn(riga, colonna-1).equalsPawn("K")
-						|| s.getPawn(riga, colonna-1).equalsPawn("T") || this.citadels.contains(s.getBox(riga,  colonna-1))){
+						|| this.isTheThrone(riga, colonna-1) || this.citadels.contains(s.getBox(riga,  colonna-1))){
 					return true;
 				}
 			}

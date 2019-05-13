@@ -2225,7 +2225,6 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		//TODO: Caso particolare in cui il re copre il trono e la funzione checkNeighbour non lo individua
 		
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
@@ -2233,6 +2232,37 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertTrue(c.checkWhiteCanBeCaptured(3, 4, s));
+	}
+	
+	@Test
+	void checkWhiteCanBeCapturedTest_9() {
+		//Varianti del particolare caso in osservazione
+		board[3][4] = Pawn.BLACK;
+		board[4][4] = Pawn.KING;
+		board[2][6] = Pawn.WHITE;
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOWOO
+		 * OOOOBOOOO
+		 * OOOOKOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		//TODO: Caso particolare in cui il re copre il trono e la funzione checkNeighbour non lo individua
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkBlackCanBeCaptured(3, 4, s));
 	}
 	
 
@@ -4684,7 +4714,6 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		//TODO: Problema con la checkNeighbour
 		
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
@@ -4757,6 +4786,41 @@ class CommonHeuristicFunctionTest {
 		
 		//Esecuzione Test
 		Assert.assertFalse(c.checkPawnBlocked(4, 4, s));
+		
+	}
+	
+	@Test
+	void checkPawnBlockedTest_9() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][3] = Pawn.WHITE;
+		board[4][5] = Pawn.WHITE;
+		board[3][4] = Pawn.WHITE;
+		board[5][4] = Pawn.WHITE;
+		board[4][4] = Pawn.KING;
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOWOOOO
+		 * OOOWKWOOO     
+		 * OOOOWOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkPawnBlocked(4, 4, s));
 		
 	}
 	
