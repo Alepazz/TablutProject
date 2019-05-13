@@ -111,7 +111,7 @@ public class IntelligenzaBianca implements IA {
 					value=- VALUE_BLACK_PAWN;
 					if(common.checkBlackCanBeCaptured(i, j, s))
 					{
-						value=+ VALUE_BLACK_PAWN/2;
+						value += VALUE_BLACK_PAWN/2;
 					}
 					if(common.checkPawnBlocked(i, j, s)) {
 						value += VALUE_BLACK_PAWN/4;
@@ -120,10 +120,10 @@ public class IntelligenzaBianca implements IA {
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
 					nBianchi++;
-					value=+ VALUE_WHITE_PAWN;
+					value += VALUE_WHITE_PAWN;
 					if(common.checkWhiteCanBeCaptured(i, j, s))
 					{
-						value=- VALUE_WHITE_PAWN/2;
+						value -= VALUE_WHITE_PAWN/2;
 					}
 					if(common.checkPawnBlocked(i, j, s)) {
 						value -= VALUE_WHITE_PAWN/4;
@@ -137,13 +137,6 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
-		/*
-		//Controlla se il re si può muovere, se si, riassegna il valore value
-		if(!common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
-			value = 20000 + getKingPositionValue(rigaRe, colonnaRe, s);
-		}
-		*/
-		
 		if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
 				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
@@ -156,7 +149,15 @@ public class IntelligenzaBianca implements IA {
 			value += 3000;
 		}
 		
-		//TODO: Aggiungere caso in cui il re, fuori dal trono, può essere mangiato: tolgo 3000
+		//valuto molto il fatto che il re, fuori dal trono, possa essere mangiato
+		if((rigaRe != 4 || colonnaRe != 4) && common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
+			value -= 3000;
+		}
+		
+		//se il re può essere mangiato, allora ho un valore negativissimo
+		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
+			value -= this.MAX_VALUE;
+		}
 		
 		// cerco di creare uno stato in cui il re possa uscire dal trono
 		if(rigaRe == 4  && colonnaRe == 4) {
@@ -174,13 +175,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		if(common.getNumberOfColor("W", s)*3 < common.getNumberOfColor("B", s)) {
-			value -= 900 - (common.getNumberOfColor("W", s) * 50); //per ogni pedina bianca tolgo 50
-		}
-		
-		//Controllo se il re viene mangiato in qualsiasi posizione sia
-		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
-		{
-			value -= 10000;
+			value -= (900 - (common.getNumberOfColor("W", s) * 50)); //per ogni pedina bianca tolgo 50
 		}
 		
 		//controllo vie di fuga re
@@ -359,7 +354,7 @@ public class IntelligenzaBianca implements IA {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return Ritorna un intero che indica il valore che è stato assegnato allo stato passato come parametro
 	 */
-	private int getHeuristicValueOfState(StateTablut s) {
+	/*private int getHeuristicValueOfState(StateTablut s) {
 		if(s.getTurn().equalsTurn("WW"))
 		{
 			return this.MAX_VALUE;
@@ -404,7 +399,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
-	}
+	}*/
 	
 	private class TreeGenerator2 implements Runnable {
 		private Nodo nodoAttuale;
@@ -1471,6 +1466,7 @@ public class IntelligenzaBianca implements IA {
 							n.setValue(albero.get(0).getNodi().get(0).getValue());
 						}
 					}
+					System.out.println("Valore livello 1: " + nodoLiv1.getValue());
 					this.calcoloEspLiv2(nodoLiv1, nodoLiv0, liv3, liv4, liv5);
 				} 
 				catch (Exception e) 
@@ -1497,6 +1493,7 @@ public class IntelligenzaBianca implements IA {
 						{
 							List<Nodo> daAggiungere = this.mossePossibiliComplete(nodoLiv2);
 							this.sortLivGenD(daAggiungere);
+							System.out.println("Mossa migliore da aggiungere: " + daAggiungere.get(0).getValue());
 							liv3.add(daAggiungere);
 							for(Nodo n : liv3.getNodi())
 							{
@@ -1520,6 +1517,7 @@ public class IntelligenzaBianca implements IA {
 								{
 									albero.get(0).getNodi().get(0).setValue(nodoLiv1.getValue());
 									a = nodoLiv1.getAzione();
+									System.out.println("Valore livello 2: " + nodoLiv1.getValue());
 									for(Nodo nodoo : albero.get(1).getNodi())
 									{
 										nodoo.setValue(albero.get(0).getNodi().get(0).getValue());
