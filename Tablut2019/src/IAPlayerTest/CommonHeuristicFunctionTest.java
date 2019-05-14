@@ -2255,8 +2255,6 @@ class CommonHeuristicFunctionTest {
 		 * 
 		 * */
 		
-		//TODO: Caso particolare in cui il re copre il trono e la funzione checkNeighbour non lo individua
-		
 		//Creazione dello stato con la precedente disposizione delle pedine
 		s.setBoard(board);
 		s.setTurn(Turn.WHITE);
