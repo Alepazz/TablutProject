@@ -5001,6 +5001,68 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void blackCannotBlockEscapeTest_6() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[6][4] = Pawn.KING;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOKOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.blackCannotBlockEscape(6, 4, s));
+		
+	}
+	
+	@Test
+	void blackCannotBlockEscapeTest_7() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[6][4] = Pawn.KING;
+		board[6][1] = Pawn.BLACK;
+		board[6][7] = Pawn.BLACK;
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OBOOKOOBO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.BLACK);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.blackCannotBlockEscape(6, 4, s));
+		
+	}
+	
+	@Test
 	void blackIsIsolatedTest_1() {
 	
 	
@@ -5295,6 +5357,168 @@ class CommonHeuristicFunctionTest {
 		nuovoStato.setBoard(board2);
 		
 		Assert.assertEquals(2, c.canMoveWhite(2, 2, "B", nuovoStato));
+	}
+	
+	@Test
+	void checkFreeColBottomTest_1() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][2] = Pawn.KING;
+
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOKOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkFreeColBottom(4, 2, s));
+		
+	}
+	
+	@Test
+	void checkFreeColBottomTest_2() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][2] = Pawn.KING;
+		board[8][2] = Pawn.BLACK;
+
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOKOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOBOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkFreeColBottom(4, 2, s));
+		
+	}
+	
+	@Test
+	void checkFreeColBottomTest_3() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[4][2] = Pawn.KING;
+		board[5][2] = Pawn.BLACK;
+
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOKOOOOOO     
+		 * OOBOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkFreeColBottom(4, 2, s));
+		
+	}
+	
+	@Test
+	void checkFreeColBottomTest_4() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[3][1] = Pawn.KING;
+
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OKOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertFalse(c.checkFreeColBottom(3, 1, s));
+		
+	}
+	
+	@Test
+	void checkFreeColBottomTest_5() {	
+		
+		//Varianti del particolare caso in osservazione
+		board[8][2] = Pawn.WHITE;
+
+		
+		
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO     
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOWOOOOOO
+		 * 
+		 * */
+		
+		
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		s.setTurn(Turn.WHITE);
+		
+		//Esecuzione Test
+		Assert.assertTrue(c.checkFreeColBottom(8, 2, s));
+		
 	}
 	
 }

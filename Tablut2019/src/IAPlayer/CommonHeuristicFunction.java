@@ -292,96 +292,59 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se dato un re con SOLO una via di fuga, quella via di fuga non può essere chiusa dalle pedine nere
+	 * Controlla se dato un re con almeno una via di fuga, le vie di fuga non possono essere chiuse dalle pedine nere
+	 * Nel caso le vie di fuga siano più di una, allora ritorna true se almeno una non può essere chiusa dalle pedine nere
 	 * @param riga Riga in cui si trova il re
 	 * @param colonna Colonna in cui si il re
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se esiste almeno una via di fuga del re che non può essere chiusa dalle pedine nere, false in caso contrario
 	 */
-	public boolean blackCannotBlockEscape(int rigaRe, int colonnaRe, StateTablut s) { //DA CORREGGERE
+	public boolean blackCannotBlockEscape(int rigaRe, int colonnaRe, StateTablut s) {
 			
-		boolean escapeBlocked=false;
+		//Numero di vie di fuga del re
+		int numberOfEscape=this.checkVieDiFugaRe(rigaRe, colonnaRe, s);
+		
+		if(numberOfEscape==0) {
+			return false;
+		}
 			
 		//Via di fuga sotto
-		for(int i=rigaRe+1; i<9 && !escapeBlocked; i++)
-		{
-			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
-			{
-				escapeBlocked=true;
-			}
-		}
-		if(!escapeBlocked)
-		{
+		if(this.checkFreeColBottom(rigaRe, colonnaRe, s) && numberOfEscape>0) {
 			for(int i=rigaRe+1; i<9; i++)
 			{
 				if(this.checkBlackCanArrive(i, colonnaRe, s))
-				{
-					return false;
-				}
+					numberOfEscape--;
 			}
 		}
-		escapeBlocked=false;
 		
 		//Via di fuga sopra
-		for(int i=rigaRe-1; i>=0 && !escapeBlocked; i--)
-		{
-			if(!s.getPawn(i, colonnaRe).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonnaRe)))
-			{
-				escapeBlocked=true;
-			}
-		}
-		if(!escapeBlocked)
-		{
+		if(this.checkFreeColTop(rigaRe, colonnaRe, s) && numberOfEscape>0) {
 			for(int i=rigaRe-1; i>=0; i--)
 			{
 				if(this.checkBlackCanArrive(i, colonnaRe, s))
-				{
-					return false;
-				}
+					numberOfEscape--;
 			}
 		}
-		escapeBlocked=false;
 		
 		//Via di fuga a destra
-		for(int i=colonnaRe+1; i<9 && !escapeBlocked; i++)
-		{
-			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
-			{
-				escapeBlocked=true;
-			}
-		}
-		if(!escapeBlocked)
-		{
+		if(this.checkFreeRowRight(rigaRe, colonnaRe, s) && numberOfEscape>0) {
 			for(int i=colonnaRe+1; i<9; i++)
 			{
 				if(this.checkBlackCanArrive(rigaRe, i, s))
-				{
-					return false;
-				}
+					numberOfEscape--;
 			}
 		}
-		escapeBlocked=false;
 		
 		//Via di fuga a sinistra
-		for(int i=colonnaRe-1; i>=0 && !escapeBlocked; i--)
-		{
-			if(!s.getPawn(rigaRe, i).equalsPawn("O") || this.citadels.contains(s.getBox(rigaRe, i)))
-			{
-				escapeBlocked=true;
-			}
-		}
-		if(!escapeBlocked)
-		{
+		if(this.checkFreeRowLeft(rigaRe, colonnaRe, s) && numberOfEscape>0) {
 			for(int i=colonnaRe-1; i>=0; i--)
 			{
 				if(this.checkBlackCanArrive(rigaRe, i, s))
-				{
-					return false;
-				}
+					numberOfEscape--;
 			}
 		}
 		
-		return true;
+		return (numberOfEscape>=1);
 	}
 		
 	/**
@@ -2005,33 +1968,32 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	
 	/**
 	 * Controlla se data una cella, tutte le celle alla destra sono libere (non occupate da bianchi, neri, trono o cittadelle)
-	 * 
-	 * @param rigaRe Riga in cui si trova la cella da valutare
-	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * Se la cella passata si trova nel bordo a destra, la riga a destra viene considerata lo stesso vuota
+	 * @param riga Riga in cui si trova la cella da valutare
+	 * @param colonna Colonna in cui si trova la cella da valutare
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi alla destra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	public boolean checkFreeRowRight(int riga, int colonna, StateTablut s) {
 		for(int i=colonna+1; i<9; i++){
-			if(s.getPawn(riga, i).equalsPawn("B") || s.getPawn(riga, i).equalsPawn("W") || s.getPawn(riga, i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, i))) {
+			if(!s.getPawn(riga, i).equalsPawn("B") || this.citadels.contains(s.getBox(riga, i))) {
 				return false;
 			}
-		}
-	
+		}	
 		return true;
 	}
 	
 	/**
 	 * Controlla se data una cella, tutte le celle alla sinsitra sono libere (non occupate da bianchi, neri, trono o cittadelle)
-	 * 
-	 * @param rigaRe Riga in cui si trova la cella da valutare
-	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * Se la cella passata si trova nel bordo a sinistra, la riga a sinistra viene considerata lo stesso vuota
+	 * @param riga Riga in cui si trova la cella da valutare
+	 * @param colonna Colonna in cui si trova la cella da valutare
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi alla sinistra della cella specificata da @riga + @colonna, false in caso contrario
 	 */
 	public boolean checkFreeRowLeft(int riga, int colonna, StateTablut s) {
 		for(int i=colonna-1; i>=0; i--) {
-			if(s.getPawn(riga, colonna-i).equalsPawn("B") || s.getPawn(riga, colonna-i).equalsPawn("W") || s.getPawn(riga, colonna-i).equalsPawn("T") || this.citadels.contains(s.getBox(riga, colonna-i))) {
+			if(!s.getPawn(riga, i).equalsPawn("O") || this.citadels.contains(s.getBox(riga, i))) {
 				return false;
 			}
 		}
@@ -2040,39 +2002,35 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	
 	/**
 	 * Controlla se data una cella, tutte le celle sopra di essa sono libere (non occupate da bianchi, neri, trono o cittadelle)
-	 * 
-	 * @param rigaRe Riga in cui si trova la cella da valutare
-	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * Se la cella passata si trova nel bordo alto, la colonna sopra viene considerata lo stesso vuota
+	 * @param riga Riga in cui si trova la cella da valutare
+	 * @param colonna Colonna in cui si trova la cella da valutare
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi sopra la cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeColTop(int rigaRe, int colonnaRe, StateTablut s) {
-		
-		for(int i=rigaRe-1; i>=0; i--) {
-			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W")) {
+	public boolean checkFreeColTop(int riga, int colonna, StateTablut s) {	
+		for(int i=riga-1; i>=0; i--) {
+			if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna))) {
 				return false;
 			}
-		}
-		
-		return true;
-		
+		}	
+		return true;	
 	}
 	
 	/**
 	 * Controlla se data una cella, tutte le celle sotto di essa sono libere (non occupate da bianchi, neri, trono o cittadelle)
-	 * 
-	 * @param rigaRe Riga in cui si trova la cella da valutare
-	 * @param colonnaRe Colonna in cui si trova la cella da valutare
+	 * Se la cella passata si trova nel bordo basso, la colonna sotto viene considerata lo stesso vuota
+	 * @param riga Riga in cui si trova la cella da valutare
+	 * @param colonna Colonna in cui si trova la cella da valutare
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se non ci sono elementi sotto la cella specificata da @riga + @colonna, false in caso contrario
 	 */
-	public boolean checkFreeColBottom(int rigaRe, int colonnaRe, StateTablut s) {
-		for(int i=rigaRe+1; i<9; i++) {
-			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W")) {
+	public boolean checkFreeColBottom(int riga, int colonna, StateTablut s) {
+		for(int i=riga+1; i<9; i++) {
+			if(!s.getPawn(i, colonna).equalsPawn("O") || this.citadels.contains(s.getBox(i, colonna))) {
 				return false;
 			}
-		}
-		
+		}		
 		return true;
 	}
 
