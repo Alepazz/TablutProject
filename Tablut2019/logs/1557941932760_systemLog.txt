@@ -1,0 +1,24 @@
+mag 15, 2019 7:38:52 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+mag 15, 2019 7:38:52 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+mag 15, 2019 7:38:55 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Bianco
+mag 15, 2019 7:38:55 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player bianco in corso..
+mag 15, 2019 7:38:56 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: White player name:	Partecipar
+mag 15, 2019 7:38:57 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Nero
+mag 15, 2019 7:38:57 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player nero in corso..
+mag 15, 2019 7:38:58 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Black player name:	random
+mag 15, 2019 7:39:00 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai giocatori
+mag 15, 2019 7:39:00 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 15, 2019 7:40:00 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Timeout! Player W lose!
+mag 15, 2019 7:40:00 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Chiusura sistema per timeout

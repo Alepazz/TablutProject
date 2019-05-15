@@ -149,8 +149,8 @@ public class IntelligenzaBianca implements IA {
 			value += 3000;
 		}
 		
-		//valuto molto il fatto che il re, fuori dal trono, possa essere mangiato
-		if((rigaRe != 4 || colonnaRe != 4) && common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
+		//valuto molto il fatto che il re, fuori dal trono, possa essere mangiato -- compensa quella di prima
+		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
 			value -= 3000;
 		}
 		
@@ -3197,7 +3197,6 @@ public class IntelligenzaBianca implements IA {
 		return a;
 	}*/
 	
-	//ROBA DI PIRO
 	private class TreeGenerator3 implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
@@ -3208,7 +3207,6 @@ public class IntelligenzaBianca implements IA {
 		private boolean taglioLivello3;
 		private boolean taglioLivello4;
 		private boolean taglioLivello5;
-		private boolean taglioLivello6;
 		private Livello liv0;
 		private Livello liv1;
 		private Livello liv2;
@@ -3222,7 +3220,6 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoLiv2;
 		private Nodo nodoLiv3;
 		private Nodo nodoLiv4;
-		//private Nodo nodoLiv6;
 		
 		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
@@ -3243,7 +3240,6 @@ public class IntelligenzaBianca implements IA {
 			taglioLivello3 = false;
 			taglioLivello4 = false;
 			taglioLivello5 = false;
-			//taglioLivello6 = false;
 
 			//aggiungo il livello 0
 			this.liv0 = new Livello();
@@ -3292,12 +3288,14 @@ public class IntelligenzaBianca implements IA {
 			
 			System.out.println("Terminazione thread treeGenerator");
 			System.out.println("Tempo utilizzato: "+(System.currentTimeMillis()-t1));
+			//System.out.notifyAll();
 		}
-		
-		
 		
 		private void getValueOfNodeLiv1() {
 			try {
+				if(this.nodoLiv1.getValue() <= this.nodoLiv0.getValue()) {
+					return;
+				}
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv1);
 				this.sortLivGenC(daAggiungere);
 				this.liv2.add(daAggiungere);
@@ -3310,9 +3308,9 @@ public class IntelligenzaBianca implements IA {
 				{
 					this.nodoLiv1.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !taglioLivello2 && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
+					for(int i=0; i<daAggiungere.size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv2 = daAggiungere.get(i);
 						this.nodoLiv2.setValue(this.nodoLiv0.getValue());
@@ -3321,13 +3319,13 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv1.setValue(this.nodoLiv2.getValue());
 						}
-						if(this.nodoLiv1.getValue() < this.nodoLiv0.getValue()) {
+						if(this.nodoLiv1.getValue() <= this.nodoLiv0.getValue()) {
 							taglioLivello2 = true;
 						}
 					}
 				}
-				
 				taglioLivello2 = false;
+				
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -3337,6 +3335,9 @@ public class IntelligenzaBianca implements IA {
 		
 		private void getValueOfNodeLiv2() {
 			try {
+				if(this.nodoLiv2.getValue() >= this.nodoLiv1.getValue()) {
+					return;
+				}
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv2);
 				this.sortLivGenD(daAggiungere);
 				this.liv3.add(daAggiungere);
@@ -3348,9 +3349,10 @@ public class IntelligenzaBianca implements IA {
 				{
 					this.nodoLiv2.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") &&!taglioLivello3 && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
+					
+					for(int i=0; i<daAggiungere.size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv3 = daAggiungere.get(i);
 						this.nodoLiv3.setValue(this.nodoLiv0.getValue());
@@ -3359,13 +3361,13 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv2.setValue(this.nodoLiv3.getValue());
 						}
-						if(this.nodoLiv2.getValue() > this.nodoLiv1.getValue()) {
+						if(this.nodoLiv2.getValue() >= this.nodoLiv1.getValue()) {
 							taglioLivello3 = true;
 						}
 					}
 				}
-				
 				taglioLivello3 = false;
+				
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -3375,6 +3377,9 @@ public class IntelligenzaBianca implements IA {
 
 		private void getValueOfNodeLiv3() {
 			try {
+				if(this.nodoLiv3.getValue() <= this.nodoLiv2.getValue()) {
+					return;
+				}
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv3);
 				this.sortLivGenC(daAggiungere);
 				this.liv4.add(daAggiungere);
@@ -3397,27 +3402,27 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv3.setValue(this.nodoLiv4.getValue());
 						}
-						if(this.nodoLiv3.getValue() < this.nodoLiv2.getValue()) {
+						if(this.nodoLiv3.getValue() <= this.nodoLiv2.getValue()) {
 							taglioLivello4 = true;
 						}
 					}
 				}
-				taglioLivello4 = false;
-				
-				
-				
+				taglioLivello4 = false;				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
 		
-		/*private void getValueOfNodeLiv3(){
-			this.nodoLiv3.setValue(this.ia.getHeuristicValue(this.nodoLiv3.getStato()));
+		/*private void getValueOfNodeLiv4(){
+			this.nodoLiv4.setValue(this.ia.getHeuristicValue(this.nodoLiv4.getStato()));
 		}*/
 		
-		/*private void getValueOfNodeLiv4() {
+		private void getValueOfNodeLiv4() {
 			try {
+				if(this.nodoLiv4.getValue() >= this.nodoLiv3.getValue()) {
+					return;
+				}
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv4);
 				this.sortLivGenD(daAggiungere);
 				this.liv5.add(daAggiungere);
@@ -3440,7 +3445,7 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv4.setValue(this.nodoLiv5.getValue());
 						}
-						if(this.nodoLiv4.getValue() > this.nodoLiv3.getValue()) {
+						if(this.nodoLiv4.getValue() >= this.nodoLiv3.getValue()) {
 							taglioLivello5 = true;
 						}
 					}
@@ -3453,56 +3458,11 @@ public class IntelligenzaBianca implements IA {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
-		}*/
-		
-		private void getValueOfNodeLiv4() {
-			this.nodoLiv4.setValue(this.ia.getHeuristicValue(this.nodoLiv4.getStato()));
 		}
 		
-		/*private void getValueOfNodeLiv5() {
-			try {
-				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv5);
-				this.sortLivGenC(daAggiungere);
-				this.liv6.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
-				{
-					this.nodoLiv5.setValue(-10000);
-				}
-				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
-				{
-					this.nodoLiv5.setValue(10000);
-				}
-				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW")) 
-				{
-					for(int i=0; i<daAggiungere.size() && !taglioLivello6 && !Thread.currentThread().isInterrupted(); i++) 
-					{
-						this.nodoLiv6 = daAggiungere.get(i);
-						this.nodoLiv6.setValue(this.nodoLiv0.getValue());
-						this.getValueOfNodeLiv6();
-						if(Float.isNaN(this.nodoLiv5.getValue()) || this.nodoLiv5.getValue() < this.nodoLiv6.getValue()) 
-						{
-							this.nodoLiv5.setValue(this.nodoLiv6.getValue());
-						}
-						if(this.nodoLiv5.getValue() < this.nodoLiv4.getValue()) 
-						{
-							taglioLivello6 = true;
-						}
-					}
-				}
-				
-				taglioLivello6 = false;
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		private void getValueOfNodeLiv6() {
-			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
-		}*/
-		
-		/*private void getValueOfNodeLiv5() {
+		private void getValueOfNodeLiv5() {
 			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
-		}*/
+		}
 		
 		//metodo di sort del livello 1
 		private void sortLiv1(Livello liv1)
@@ -3512,19 +3472,20 @@ public class IntelligenzaBianca implements IA {
 				Nodo nodo = liv1.getNodi().get(x);
 				if(nodo.getStato().getTurn().equalsTurn("WW"))
 				{
-					nodo.setValue(10000);
+					nodo.setValue(100000);
 				}
 				if(nodo.getStato().getTurn().equalsTurn("BW"))
 				{
-					nodo.setValue(-10000);
+					nodo.setValue(-100000);
 				}
 				if(this.ia.checkDraw(nodo.getStato()))
 				{
 					nodo.setValue(-5000);
+					nodo.getStato().setTurn(Turn.DRAW);
 				}
 				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
 				{
-					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+					nodo.setValue(this.ia.getHeuristicValue(nodo.getStato()));
 				}
 				Collections.sort(liv1.getNodi(), new Comparator<Nodo>() {
 					@Override
@@ -3548,7 +3509,8 @@ public class IntelligenzaBianca implements IA {
 				
 		//metodo per il riordinamento livello 1, da cambiare
 		private float setSimpleHeuristic(StateTablut s) {
-			int nBianchi = 1;
+			return this.ia.getHeuristicValue(s);
+			/*int nBianchi = 1;
 			int nNeri=0;
 			for(int x =0 ; x<9; x++)
 			{
@@ -3564,7 +3526,7 @@ public class IntelligenzaBianca implements IA {
 					}
 				}
 			}
-			return 2*nBianchi-nNeri;				
+			return 2*nBianchi-nNeri;*/				
 		}
 	
 		//metodo per ordinare in ordine crescente (con simple heuristic) una lista di nodi
