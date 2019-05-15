@@ -3369,17 +3369,17 @@ public class IntelligenzaBianca implements IA {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv3);
 				this.sortLivGenC(daAggiungere);
 				this.liv4.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv3.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv3.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
+					for(int i=0; i<daAggiungere.size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv4 = daAggiungere.get(i);
 						this.nodoLiv4.setValue(this.nodoLiv0.getValue());
@@ -3388,8 +3388,12 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv3.setValue(this.nodoLiv4.getValue());
 						}
+						if(this.nodoLiv3.getValue() < this.nodoLiv2.getValue()) {
+							taglioLivello4 = true;
+						}
 					}
 				}
+				taglioLivello4 = false;
 				
 				
 				
@@ -3399,8 +3403,8 @@ public class IntelligenzaBianca implements IA {
 			}			
 		}
 		
-	/*	private void getValueOfNodeLiv4(){
-			this.nodoLiv4.setValue(this.ia.getHeuristicValue(this.nodoLiv4.getStato()));
+		/*private void getValueOfNodeLiv3(){
+			this.nodoLiv3.setValue(this.ia.getHeuristicValue(this.nodoLiv3.getStato()));
 		}*/
 		
 		private void getValueOfNodeLiv4() {
@@ -3408,17 +3412,17 @@ public class IntelligenzaBianca implements IA {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv4);
 				this.sortLivGenD(daAggiungere);
 				this.liv5.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv2.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv2.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
+					for(int i=0; i<daAggiungere.size() && !taglioLivello5 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv5 = daAggiungere.get(i);
 						this.nodoLiv5.setValue(this.nodoLiv0.getValue());
@@ -3427,9 +3431,13 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv4.setValue(this.nodoLiv5.getValue());
 						}
+						if(this.nodoLiv4.getValue() > this.nodoLiv3.getValue()) {
+							taglioLivello5 = true;
+						}
 					}
 				}
 				
+				taglioLivello5 = false;
 				
 				
 			} catch (Exception e) {
