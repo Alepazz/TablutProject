@@ -165,7 +165,7 @@ public class IntelligenzaNera implements IA {
 		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
 		{
 			
-			return this.MAX_VALUE;
+			return this.MAX_VALUE-1;
 			
 		}
 		
@@ -211,8 +211,12 @@ public class IntelligenzaNera implements IA {
 		else {
 			
 			
-			value += this.getValueofDiagonali(neri, rigaRe, colonnaRe, s);
+			value += this.getValueofDiagonali(neri, s);
+			value += this.getValueOfPosizioneDelleNere(neri, s);
+			value += this.getValueOfSpostamentoDelRe(neri, rigaRe, colonnaRe, s);
 			
+			
+			//pedine già posizionate
 			value +=this.getValueOfReAccerchiato(neri, rigaRe, colonnaRe, s);
 			
 			value +=this.getValueOfBianchiScappano(bianchi, s);
@@ -273,11 +277,17 @@ public class IntelligenzaNera implements IA {
 				
 				}
 			}
-		System.out.println("valore"+value);
+		//System.out.println("valore"+value);
 		return value;
 	}
 	
-	private int getValueofDiagonali(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
+
+	//microfunzioni di cui si analizza il valore
+	//caso in cui pedina sulla diagonale
+	//caso in cui pedine vicine sulla diagonale
+	//caso re fuori dalle macroaree
+	//caso re fuori orizz o verticale
+	private int getValueofDiagonali(List<String> posNeri, StateTablut s) {
 		int value=0;
 		 //controllo che possa andare in una delle posizioni buone (per le prime mosse)
 		/*
@@ -291,6 +301,14 @@ public class IntelligenzaNera implements IA {
 		 * OOOBOBOOO
 		 * OOOOOOOOO
 		 * */
+		//caso in cui le pedine ci sono già
+		for(String st : this.perfectPos ) {
+			if(posNeri.contains(st)) {
+				value += 500;
+				}
+			}
+		
+		//caso in cui le pedine possano avvicinarsi alla diagonale
 		if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
 			value +=100;
 		if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -319,6 +337,16 @@ public class IntelligenzaNera implements IA {
 			value+=100;
 		if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
 			value+=100;
+		
+		return value;
+	}
+	
+	/***
+	 * se ci sono delle nere già posizionate do più importanza alle pedine che ci sono nella diagonale opposta
+	 * */
+	
+	private int getValueOfPosizioneDelleNere(List<String> posNeri, StateTablut s) {
+		int value=0;
 		//hanno tutte lo stesso valore
 		//ora faccio le casistiche in cui ci sono già dei neri sulla diagonale
 		for(String st : this.perfectPos ) {
@@ -327,6 +355,12 @@ public class IntelligenzaNera implements IA {
 				int colonna = Integer.parseInt(st)%10;
 				//se si trova in basso a destra
 				if(riga> 4 && colonna >4){
+					if(posNeri.contains("13"))
+						value+= 100;
+					if(posNeri.contains("22"))
+						value+= 100;
+					if(posNeri.contains("31"))
+						value+= 100;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -336,6 +370,12 @@ public class IntelligenzaNera implements IA {
 				}
 				//se si trova in basso a sinistra
 				if(riga>4 && colonna <4) {
+					if(posNeri.contains("15"))
+						value+= 100;
+					if(posNeri.contains("26"))
+						value+= 100;
+					if(posNeri.contains("37"))
+						value+= 100;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -345,6 +385,12 @@ public class IntelligenzaNera implements IA {
 				}
 				//se si trova in alto a destra
 				if(riga < 4 && colonna > 4) {
+					if(posNeri.contains("51"))
+						value+= 100;
+					if(posNeri.contains("62"))
+						value+= 100;
+					if(posNeri.contains("73"))
+						value+= 100;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
@@ -353,6 +399,12 @@ public class IntelligenzaNera implements IA {
 						value += 30;
 				}
 				if(riga < 4 && colonna < 4) {
+					if(posNeri.contains("75"))
+						value+= 100;
+					if(posNeri.contains("66"))
+						value+= 100;
+					if(posNeri.contains("57"))
+						value+= 100;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
 						value+=30;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
@@ -363,9 +415,30 @@ public class IntelligenzaNera implements IA {
 			}
 				
 		}
+		return value;
+	}
+	
+	/***
+	 * valuta quando il re si muove e cerca di mettere più pedine nere nelle 4 macro aree 
+	 * nel caso il re si muove solo sulla linea verticale o orizzontale metto le pedine nel semipiano
+	 * @param posNeri
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return
+	 */
+	private int getValueOfSpostamentoDelRe(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
+		int value =0;
 		//caso in cui il re si sposta in una delle 4 macroaree
 		if(rigaRe != 4 && colonnaRe != 4) {
 			if(rigaRe> 4 && colonnaRe >4){
+			//pedina già nella diagonale valore molto alto, se ci può arrivare valore minore
+				if(posNeri.contains("75"))
+					value+= 100;
+				if(posNeri.contains("66"))
+					value+= 100;
+				if(posNeri.contains("57"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -375,6 +448,12 @@ public class IntelligenzaNera implements IA {
 			}
 			//se si trova in basso a sinistra
 			if(rigaRe>4 && colonnaRe <4) {
+				if(posNeri.contains("51"))
+					value+= 100;
+				if(posNeri.contains("62"))
+					value+= 100;
+				if(posNeri.contains("73"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -384,6 +463,12 @@ public class IntelligenzaNera implements IA {
 			}
 			//se si trova in alto a destra
 			if(rigaRe < 4 && colonnaRe > 4) {
+				if(posNeri.contains("15"))
+					value+= 100;
+				if(posNeri.contains("26"))
+					value+= 100;
+				if(posNeri.contains("37"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
@@ -392,6 +477,12 @@ public class IntelligenzaNera implements IA {
 					value += 60;
 			}
 			if(rigaRe < 4 && colonnaRe < 4) {
+				if(posNeri.contains("13"))
+					value+= 100;
+				if(posNeri.contains("22"))
+					value+= 100;
+				if(posNeri.contains("31"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
 					value+=60;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
@@ -404,6 +495,17 @@ public class IntelligenzaNera implements IA {
 		//si sposta in verticale
 		if(rigaRe != 4 && colonnaRe ==4) {
 			if(rigaRe <4){
+				if(posNeri.contains("13"))
+					value+= 100;
+				if(posNeri.contains("22"))
+					value+= 100;
+				if(posNeri.contains("31"))
+					value+= 100;
+				if(posNeri.contains("15"))
+					value+= 100;
+				if(posNeri.contains("26"))
+					value+= 100;
+				if(posNeri.contains("37"))
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -418,6 +520,18 @@ public class IntelligenzaNera implements IA {
 					value += 50;
 			}
 			if(rigaRe > 4) {
+				if(posNeri.contains("51"))
+					value+= 100;
+				if(posNeri.contains("62"))
+					value+= 100;
+				if(posNeri.contains("73"))
+					value+= 100;
+				if(posNeri.contains("75"))
+					value+= 100;
+				if(posNeri.contains("66"))
+					value+= 100;
+				if(posNeri.contains("57"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
@@ -434,6 +548,18 @@ public class IntelligenzaNera implements IA {
 		}
 		if(rigaRe == 4 && colonnaRe !=4) {
 			if( colonnaRe <4){
+				if(posNeri.contains("13"))
+					value+= 100;
+				if(posNeri.contains("22"))
+					value+= 100;
+				if(posNeri.contains("31"))
+					value+= 100;
+				if(posNeri.contains("51"))
+					value+= 100;
+				if(posNeri.contains("62"))
+					value+= 100;
+				if(posNeri.contains("73"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -448,6 +574,18 @@ public class IntelligenzaNera implements IA {
 					value += 50;
 			}
 			if(colonnaRe >4) {
+				if(posNeri.contains("15"))
+					value+= 100;
+				if(posNeri.contains("26"))
+					value+= 100;
+				if(posNeri.contains("37"))
+					value+= 100;
+				if(posNeri.contains("75"))
+					value+= 100;
+				if(posNeri.contains("66"))
+					value+= 100;
+				if(posNeri.contains("57"))
+					value+= 100;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -469,26 +607,62 @@ public class IntelligenzaNera implements IA {
 		return value;
 	}
 	
+	/***
+	 * 
+	 * @param posNeri
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return il valore "massimo" qui può essere diviso per 4 se il re è sul trono, per 3 se è vicino altrimenti per 2
+	 */
 	private int getValueOfReAccerchiato(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
 		int value=0;
-		//controllo che le pedine possano arrivare al re senza essere mangiate
-		if(common.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
-			value+= 1100;
-		if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
-			value+= 1100;
-		if(common.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
-			value+= 1100;
-		if(common.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
-			value+= 1100;
-		//se una pedina è già vicino al re e non rischia di essere mangiata deve rimanere lì
-		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
-			value+=5000;
-		if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
-			value+=5000;
-		if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
-			value+=5000;
-		if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
-			value+=5000;
+		
+		//casistiche del re dentro o fuori dal trono
+		if(common.kingOnTheThrone(rigaRe, colonnaRe)) {
+			//deve essere accerchiato sui 4 lati
+			//se una pedina è già vicino al re e non rischia di essere mangiata deve rimanere lì
+			if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
+				value+=1000;
+			if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
+				value+=1000;
+			if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
+				value+=1000;
+			if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
+				value+=1000;
+			//controllo che le pedine possano arrivare al re senza essere mangiate
+			if(common.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
+				value+= 30;
+			if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
+				value+= 30;
+			if(common.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
+				value+= 30;
+			if(common.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s) && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
+				value+= 30;
+		}
+		//se il re si trova vicino al trono (servono 3 neri per catturarlo)
+		if(common.kingAdjacentToTheThrone(rigaRe, colonnaRe)) {
+			if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") &&
+					(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B")))
+				value += 2000;
+			if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") &&
+					(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B")))
+				value += 2000;
+			
+				
+		}
+		
+		//se il re si trova in qualsiasi altro punto del piano (servono 2 neri per catturarlo)
+		else {
+			if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B"))
+				value += 3000;
+			if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B"))
+				value += 3000;
+			
+				
+		}
+
+		
 		
 		
 		return value;
