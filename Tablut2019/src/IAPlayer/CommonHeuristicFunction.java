@@ -1943,6 +1943,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi verticalmente dal basso all' alto, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
 	 */
+	//TODO:controllare questa funzione
 	public boolean checkFreeRowComingFromBottom(int rigaRe, int colonnaRe, StateTablut s){
 		for(int i=rigaRe-1; i==2; i++){
 			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe-i, colonnaRe))) {
