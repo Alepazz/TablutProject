@@ -25,8 +25,7 @@ import java.util.List;
 public class IntelligenzaBianca implements IA {
 
 
-	private static final int TIMETOSTOPTREEGENERATOR = 30000;
-	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
+	private int TIMETOSTOPTREEGENERATOR;
 	private List<String> citadels;
 	private static List<Livello> albero;
 	private static Action a = null;
@@ -38,12 +37,13 @@ public class IntelligenzaBianca implements IA {
 	private CommonHeuristicFunction common;
 	private List<StateTablut> listState; 
 	
-	public IntelligenzaBianca() {
+	public IntelligenzaBianca(int secondi) {
 		albero = new ArrayList<Livello>();
 		this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
 		this.listState = new ArrayList<StateTablut>();
 		this.citadels = common.getCitadels();
+		this.TIMETOSTOPTREEGENERATOR = secondi * 1000;
 	}
 	
 	/**
@@ -3070,11 +3070,11 @@ public class IntelligenzaBianca implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, TIMETOSTOPTREEGENERATOR, this);
+			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this);
 			Thread t = new Thread(treeGenerator2);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(40000);
+			Thread.sleep(TIMETOSTOPTREEGENERATOR);
 			//System.out.println("Lancio l'interruzione");
 			//treeGenerator.stopThread();
 			t.interrupt();
@@ -3202,7 +3202,6 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
 		private List<String> citadels;
-		private int timeToStopTreeGenerator;
 		private IntelligenzaBianca ia;
 		private boolean taglioLivello1;
 		private boolean taglioLivello2;
@@ -3223,14 +3222,13 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoLiv3;
 		private Nodo nodoLiv4;
 		
-		public TreeGenerator3(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
+		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
 			this.ia = i;
 			//this.simulatore = s;
 			//this.!Thread.currentThread().isInterrupted()=true;
 			//this.iaB = ia;
 			this.citadels = cit;
-			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
 			this.simulatore = new Simulator();
 		}
 		

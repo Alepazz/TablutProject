@@ -17,7 +17,7 @@ public class TestingSimulator {
         StateTablut state = new StateTablut();
 		state.setTurn(State.Turn.WHITE);
 		Simulator sim = new Simulator();
-		IntelligenzaBianca ia = new IntelligenzaBianca();
+		IntelligenzaBianca ia = new IntelligenzaBianca(30);
 		int cont = 0;
 		int c = 1;
 		//long t1 = System.currentTimeMillis();

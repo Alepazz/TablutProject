@@ -7,8 +7,10 @@ import it.unibo.ai.didattica.competition.tablut.client.TablutClient;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
 
-//NON TOCCHIAMO PIù QUESTA CLASSE, LE STAMPE METTIAMOLE NEI METODI
+//NON TOCCHIAMO PIï¿½ QUESTA CLASSE, LE STAMPE METTIAMOLE NEI METODI
 public class GiocatoreArtificiale extends TablutClient {
+	
+	private static int secondi = 0;
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, ClassNotFoundException {
 
@@ -17,6 +19,9 @@ public class GiocatoreArtificiale extends TablutClient {
 			System.exit(-1);
 		}
 		System.out.println("Selected this: " + args[0]);
+		
+		System.out.println("secondi inseriti: " + args[1]);
+		secondi = Integer.parseInt(args[1]);
 
 		TablutClient client = new GiocatoreArtificiale(args[0], "Partecipare_e_importante");
 
@@ -31,7 +36,7 @@ public class GiocatoreArtificiale extends TablutClient {
 		super(player, name);
 		if(this.getPlayer().equalsTurn("W"))
 		{
-			this.intelligenza = new IntelligenzaBianca();
+			this.intelligenza = new IntelligenzaBianca(secondi);
 		}
 		else
 		{

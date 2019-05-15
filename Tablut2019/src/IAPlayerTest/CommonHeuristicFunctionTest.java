@@ -5122,7 +5122,7 @@ class CommonHeuristicFunctionTest {
 	@Test
 	void checkDraw() {
 		
-		IntelligenzaBianca ia = new IntelligenzaBianca();
+		IntelligenzaBianca ia = new IntelligenzaBianca(30);
 		
 		ia.setState(s);
 		
