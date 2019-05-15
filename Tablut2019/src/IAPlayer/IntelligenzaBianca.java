@@ -3222,7 +3222,7 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoLiv2;
 		private Nodo nodoLiv3;
 		private Nodo nodoLiv4;
-		private Nodo nodoLiv6;
+		//private Nodo nodoLiv6;
 		
 		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
@@ -3243,7 +3243,7 @@ public class IntelligenzaBianca implements IA {
 			taglioLivello3 = false;
 			taglioLivello4 = false;
 			taglioLivello5 = false;
-			taglioLivello6 = false;
+			//taglioLivello6 = false;
 
 			//aggiungo il livello 0
 			this.liv0 = new Livello();
@@ -3416,7 +3416,7 @@ public class IntelligenzaBianca implements IA {
 			this.nodoLiv3.setValue(this.ia.getHeuristicValue(this.nodoLiv3.getStato()));
 		}*/
 		
-		private void getValueOfNodeLiv4() {
+		/*private void getValueOfNodeLiv4() {
 			try {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv4);
 				this.sortLivGenD(daAggiungere);
@@ -3453,6 +3453,10 @@ public class IntelligenzaBianca implements IA {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
+		}*/
+		
+		private void getValueOfNodeLiv4() {
+			this.nodoLiv4.setValue(this.ia.getHeuristicValue(this.nodoLiv4.getStato()));
 		}
 		
 		/*private void getValueOfNodeLiv5() {
@@ -3496,9 +3500,9 @@ public class IntelligenzaBianca implements IA {
 			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
 		}*/
 		
-		private void getValueOfNodeLiv5() {
+		/*private void getValueOfNodeLiv5() {
 			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
-		}
+		}*/
 		
 		//metodo di sort del livello 1
 		private void sortLiv1(Livello liv1)
