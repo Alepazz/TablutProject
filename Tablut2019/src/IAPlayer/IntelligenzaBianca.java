@@ -3299,15 +3299,15 @@ public class IntelligenzaBianca implements IA {
 				this.sortLivGenC(daAggiungere);
 				this.liv2.add(daAggiungere);
 				
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv1.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv1.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !taglioLivello2 && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
 					{
@@ -3318,10 +3318,13 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv1.setValue(this.nodoLiv2.getValue());
 						}
+						if(this.nodoLiv1.getValue() < this.nodoLiv0.getValue()) {
+							taglioLivello2 = true;
+						}
 					}
 				}
 				
-				
+				taglioLivello2 = false;
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -3334,15 +3337,15 @@ public class IntelligenzaBianca implements IA {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv2);
 				this.sortLivGenD(daAggiungere);
 				this.liv3.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv2.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv2.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") &&!taglioLivello3 && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !Thread.currentThread().isInterrupted(); i++)
 					{
@@ -3353,10 +3356,13 @@ public class IntelligenzaBianca implements IA {
 						{
 							this.nodoLiv2.setValue(this.nodoLiv3.getValue());
 						}
+						if(this.nodoLiv2.getValue() > this.nodoLiv1.getValue()) {
+							taglioLivello3 = true;
+						}
 					}
 				}
 				
-				
+				taglioLivello3 = false;
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
