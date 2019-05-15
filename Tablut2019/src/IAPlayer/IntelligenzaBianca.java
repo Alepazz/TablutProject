@@ -3423,11 +3423,11 @@ public class IntelligenzaBianca implements IA {
 				this.liv5.add(daAggiungere);
 				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
-					this.nodoLiv2.setValue(-10000);
+					this.nodoLiv4.setValue(-10000);
 				}
 				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					this.nodoLiv2.setValue(10000);
+					this.nodoLiv4.setValue(10000);
 				}
 				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
@@ -3455,7 +3455,7 @@ public class IntelligenzaBianca implements IA {
 			}			
 		}
 		
-		private void getValueOfNodeLiv5() {
+		/*private void getValueOfNodeLiv5() {
 			try {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv5);
 				this.sortLivGenC(daAggiungere);
@@ -3494,11 +3494,11 @@ public class IntelligenzaBianca implements IA {
 		
 		private void getValueOfNodeLiv6() {
 			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
-		}
-		
-		/*private void getValueOfNodeLiv5() {
-			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
 		}*/
+		
+		private void getValueOfNodeLiv5() {
+			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
+		}
 		
 		//metodo di sort del livello 1
 		private void sortLiv1(Livello liv1)
