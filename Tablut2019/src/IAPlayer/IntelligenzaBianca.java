@@ -3208,6 +3208,7 @@ public class IntelligenzaBianca implements IA {
 		private boolean taglioLivello3;
 		private boolean taglioLivello4;
 		private boolean taglioLivello5;
+		private boolean taglioLivello6;
 		private Livello liv0;
 		private Livello liv1;
 		private Livello liv2;
@@ -3221,6 +3222,7 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoLiv2;
 		private Nodo nodoLiv3;
 		private Nodo nodoLiv4;
+		private Nodo nodoLiv6;
 		
 		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
@@ -3241,6 +3243,7 @@ public class IntelligenzaBianca implements IA {
 			taglioLivello3 = false;
 			taglioLivello4 = false;
 			taglioLivello5 = false;
+			taglioLivello6 = false;
 
 			//aggiungo il livello 0
 			this.liv0 = new Livello();
@@ -3453,8 +3456,49 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		private void getValueOfNodeLiv5() {
-			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
+			try {
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv5);
+				this.sortLivGenC(daAggiungere);
+				this.liv6.add(daAggiungere);
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
+				{
+					this.nodoLiv5.setValue(-10000);
+				}
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					this.nodoLiv5.setValue(10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW")) 
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello6 && !Thread.currentThread().isInterrupted(); i++) 
+					{
+						this.nodoLiv6 = daAggiungere.get(i);
+						this.nodoLiv6.setValue(this.nodoLiv0.getValue());
+						this.getValueOfNodeLiv6();
+						if(Float.isNaN(this.nodoLiv5.getValue()) || this.nodoLiv5.getValue() < this.nodoLiv6.getValue()) 
+						{
+							this.nodoLiv5.setValue(this.nodoLiv6.getValue());
+						}
+						if(this.nodoLiv5.getValue() < this.nodoLiv4.getValue()) 
+						{
+							taglioLivello6 = true;
+						}
+					}
+				}
+				
+				taglioLivello6 = false;
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+		
+		private void getValueOfNodeLiv6() {
+			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
+		}
+		
+		/*private void getValueOfNodeLiv5() {
+			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
+		}*/
 		
 		//metodo di sort del livello 1
 		private void sortLiv1(Livello liv1)
