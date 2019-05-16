@@ -1,0 +1,4 @@
+mag 16, 2019 3:59:08 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+mag 16, 2019 3:59:08 PM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
