@@ -177,27 +177,79 @@ public class IntelligenzaBianca implements IA {
 				value -= 3000;
 			}
 		}
-		
-		/* cerco di creare uno stato in cui il re possa uscire dal trono
-		if(rigaRe == 4  && colonnaRe == 4) {
-			if(this.checkKingCanComeOutFromThrone(s)) {
-				value += 1000;
-			}
-		}*/
-		
+				
 		int numberOfStarFree = common.getNumberStarFree(s);
 		if(numberOfStarFree < 4) {		
 			value -= (8-numberOfStarFree) * 350; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (350 per ogni star non più libera)		
 		}
 		
-				
-		//Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
-		/*if((this.common.enemyOnTheBottom(rigaRe, colonnaRe, s) || 
-				this.common.enemyOnTheLeft(rigaRe, colonnaRe, s) ||
-				this.common.enemyOnTheRight(rigaRe, colonnaRe, s) ||
-				this.common.enemyOnTheTop(rigaRe, colonnaRe, s )) && rigaRe!=4 && colonnaRe !=4) {
-			value -= 5000;
-		}*/
+		//cerchiamo di tenere il re con un po' di spazio
+		if(common.checkPawnBlocked(rigaRe, colonnaRe, s)) {
+			value -= 300;
+		}
+		
+		//cerchiamo di tenere il re isolato, così da non essere schiacciato
+		if(common.checkPedinaIsolata(rigaRe, colonnaRe, s)) {
+			value += 100;
+		}
+		
+		//controlla che il re non abbia più di una nera vicino
+		if((common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourBottomLeft(rigaRe, colonnaRe, s).contentEquals("B") ||
+				common.checkNeighbourBottomRight(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourTopLeft(rigaRe, colonnaRe, s).equals("B") ||
+				common.checkNeighbourTopRight(rigaRe, colonnaRe, s).equals("B")) && common.checkBlackCanArriveAdjacent(rigaRe, colonnaRe, s)) {
+			value -= 200;
+			
+		}
+		
+		//evito situazioni di vittoria per il nero (nel turno del nero), o di possibile pericolo nel turno del bianco
+		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("C")) {
+			if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s)) {
+				if(s.getTurn().equalsTurn("B")) {
+					return this.MIN_VALUE-1;
+				} else { //turno del bianco
+					value -= 200;
+				}		
+			}
+		}
+		
+		if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("C")) {
+			if(common.checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s)) {
+				if(s.getTurn().equalsTurn("B")) {
+					return this.MIN_VALUE-1;
+				} else { //turno del bianco
+					value -= 200;
+				}		
+			}
+		}
+		
+		if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("C")) {
+			if(common.checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s)) {
+				if(s.getTurn().equalsTurn("B")) {
+					return this.MIN_VALUE-1;
+				} else { //turno del bianco
+					value -= 200;
+				}		
+			}
+		}
+		
+		if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("C")) {
+			if(common.checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s)) {
+				if(s.getTurn().equalsTurn("B")) {
+					return this.MIN_VALUE-1;
+				} else { //turno del bianco
+					value -= 200;
+				}		
+			}
+		}
+		
+		//TODO: disposizione pedine bianche in diagonale potrebbe essere una buona idea
+		
+		//TODO: usare getPositionValue()
 				
 		return value;	
 	}
@@ -341,65 +393,12 @@ public class IntelligenzaBianca implements IA {
 		return false;
 	}
 	
-	/**
-	 * Funzione euristica: calcola l'euristica
-	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return Ritorna un intero che indica il valore che è stato assegnato allo stato passato come parametro
-	 */
-	/*private int getHeuristicValueOfState(StateTablut s) {
-		if(s.getTurn().equalsTurn("WW"))
-		{
-			return this.MAX_VALUE;
-		}
-		if(s.getTurn().equalsTurn("BW"))
-		{
-			return this.MIN_VALUE;
-		}
-		if(s.getTurn().equalsTurn("D"))
-		{
-			return 0;
-		}
-		
-		//numero pedine
-		int nBianchi=0;
-		int nNeri=0;
-		int rigaRe=-1;
-		int colonnaRe=-1;
-		for(int i=0; i<9; i++)
-		{
-			for(int j=0; j<9; j++)
-			{
-				if(s.getBoard()[i][j].equalsPawn("B"))
-				{
-					nNeri++;
-				}
-				if(s.getBoard()[i][j].equalsPawn("W"))
-				{
-					nBianchi++;
-				}
-				if(s.getBoard()[i][j].equalsPawn("K"))
-				{
-					rigaRe=i;
-					colonnaRe=j;
-				}
-			}
-		}
-		//Controllo se il re viene mangiato in qualsiasi posizione sia
-		if(this.common.kingCanBeCaptured(rigaRe, colonnaRe, s))
-		{
-			return this.MIN_VALUE+1;
-		}
-		
-		return nBianchi - nNeri + 2*this.common.getNumberStarFree(s) + 2 * common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
-	}*/
-	
 	private class TreeGenerator2 implements Runnable {
 		private Nodo nodoAttuale;
 		//private Simulator simulatore;
 		//private boolean !Thread.currentThread().isInterrupted();
 		//private CommonHeuristicFunction iaB;
 		private List<String> citadels;
-		private int timeToStopTreeGenerator;
 		private IntelligenzaBianca ia;
 		private boolean taglioLivello1;
 		private boolean taglioLivello2;
@@ -407,19 +406,13 @@ public class IntelligenzaBianca implements IA {
 		private boolean taglioLivello4;
 		private boolean taglioLivello5;
 		
-		public TreeGenerator2(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
+		public TreeGenerator2(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
 			this.ia = i;
 			//this.simulatore = s;
 			//this.!Thread.currentThread().isInterrupted()=true;
 			//this.iaB = ia;
 			this.citadels = cit;
-			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
-		}
-
-		public void stopThread()
-		{
-			//this.!Thread.currentThread().isInterrupted()=false;
 		}
 
 		public boolean assiSimmetrici(StateTablut s)
@@ -467,76 +460,6 @@ public class IntelligenzaBianca implements IA {
 				}
 				return true;
 			}
-		
-		//metodo che ritorna il numero di mosse possibili 
-		/*private int numeroMossePossibiliComplete(StateTablut s) {
-			int mossePossibili = 0;
-			boolean simmV = this.statoSimmetricoVerticalmente(s);
-			boolean simmO = this.statoSimmetricoOrizontalmente(s);
-			boolean statiSimm = this.assiSimmetrici(s);
-			int righeDaControllare = 9;
-			int colonneDaControllare = 9;
-			if(simmV)
-			{
-				colonneDaControllare = 5;
-			}
-			if(simmO)
-			{
-				righeDaControllare = 5;
-			}
-			if(simmV && simmO && statiSimm)
-			{
-				righeDaControllare = 4;
-			}
-			//prima le righe
-			for(int i=0; i<righeDaControllare && !Thread.currentThread().isInterrupted(); i++)
-			{		
-				//poi le colonne
-				for(int j=0; j<colonneDaControllare && !Thread.currentThread().isInterrupted(); j++)
-				{
-					//se è il turno nero conto le mosse delle pedine nere
-					if(s.getTurn().equalsTurn(State.Turn.BLACK.toString()) && State.Pawn.BLACK.equalsPawn(s.getBoard()[i][j].toString()) && !Thread.currentThread().isInterrupted())
-					{
-						if(statiSimm && j==4)
-						{
-							mossePossibili = mossePossibili + mossePossibiliPedinaCS(i, j);
-						}
-						else
-						{
-							if(simmV && simmO && j==4)
-							{
-								mossePossibili = mossePossibili + mossePossibiliPedinaCCS(i, j);
-							}
-							else
-							{
-								if(simmV && j==4)
-								{
-									mossePossibili = mossePossibili + mossePossibiliPedinaSV(i, j);
-								}
-								else
-								{
-									if(simmO && i==4)
-									{
-										mossePossibili = mossePossibili + mossePossibiliPedinaSO(i, j);
-									}
-									else
-									{
-										for(Nodo nod: mossePossibiliPedina(node, i, j))
-										{
-											listaMossePossibili.add(nod);
-										}
-									}
-								}	
-							}	
-						}
-								
-					}
-					
-				}					
-			}	
-			return mossePossibili;
-		}
-		*/
 		
 		//restituisce tutti i nodi a cui è possibile arrivare a partire dal nodo passato
 		public List<Nodo> mossePossibiliComplete(Nodo node) throws IOException, BoardException, ActionException, StopException, PawnException, DiagonalException, ClimbingException, ThroneException, OccupitedException, ClimbingCitadelException, CitadelException{
@@ -1919,20 +1842,11 @@ public class IntelligenzaBianca implements IA {
 	 */
 	private class HeuristicValuator implements Runnable {
 		private IntelligenzaBianca ia;
-		//private boolean !Thread.currentThread().isInterrupted();
-		private int timeToStopHeuristicValuator;
 		
-		public HeuristicValuator(IntelligenzaBianca ia, int timeToStopHeuristicValuator){
+		public HeuristicValuator(IntelligenzaBianca ia){
 			this.ia = ia;
-			//this.!Thread.currentThread().isInterrupted()=true;
-			this.timeToStopHeuristicValuator = timeToStopHeuristicValuator;
 		}
-		
-		public void stopThread()
-		{
-			//this.!Thread.currentThread().isInterrupted()=false;
-		}
-		
+
 		public void run() {
 			System.out.println("Thread heuristicValuator avviato");
 			int x =0;
@@ -2049,22 +1963,12 @@ public class IntelligenzaBianca implements IA {
 		//private boolean !Thread.currentThread().isInterrupted();
 		//private CommonHeuristicFunction iaB;
 		private List<String> citadels;
-		private int timeToStopTreeGenerator;
 		private IntelligenzaBianca ia;
 		
-		public TreeGenerator(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
+		public TreeGenerator(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
 			this.ia = i;
-			//this.simulatore = s;
-			//this.!Thread.currentThread().isInterrupted()=true;
-			//this.iaB = ia;
 			this.citadels = cit;
-			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
-		}
-
-		public void stopThread()
-		{
-			//this.!Thread.currentThread().isInterrupted()=false;
 		}
 
 		public boolean assiSimmetrici(StateTablut s)
@@ -3052,7 +2956,6 @@ public class IntelligenzaBianca implements IA {
 	}
 	
 	//GET BETTER MOVE DI PIRO
-	@SuppressWarnings("static-access")
 	@Override
 	public synchronized Action getBetterMove(StateTablut s) {
 
@@ -3062,7 +2965,7 @@ public class IntelligenzaBianca implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this.TIMETOSTOPTREEGENERATOR, this);
+			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this);
 			Thread t = new Thread(treeGenerator2);
 			t.start();
 			//this.wait(30000);
@@ -3107,93 +3010,21 @@ public class IntelligenzaBianca implements IA {
 			System.out.println("Valore root: "+albero.get(0).getNodi().get(0).getValue());
 			albero.clear();
 			System.gc();
-			/*HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
-			t = new Thread(heuristicValuator);
-			t.start();
-			//this.wait(10000);
-			Thread.sleep(3000);
-			//System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			//heuristicValuator.stopThread();
-			//System.out.println("Finito sviluppo euristica");
-			//t.stop();
-			*/
-
-			
-			//System.out.println("Livello 3 espanso");
-
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		//System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
+		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
 		return a;
 	}
 	
-	/*@SuppressWarnings("static-access")
-	@Override
-	public synchronized Action getBetterMove(StateTablut s) {
-
-
-		long t1 = System.currentTimeMillis();
-		long t3 = 0;
-
-		try {
-			Nodo node = new Nodo(s);
-			TreeGenerator2 treeGenerator2 = new TreeGenerator2(node, this.citadels, TIMETOSTOPTREEGENERATOR, this);
-			Thread t = new Thread(treeGenerator2);
-			t.start();
-			//this.wait(30000);
-			Thread.sleep(5000);
-			//System.out.println("Lancio l'interruzione");
-			//treeGenerator.stopThread();
-			t.interrupt();
-			//t.stop();
-			//System.out.println("Finito sviluppo albero");
-			t3 = System.currentTimeMillis();
-			System.out.println("Tempo trascorso sviluppo albero: "+(t3-t1)+" millisecondi");
-			for(int x=0; x<albero.size(); x++)
-			{
-				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-			}
-			albero.clear();
-			
-			//HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
-			//t = new Thread(heuristicValuator);
-			//t.start();
-			//this.wait(10000);
-			//Thread.sleep(3000);
-			//System.out.println("Lancio l'interruzione");
-			//t.interrupt();
-			//heuristicValuator.stopThread();
-			//System.out.println("Finito sviluppo euristica");
-			//t.stop();
-			
-
-			
-			//System.out.println("Livello 3 espanso");
-
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		long t2 = System.currentTimeMillis();
-		//System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
-		System.out.println("Mossa: "+a.toString());
-		System.out.println("");
-		return a;
-	}*/
-	
 	private class TreeGenerator3 implements Runnable {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
 		private List<String> citadels;
-		private int timeToStopTreeGenerator;
 		private IntelligenzaBianca ia;
 		private boolean taglioLivello1;
 		private boolean taglioLivello2;
@@ -3216,14 +3047,10 @@ public class IntelligenzaBianca implements IA {
 		private Nodo nodoLiv4;
 		private Nodo nodoLiv6;
 		
-		public TreeGenerator3(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaBianca i) {
+		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaBianca i) {
 			this.nodoAttuale = n;
 			this.ia = i;
-			//this.simulatore = s;
-			//this.!Thread.currentThread().isInterrupted()=true;
-			//this.iaB = ia;
 			this.citadels = cit;
-			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
 			this.simulatore = new Simulator();
 		}
 		
@@ -3297,15 +3124,15 @@ public class IntelligenzaBianca implements IA {
 				this.sortLivGenC(daAggiungere);
 				this.liv2.add(daAggiungere);
 				
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv1.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv1.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i++)
 					{
@@ -3324,7 +3151,6 @@ public class IntelligenzaBianca implements IA {
 				taglioLivello2 = false;			
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -3337,15 +3163,15 @@ public class IntelligenzaBianca implements IA {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv2);
 				this.sortLivGenD(daAggiungere);
 				this.liv3.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv2.setValue(-10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv2.setValue(10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i++)
 					{
@@ -3365,7 +3191,6 @@ public class IntelligenzaBianca implements IA {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -3411,7 +3236,6 @@ public class IntelligenzaBianca implements IA {
 				}
 				taglioLivello4 = false;				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -3457,7 +3281,6 @@ public class IntelligenzaBianca implements IA {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -3465,48 +3288,6 @@ public class IntelligenzaBianca implements IA {
 		private void getValueOfNodeLiv5() {
 			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
 		}
-		
-		/*private void getValueOfNodeLiv5() {
-			try {
-				if(this.nodoLiv5.getValue() <= this.nodoLiv4.getValue()) {
-					return;
-				}
-				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv5);
-				this.sortLivGenD(daAggiungere);
-				this.liv6.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
-				{
-					this.nodoLiv5.setValue(-10000);
-				}
-				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
-				{
-					this.nodoLiv5.setValue(10000);
-				}
-				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
-				{
-					for(int i=0; i<daAggiungere.size() && !taglioLivello6 && !Thread.currentThread().isInterrupted(); i++)
-					{
-						this.nodoLiv6 = daAggiungere.get(i);
-						this.nodoLiv6.setValue(this.nodoLiv0.getValue());
-						this.getValueOfNodeLiv6();
-						if(Float.isNaN(this.nodoLiv5.getValue()) || this.nodoLiv5.getValue()>this.nodoLiv6.getValue())
-						{
-							this.nodoLiv5.setValue(this.nodoLiv6.getValue());
-						}
-						if(this.nodoLiv5.getValue() <= this.nodoLiv4.getValue()) {
-							taglioLivello6 = true;
-						}
-					}
-				}
-				
-				taglioLivello6 = false;
-				
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}*/
 		
 		private void getValueOfNodeLiv6() {
 			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
@@ -3557,24 +3338,7 @@ public class IntelligenzaBianca implements IA {
 				
 		//metodo per il riordinamento livello 1, da cambiare
 		private float setSimpleHeuristic(StateTablut s) {
-			return this.ia.getHeuristicValue(s);
-			/*int nBianchi = 1;
-			int nNeri=0;
-			for(int x =0 ; x<9; x++)
-			{
-				for(int y=0; y<9; y++)
-				{
-					if(s.getPawn(x, y).equalsPawn("B"))
-					{
-						nNeri++;
-					}
-					if(s.getPawn(x, y).equalsPawn("W"))
-					{
-						nBianchi++;
-					}
-				}
-			}
-			return 2*nBianchi-nNeri;*/				
+			return this.ia.getHeuristicValue(s);		
 		}
 	
 		//metodo per ordinare in ordine crescente (con simple heuristic) una lista di nodi
