@@ -440,18 +440,18 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data colonna è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data colonna è libera da pedine NERE od ostacoli
 	 * Attenzione! Funziona solo se viene passata come parametro la colonna 2 o 6
 	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se la colonna, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
+	 * @return true se la colonna, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina nera, c'è il castello, oppure una o più cittadelle
 	 */
 	public boolean isColumnFree(int numberCol, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<9; i++) {
-			if(s.getPawn(i, numberCol).equalsPawn("O") && !this.citadels.contains(s.getBox(i, numberCol))) {
+			if((s.getPawn(i, numberCol).equalsPawn("O") || s.getPawn(i, numberCol).equalsPawn("W")) && !this.citadels.contains(s.getBox(i, numberCol)) || s.getPawn(i, numberCol).equalsPawn("W")) {
 				result = result && true;
 			} else result = false;
 		}
@@ -460,18 +460,18 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data riga è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data riga è libera da pedine NERE od ostacoli
 	 * Attenzione! Funziona solo se viene passata come parametro la riga 2 o 6
 	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina bianca/nera, c'è il castello, oppure una o più cittadelle
+	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina nera, c'è il castello, oppure una o più cittadelle
 	 */
 	public boolean isRowFree(int numberRow, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<9; i++) {
-			if(s.getPawn(numberRow, i).equalsPawn("O") && !this.citadels.contains(s.getBox(numberRow, i))) {
+			if((s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) && !this.citadels.contains(s.getBox(numberRow, i))) {
 				result = result && true;
 			} else result = false;
 		}
@@ -480,18 +480,18 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data riga, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data riga, intervallata da una cittadella, è libera da pedine NERE od ostacoli
 	 * Attenzione! Funziona solo se viene passata come parametro la riga 1 e 7 (quelle intervallate da una cittadella)
 	 * @param numberRow Riga per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
+	 * @return true se le righe, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina nera in tali celle
 	 */
 	public boolean isSemirowFree(int numberRow, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<4; i++) {
-			if(s.getPawn(numberRow, i).equalsPawn("O")) {
+			if(s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) {
 				result = result && true;
 			} else result = false;
 		} //controlla dalla colonna 0 alla 3
@@ -500,7 +500,7 @@ public class CommonHeuristicFunction {
 			return result;
 		} else {
 			for(int i=5; i<9; i++) {
-				if(s.getPawn(numberRow, i).equalsPawn("O")) {
+				if(s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) {
 					result = result && true;
 				} else result = false;
 			} //controlla dalla colonna 5 (quella dopo la cittadella) alla colonna 8
@@ -510,18 +510,18 @@ public class CommonHeuristicFunction {
 	}
 	
 	/**
-	 * Controlla se una data colonna, intervallata da una cittadella, è libera ovvero se non ci sono ostacoli che impediscano ad una pedina nera o bianca che sia, di percorrerla
+	 * Controlla se una data colonna, intervallata da una cittadella, è libera da pedine NERE od ostacoli
 	 * Attenzione! Funziona solo se viene passata come parametro la colonna 1 e 7
 	 * @param numberCol Colonna per la quale si vuole effettuare tale controllo
 	 * @param s StateTablut ovvero lo stato da valutare
-	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina bianca/nera in tali celle
+	 * @return true se le colonne, dalla cella 0 alla 3 e dalla cella 5 alla cella 8 sono libere, false se invece è presente almeno una pedina nera in tali celle
 	 */
 	public boolean isSemicolumnFree(int numberColumn, StateTablut s) {
 		
 		boolean result = true;
 		
 		for(int i=0; i<4; i++) {
-			if(s.getPawn(i, numberColumn).equalsPawn("O")) {
+			if(s.getPawn(i, numberColumn).equalsPawn("O") || s.getPawn(i, numberColumn).equalsPawn("W")) {
 				result = result && true;
 			} else result = false;
 		} //controlla dalla riga 0 alla 3
@@ -530,7 +530,7 @@ public class CommonHeuristicFunction {
 			return result;
 		} else {
 			for(int i=5; i<9; i++) {
-				if(s.getPawn(i, numberColumn).equalsPawn("O")) {
+				if(s.getPawn(i, numberColumn).equalsPawn("O") || s.getPawn(i, numberColumn).equalsPawn("W")) {
 					result = result && true;
 				} else result = false;
 			} //controlla dalla riga 5 (quella dopo la cittadella) alla riga 8

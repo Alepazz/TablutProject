@@ -179,6 +179,62 @@ class CommonHeuristicFunctionTest {
 	}
 	
 	@Test
+	void isStartFree_TestWhite() {
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.WHITE;
+		board[6][3] = Pawn.WHITE;
+				
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+				
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		//s.setTurn(Turn.BLACK);
+		
+		Assert.assertEquals(8, c.getNumberStarFree(s));
+	}
+	
+	@Test
+	void isStartFree_TestBlack() {
+		//Varianti del particolare caso in osservazione
+		board[2][3] = Pawn.BLACK;
+		board[6][3] = Pawn.BLACK;
+				
+				
+		/* Rappresentazione tavola
+		 * 
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * OOOBOOOOO
+		 * OOOOOOOOO
+		 * OOOOOOOOO
+		 * 
+		 * */
+				
+		//Creazione dello stato con la precedente disposizione delle pedine
+		s.setBoard(board);
+		//s.setTurn(Turn.BLACK);
+		
+		Assert.assertEquals(6, c.getNumberStarFree(s));
+	}
+	
+	@Test
 	void isSemirowFreeTest_1() {	
 		
 		//Varianti del particolare caso in osservazione

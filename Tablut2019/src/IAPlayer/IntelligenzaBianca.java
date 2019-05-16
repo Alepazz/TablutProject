@@ -137,85 +137,67 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
+		//condizioni finali di vittoria
+		int vieDiFuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
+				
+		//controllo se nella mossa del nero mi mangia il re
+		if((vieDiFuga==1 && s.getTurn().equalsTurn("W")) || vieDiFuga > 1)
+		{
+			return this.MAX_VALUE-1;
+		}
+		if(vieDiFuga==1 && s.getTurn().equalsTurn("B"))
+		{
+			if(common.blackCannotBlockEscape(rigaRe, colonnaRe, s))
+			{
+				return this.MAX_VALUE-1;
+			}
+		}
+		
 		if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
 				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
-			value += 4000;
+			if(s.getTurn().equalsTurn("W")) {
+				value += 4000;
+			} else { //turno nero
+				value += 1000;
+			}
 		}
 		
 		//valuto molto il fatto che il re sia fuori dal trono
 		if(!common.kingOnTheThrone(rigaRe, colonnaRe)) {
-			value += 3000;
+			value += 6000;
 		}
 		
-		//re adiacente al trono
-		if(!common.kingAdjacentToTheThrone(rigaRe, colonnaRe)) {
-			value += 4000;
-		}
-		
-		//valuto molto il fatto che il re, fuori dal trono, possa essere mangiato -- compensa quella di prima
+		//valuto molto il fatto che il re, possa essere mangiato -- compensa quella di prima
 		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
-			value -= 3000;
+			if(s.getTurn().equalsTurn("B")) {
+				return this.MIN_VALUE+1;
+			} else { //turno del bianco
+				value -= 3000;
+			}
 		}
 		
-		//se il re può essere mangiato, allora ho un valore negativissimo
-		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
-			value -= this.MAX_VALUE;
-		}
-		
-		if(common.checkBlackCanArriveAdjacent(rigaRe, colonnaRe, s)) {
-			value -= 4000;
-		}
-		
-		// cerco di creare uno stato in cui il re possa uscire dal trono
+		/* cerco di creare uno stato in cui il re possa uscire dal trono
 		if(rigaRe == 4  && colonnaRe == 4) {
 			if(this.checkKingCanComeOutFromThrone(s)) {
 				value += 1000;
 			}
+		}*/
+		
+		int numberOfStarFree = common.getNumberStarFree(s);
+		if(numberOfStarFree < 4) {		
+			value -= (8-numberOfStarFree) * 1000; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (1000 per ogni star non più libera)		
 		}
+		
 				
-		if(common.getNumberStarFree(s) < 4) {
-			
-			value -= common.getNumberStarFree(s) * 100; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (100 per ogni star non più libera)
-			
-		} else {
-			value += 2*common.getNumberStarFree(s);
-		}
-		
-		if(common.getNumberOfColor("W", s)*3 < common.getNumberOfColor("B", s)) {
-			value -= (900 - (common.getNumberOfColor("W", s) * 50)); //per ogni pedina bianca tolgo 50
-		}
-		
-		//controllo vie di fuga re
-		int viedifuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
-				
-		//controllo se nella mossa del nero mi mangia il re
-		if(viedifuga>1)
-		{
-			value += 4000;			
-		}
-		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
-		{
-			return this.MAX_VALUE-1;
-		}
-		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
-		{
-			if(common.blackCannotBlockEscape(rigaRe, colonnaRe, s))
-			{
-				value += 4000;
-			}
-		}		
-		
-		
-
 		//Controllo che il re non vada adiacente ad una cittadella, rischiando di essere mangiato
-		if((this.common.enemyOnTheBottom(rigaRe, colonnaRe, s) || 
+		/*if((this.common.enemyOnTheBottom(rigaRe, colonnaRe, s) || 
 				this.common.enemyOnTheLeft(rigaRe, colonnaRe, s) ||
 				this.common.enemyOnTheRight(rigaRe, colonnaRe, s) ||
 				this.common.enemyOnTheTop(rigaRe, colonnaRe, s )) && rigaRe!=4 && colonnaRe !=4) {
 			value -= 5000;
-		}
+		}*/
 				
 		return value;	
 	}
