@@ -3,6 +3,7 @@ package IAPlayer;
 import it.unibo.ai.didattica.competition.tablut.domain.Action;
 import it.unibo.ai.didattica.competition.tablut.domain.State;
 import it.unibo.ai.didattica.competition.tablut.domain.StateTablut;
+import it.unibo.ai.didattica.competition.tablut.domain.State.Turn;
 import it.unibo.ai.didattica.competition.tablut.exceptions.ActionException;
 import it.unibo.ai.didattica.competition.tablut.exceptions.BoardException;
 import it.unibo.ai.didattica.competition.tablut.exceptions.CitadelException;
@@ -16,14 +17,16 @@ import it.unibo.ai.didattica.competition.tablut.exceptions.ThroneException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
 
 public class IntelligenzaNera implements IA {
 	
 	private static final int TIMETOSTOPTREEGENERATOR = 30000;
 	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
 	private List<String> citadels;
+	private List<StateTablut> listState; 
 	private static Action a = null;
 	private static List<Livello> albero;
 	//private List<Nodo> nodiEsistenti;
@@ -193,20 +196,20 @@ public class IntelligenzaNera implements IA {
 			
 		else {
 			
-			//dalla funzione più importante allameno importante
+			//dalla funzione piï¿½ importante allameno importante
 			value +=this.getValueOfReAccerchiato(neri, rigaRe, colonnaRe, s);
 			if(value > this.MAX_VALUE/2)
 				return value;
 			
-			//maxvalue/4 è il massimo a cui si può arrivare
+			//maxvalue/4 ï¿½ il massimo a cui si puï¿½ arrivare
 			int valueSpostamentoRe = this.getValueOfSpostamentoDelRe(neri, rigaRe, colonnaRe, s);
 			if(valueSpostamentoRe > this.MAX_VALUE/12)
 				return valueSpostamentoRe;
 			value += valueSpostamentoRe;
 			
-			//maxvalue/10 è il massimo a cui si può arrivare
+			//maxvalue/10 ï¿½ il massimo a cui si puï¿½ arrivare
 			int valueDiagonali = this.getValueofDiagonali(neri, s);
-			//se già ci sono 5 pedine sulla diagonale posso tornare perché ho un buon valore
+			//se giï¿½ ci sono 5 pedine sulla diagonale posso tornare perchï¿½ ho un buon valore
 			if(valueDiagonali > this.MAX_VALUE/(2*5))
 				return valueDiagonali;
 			value += valueDiagonali;
@@ -280,6 +283,32 @@ public class IntelligenzaNera implements IA {
 		return value;
 	}
 	
+	/**
+	 * Controlla lo stato genera una situazione di pareggio
+	 * @param s StateTablut ovvero lo stato da valutare
+	 * @return true se lo stato Ã¨ giÃ  presente nella lista degli stati visitati, false in caso contrario
+	 */
+	public boolean checkDraw(StateTablut s) {
+		if(listState.isEmpty()) {
+			listState.add(s);
+			return false;
+		} else { //se il numero di pedine sulla scacchiera Ã¨ cambiato vuol dire che una pedina Ã¨ stata mangiata, quindi svuoto l'elenco degli stati
+			if(common.getNumberPawns(s) != common.getNumberPawns(listState.get(listState.size()-1))) {
+				listState.clear();
+				listState.add(s);
+				return false;
+			} else { //controllo se lo stato esiste giÃ 
+				for(int i=0; i<listState.size()-1; i++) {
+					if(listState.get(i).equals(s)) {
+						//System.out.println("Lo stato esisteva giÃ \n1.\n" + listState.get(i).toString() + "\n2.\n" + s.toString());
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 
 	//microfunzioni di cui si analizza il valore
 	//caso in cui pedina sulla diagonale
@@ -300,10 +329,10 @@ public class IntelligenzaNera implements IA {
 		 * OOOBOBOOO
 		 * OOOOOOOOO
 		 * */
-		//caso in cui le pedine ci sono già
+		//caso in cui le pedine ci sono giï¿½
 		for(String st : this.perfectPos ) {
 			if(posNeri.contains(st)) {
-				//diviso 10 è il valore che gli do mentre /9 è perché sono 9 le posizioni giuste
+				//diviso 10 ï¿½ il valore che gli do mentre /9 ï¿½ perchï¿½ sono 9 le posizioni giuste
 				value += (this.MAX_VALUE/36);
 				}
 			}
@@ -342,13 +371,13 @@ public class IntelligenzaNera implements IA {
 	}
 	
 	/***
-	 * se ci sono delle nere già posizionate do più importanza alle pedine che ci sono nella diagonale opposta
+	 * se ci sono delle nere giï¿½ posizionate do piï¿½ importanza alle pedine che ci sono nella diagonale opposta
 	 * */
 	
 	private int getValueOfPosizioneDelleNere(List<String> posNeri, StateTablut s) {
 		int value=0;
 		//hanno tutte lo stesso valore
-		//ora faccio le casistiche in cui ci sono già dei neri sulla diagonale
+		//ora faccio le casistiche in cui ci sono giï¿½ dei neri sulla diagonale
 		for(String st : this.perfectPos ) {
 			if(posNeri.contains(st)) {
 				int riga= Integer.parseInt(st)/10;
@@ -419,7 +448,7 @@ public class IntelligenzaNera implements IA {
 	}
 	
 	/***
-	 * valuta quando il re si muove e cerca di mettere più pedine nere nelle 4 macro aree 
+	 * valuta quando il re si muove e cerca di mettere piï¿½ pedine nere nelle 4 macro aree 
 	 * nel caso il re si muove solo sulla linea verticale o orizzontale metto le pedine nel semipiano
 	 * @param posNeri
 	 * @param rigaRe
@@ -432,7 +461,7 @@ public class IntelligenzaNera implements IA {
 		//caso in cui il re si sposta in una delle 4 macroaree
 		if(rigaRe != 4 && colonnaRe != 4) {
 			if(rigaRe> 4 && colonnaRe >4){
-			//pedina già nella diagonale valore molto alto, se ci può arrivare valore minore
+			//pedina giï¿½ nella diagonale valore molto alto, se ci puï¿½ arrivare valore minore
 				if(posNeri.contains("75"))
 					value+= this.MAX_VALUE/6;
 				if(posNeri.contains("66"))
@@ -614,7 +643,7 @@ public class IntelligenzaNera implements IA {
 	 * @param rigaRe
 	 * @param colonnaRe
 	 * @param s
-	 * @return il valore "massimo" qui può essere diviso per 4 se il re è sul trono, per 3 se è vicino altrimenti per 2
+	 * @return il valore "massimo" qui puï¿½ essere diviso per 4 se il re ï¿½ sul trono, per 3 se ï¿½ vicino altrimenti per 2
 	 */
 	private int getValueOfReAccerchiato(List<String> posNeri,int rigaRe,int colonnaRe, StateTablut s) {
 		int value=0;
@@ -622,7 +651,7 @@ public class IntelligenzaNera implements IA {
 		//casistiche del re dentro o fuori dal trono
 		if(common.kingOnTheThrone(rigaRe, colonnaRe)) {
 			//deve essere accerchiato sui 4 lati
-			//se una pedina è già vicino al re e non rischia di essere mangiata deve rimanere lì
+			//se una pedina ï¿½ giï¿½ vicino al re e non rischia di essere mangiata deve rimanere lï¿½
 			if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
 				value+= (this.MAX_VALUE)/4;
 			if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
@@ -696,7 +725,7 @@ public class IntelligenzaNera implements IA {
 	}
 	
 	/**se un bianco si trova dietro a dei neri (inteso nelle posizioni dietro la diagonale perfetta) lui deve essere mangiato. 
-	*se ci si trova ma non può essere mangiato devo restituire un valore molto negativo(ovvero evito di finire in questo stato)
+	*se ci si trova ma non puï¿½ essere mangiato devo restituire un valore molto negativo(ovvero evito di finire in questo stato)
 	*
 	**/
 	private int getValueOfBianchiScappano(List<String> posBianchi, StateTablut s) {
@@ -1802,35 +1831,62 @@ public class IntelligenzaNera implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator treeGenerator = new TreeGenerator(node, this.citadels, TIMETOSTOPTREEGENERATOR);
-			Thread t = new Thread(treeGenerator);
+			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this.TIMETOSTOPTREEGENERATOR, this);
+			Thread t = new Thread(treeGenerator2);
 			t.start();
 			//this.wait(30000);
-			Thread.sleep(5000);
+			Thread.sleep(TIMETOSTOPTREEGENERATOR);
 			//System.out.println("Lancio l'interruzione");
-			treeGenerator.stopThread();
-			//t.interrupt();
+			//treeGenerator.stopThread();
+			t.interrupt();
 			//t.stop();
 			//System.out.println("Finito sviluppo albero");
 			t3 = System.currentTimeMillis();
 			System.out.println("Tempo trascorso sviluppo albero: "+(t3-t1)+" millisecondi");
-			/*for(int x=0; x<albero.size(); x++)
+			
+			for(int x=0; x<albero.size(); x++)
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
-			}*/
-			
-			
-			HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
+			}
+			System.out.println("Livello 1");
+			for(int x=0; x<albero.get(1).getNodi().size(); x++)
+			{
+				System.out.println("Nodo: " + x +" ha valore "+albero.get(1).getNodi().get(x).getValue());
+			}
+			System.out.println("Livello 2");
+			for(int x=0; x<albero.get(2).getNodi().size(); x++)
+			{
+				System.out.println("Nodo: " + x +" ha valore "+albero.get(2).getNodi().get(x).getValue());
+			}
+			System.out.println("Livello 3");
+			for(int x=0; x<100; x++)
+			{
+				System.out.println("Nodo: " + x +" ha valore "+albero.get(3).getNodi().get(x).getValue());
+			}
+			System.out.println("Livello 4");
+			for(int x=0; x<100; x++)
+			{
+				System.out.println("Nodo: " + x +" ha valore "+albero.get(4).getNodi().get(x).getValue());
+				if(albero.get(4).getNodi().get(x).getValue()==-92)
+				{
+					System.out.println(albero.get(4).getNodi().get(x).getStato());
+				}
+			}
+			System.out.println(albero.get(4).getNodi().get(0).getStato());
+			System.out.println("Valore root: "+albero.get(0).getNodi().get(0).getValue());
+			albero.clear();
+			System.gc();
+			/*HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
 			t = new Thread(heuristicValuator);
 			t.start();
-			//this.wait(25000);
-			Thread.sleep(5000);
+			//this.wait(10000);
+			Thread.sleep(3000);
 			//System.out.println("Lancio l'interruzione");
-			//t.interrupt();
-			heuristicValuator.stopThread();
+			t.interrupt();
+			//heuristicValuator.stopThread();
 			//System.out.println("Finito sviluppo euristica");
 			//t.stop();
-			
+			*/
 
 			
 			//System.out.println("Livello 3 espanso");
@@ -1841,9 +1897,480 @@ public class IntelligenzaNera implements IA {
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
+		//System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
 		return a;
+	}
+	
+	private class TreeGenerator3 implements Runnable{
+
+		private Nodo nodoAttuale;
+		private Simulator simulatore;
+		private List<String> citadels;
+		private int timeToStopTreeGenerator;
+		private IntelligenzaNera ia;
+		private boolean taglioLivello1;
+		private boolean taglioLivello2;
+		private boolean taglioLivello3;
+		private boolean taglioLivello4;
+		private boolean taglioLivello5;
+		private boolean taglioLivello6;
+		private Livello liv0;
+		private Livello liv1;
+		private Livello liv2;
+		private Livello liv3;
+		private Livello liv4;
+		private Livello liv5;
+		private Livello liv6;
+		private Nodo nodoLiv0;
+		private Nodo nodoLiv1;
+		private Nodo nodoLiv5;
+		private Nodo nodoLiv2;
+		private Nodo nodoLiv3;
+		private Nodo nodoLiv4;
+		private Nodo nodoLiv6;
+		
+		public TreeGenerator3(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaNera i) {
+			this.nodoAttuale = n;
+			this.ia = i;
+			//this.simulatore = s;
+			//this.!Thread.currentThread().isInterrupted()=true;
+			//this.iaB = ia;
+			this.citadels = cit;
+			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
+			this.simulatore = new Simulator();
+		}
+		
+		public void run() {
+			
+			long t1 = System.currentTimeMillis();
+			System.out.println("Attivazione thread treeGenerator");
+			taglioLivello1 = false;
+			taglioLivello2 = false;
+			taglioLivello3 = false;
+			taglioLivello4 = false;
+			taglioLivello5 = false;
+			taglioLivello6 = false;
+
+			//aggiungo il livello 0
+			this.liv0 = new Livello();
+			liv0.add(this.nodoAttuale);
+			albero.add(liv0);
+			this.liv1 = new Livello();
+			albero.add(liv1);
+			this.liv2 = new Livello();
+			albero.add(liv2);
+			this.liv3 = new Livello();
+			albero.add(liv3);
+			this.liv4 = new Livello();
+			albero.add(liv4);
+			this.liv5 = new Livello();
+			albero.add(liv5);
+			this.liv6 = new Livello();
+			albero.add(liv6);
+			this.nodoLiv0 = liv0.getNodi().get(0);
+			liv0.getNodi().get(0).setValue(Float.NaN);
+			//calcolo TUTTE le mosse possibili al livello 1 (le mosse effettive che posso fare)
+			//facendogli poi la sort per avere l'ordine giusto e per sapere se ho giÃ  vinto
+			try 
+			{
+				this.liv1.add(this.simulatore.mossePossibiliComplete(this.nodoAttuale));
+				this.sortLiv1(liv1);
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			if(!this.liv1.getNodi().get(0).getTurn().equalsTurn("BW"))
+			{
+				for(int i=0; i<this.liv1.getNodi().size() && !Thread.currentThread().isInterrupted(); i++)
+				{
+					this.nodoLiv1 = this.liv1.getNodi().get(i);
+					this.nodoLiv1.setValue(Float.NaN);
+					this.getValueOfNodeLiv1();
+					if(Float.isNaN(this.nodoLiv0.getValue()) || this.nodoLiv0.getValue()<this.nodoLiv1.getValue())
+					{
+						this.nodoLiv0.setValue(this.nodoLiv1.getValue());
+						a = this.nodoLiv1.getAzione();
+					}
+				}
+			}
+			
+			
+			System.out.println("Terminazione thread treeGenerator");
+			System.out.println("Tempo utilizzato: "+(System.currentTimeMillis()-t1));
+			//this.ia.notify();
+		}
+		
+		private void getValueOfNodeLiv1() {
+			try {
+				if(this.nodoLiv1.getValue() <= this.nodoLiv0.getValue()) {
+					return;
+				}
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv1);
+				this.sortLivGenC(daAggiungere);
+				this.liv2.add(daAggiungere);
+				
+				if(daAggiungere.get(0).getTurn().equals("BW"))
+				{
+					this.nodoLiv1.setValue(10000);
+				}
+				if(daAggiungere.get(0).getTurn().equals("WW"))
+				{
+					this.nodoLiv1.setValue(-10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i++)
+					{
+						this.nodoLiv2 = daAggiungere.get(i);
+						this.nodoLiv2.setValue(this.nodoLiv0.getValue());
+						this.getValueOfNodeLiv2();
+						if(Float.isNaN(this.nodoLiv1.getValue()) || this.nodoLiv2.getValue()<this.nodoLiv1.getValue())
+						{
+							this.nodoLiv1.setValue(this.nodoLiv2.getValue());
+						}
+						if(this.nodoLiv1.getValue() <= this.nodoLiv0.getValue()) {
+							taglioLivello2 = true;
+						}
+					}
+				}
+				taglioLivello2 = false;			
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
+		private void getValueOfNodeLiv2() {
+			try {
+				if(this.nodoLiv2.getValue() >= this.nodoLiv1.getValue()) {
+					return;
+				}
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv2);
+				this.sortLivGenD(daAggiungere);
+				this.liv3.add(daAggiungere);
+				if(daAggiungere.get(0).getTurn().equals("BW"))
+				{
+					this.nodoLiv2.setValue(10000);
+				}
+				if(daAggiungere.get(0).getTurn().equals("WW"))
+				{
+					this.nodoLiv2.setValue(-10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i++)
+					{
+						this.nodoLiv3 = daAggiungere.get(i);
+						this.nodoLiv3.setValue(Float.NaN);
+						this.getValueOfNodeLiv3();
+						if(Float.isNaN(this.nodoLiv2.getValue()) || this.nodoLiv2.getValue()<this.nodoLiv3.getValue())
+						{
+							this.nodoLiv2.setValue(this.nodoLiv3.getValue());
+						}
+						if(this.nodoLiv2.getValue() >= this.nodoLiv1.getValue()) {
+							taglioLivello3 = true;
+						}
+					}
+				}
+				taglioLivello3 = false;
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+
+		private void getValueOfNodeLiv3() {
+			try {
+				if(this.nodoLiv3.getValue() <= this.nodoLiv2.getValue()) {
+					return;
+				}
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv3);
+				this.sortLivGenC(daAggiungere);
+				this.liv4.add(daAggiungere);
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
+				{
+					this.nodoLiv3.setValue(10000);
+				}
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					this.nodoLiv3.setValue(-10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i++)
+					{
+						this.nodoLiv4 = daAggiungere.get(i);
+						this.nodoLiv4.setValue(this.nodoLiv0.getValue());
+						if(albero.get(1).getNodi().size()<30)
+						{
+							this.getValueOfNodeLiv4();
+						}
+						else
+						{
+							this.getValueOfNodeLiv4Bis();
+						}
+						if(Float.isNaN(this.nodoLiv3.getValue()) || this.nodoLiv4.getValue()<this.nodoLiv3.getValue())
+						{
+							this.nodoLiv3.setValue(this.nodoLiv4.getValue());
+						}
+						if(this.nodoLiv3.getValue() <= this.nodoLiv2.getValue() || this.nodoLiv3.getValue() <= this.nodoLiv0.getValue()) {
+							taglioLivello4 = true;
+						}					
+					}
+				}
+				taglioLivello4 = false;				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
+		private void getValueOfNodeLiv4Bis(){
+			this.nodoLiv4.setValue(this.ia.getHeuristicValue(this.nodoLiv4.getStato()));
+		}
+		
+		private void getValueOfNodeLiv4() {
+			try {
+				if(this.nodoLiv4.getValue() >= this.nodoLiv3.getValue()) {
+					return;
+				}
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv4);
+				this.sortLivGenD(daAggiungere);
+				this.liv5.add(daAggiungere);
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
+				{
+					this.nodoLiv4.setValue(10000);
+				}
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					this.nodoLiv4.setValue(-10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello5 && !Thread.currentThread().isInterrupted(); i++)
+					{
+						this.nodoLiv5 = daAggiungere.get(i);
+						this.nodoLiv5.setValue(Float.NaN);
+						this.getValueOfNodeLiv5();
+						if(Float.isNaN(this.nodoLiv4.getValue()) || this.nodoLiv4.getValue()<this.nodoLiv5.getValue())
+						{
+							this.nodoLiv4.setValue(this.nodoLiv5.getValue());
+						}
+						if(this.nodoLiv4.getValue() >= this.nodoLiv3.getValue() || this.nodoLiv4.getValue() >= this.nodoLiv1.getValue()) {
+							taglioLivello5 = true;
+						}
+					}
+				}
+				
+				taglioLivello5 = false;
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
+		private void getValueOfNodeLiv5() {
+			this.nodoLiv5.setValue(this.ia.getHeuristicValue(this.nodoLiv5.getStato()));
+		}
+		
+		/*private void getValueOfNodeLiv5() {
+			try {
+				if(this.nodoLiv5.getValue() <= this.nodoLiv4.getValue()) {
+					return;
+				}
+				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv5);
+				this.sortLivGenD(daAggiungere);
+				this.liv6.add(daAggiungere);
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
+				{
+					this.nodoLiv5.setValue(-10000);
+				}
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					this.nodoLiv5.setValue(10000);
+				}
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
+				{
+					for(int i=0; i<daAggiungere.size() && !taglioLivello6 && !Thread.currentThread().isInterrupted(); i++)
+					{
+						this.nodoLiv6 = daAggiungere.get(i);
+						this.nodoLiv6.setValue(this.nodoLiv0.getValue());
+						this.getValueOfNodeLiv6();
+						if(Float.isNaN(this.nodoLiv5.getValue()) || this.nodoLiv5.getValue()>this.nodoLiv6.getValue())
+						{
+							this.nodoLiv5.setValue(this.nodoLiv6.getValue());
+						}
+						if(this.nodoLiv5.getValue() <= this.nodoLiv4.getValue()) {
+							taglioLivello6 = true;
+						}
+					}
+				}
+				
+				taglioLivello6 = false;
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}*/
+		
+		private void getValueOfNodeLiv6() {
+			this.nodoLiv6.setValue(this.ia.getHeuristicValue(this.nodoLiv6.getStato()));
+		}
+		
+		//metodo di sort del livello 1
+		private void sortLiv1(Livello liv1)
+		{
+			for(int x=0; x<liv1.getNodi().size(); x++)
+			{
+				Nodo nodo = liv1.getNodi().get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(100000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(-100000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+					nodo.getStato().setTurn(Turn.DRAW);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.ia.getHeuristicValue(nodo.getStato()));
+				}
+				Collections.sort(liv1.getNodi(), new Comparator<Nodo>() {
+					@Override
+					public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n1.getValue()-n2.getValue());
+					}
+				});
+			}
+			//imposto la mossa migliore
+			a=albero.get(1).getNodi().get(0).getAzione();
+			for(Nodo nodo : albero.get(1).getNodi())
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(Float.NaN);
+				}
+			}
+			albero.get(0).getNodi().get(0).setValue(albero.get(1).getNodi().get(0).getValue());
+		}
+				
+		//metodo per il riordinamento livello 1, da cambiare
+		private float setSimpleHeuristic(StateTablut s) {
+			return this.ia.getHeuristicValue(s);
+			/*int nBianchi = 1;
+			int nNeri=0;
+			for(int x =0 ; x<9; x++)
+			{
+				for(int y=0; y<9; y++)
+				{
+					if(s.getPawn(x, y).equalsPawn("B"))
+					{
+						nNeri++;
+					}
+					if(s.getPawn(x, y).equalsPawn("W"))
+					{
+						nBianchi++;
+					}
+				}
+			}
+			return 2*nBianchi-nNeri;*/				
+		}
+	
+		//metodo per ordinare in ordine crescente (con simple heuristic) una lista di nodi
+		private void sortLivGenC(List<Nodo> lista)
+		{
+			for(int x=0; x<lista.size(); x++)
+			{
+				Nodo nodo = lista.get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(-10000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+				}
+				
+				Collections.sort(lista, new Comparator<Nodo>() {
+					@Override
+			    	public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n2.getValue()-n1.getValue());
+					}
+			    });
+			}
+			for(Nodo nodo : lista)
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(Float.NaN);
+				}
+			}
+		}
+		
+		//metodo per ordinare in ordine decrescente (con simple heuristic) una lista di nodi
+		private void sortLivGenD(List<Nodo> lista)
+		{
+			for(int x=0; x<lista.size(); x++)
+			{
+				Nodo nodo = lista.get(x);
+				if(nodo.getStato().getTurn().equalsTurn("WW"))
+				{
+					nodo.setValue(10000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("BW"))
+				{
+					nodo.setValue(-10000);
+				}
+				if(this.ia.checkDraw(nodo.getStato()))
+				{
+					nodo.setValue(-5000);
+				}
+				if(nodo.getStato().getTurn().equalsTurn("W") || nodo.getStato().getTurn().equalsTurn("B"))
+				{
+					nodo.setValue(this.setSimpleHeuristic(nodo.getStato()));
+				}
+				
+				Collections.sort(lista, new Comparator<Nodo>() {
+					@Override
+			    	public int compare(Nodo n2, Nodo n1)
+					{
+						return  (int) (n1.getValue()-n2.getValue());
+					}
+			    });
+			}
+			for(Nodo nodo : lista)
+			{
+				if(!nodo.getTurn().equalsTurn("BW") && !nodo.getTurn().equalsTurn("WW") && !nodo.getTurn().equalsTurn("D"))
+				{
+					nodo.setValue(albero.get(0).getNodi().get(0).getValue());
+				}
+			}
+		}
+
 	}
 }
