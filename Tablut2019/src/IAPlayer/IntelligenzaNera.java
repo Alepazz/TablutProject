@@ -608,7 +608,7 @@ public class IntelligenzaNera implements IA {
 	}
 	
 	/***
-	 * 
+	 * dalla posizione del re vedo sedelle pedine possono mangiarlo
 	 * @param posNeri
 	 * @param rigaRe
 	 * @param colonnaRe
