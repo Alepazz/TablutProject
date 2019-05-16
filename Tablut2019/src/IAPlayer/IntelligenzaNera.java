@@ -219,9 +219,9 @@ public class IntelligenzaNera implements IA {
 			
 			//cotrollo le mosse dei bianchi 
 			//controllo se mi viene mangiato il nero
-			for(int i=0; i<neri.size(); i++ ) {
+			for(String st : neri ) {
 				
-				int posizione= Integer.parseInt(neri.get(i));
+				int posizione= Integer.parseInt(st);
 				
 				//le unit� sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
@@ -732,7 +732,7 @@ public class IntelligenzaNera implements IA {
 	private int getValueOfBianco(List<String> posBianchi, StateTablut s) {
 		int value=0;
 		for(String st: posBianchi) {
-			int posizione= Integer.parseInt(neri.get(i));
+			int posizione= Integer.parseInt(st);
 			
 			//le unit� sono le colonne mentre le decine sono le righe
 			int riga = posizione/10;
