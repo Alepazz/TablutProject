@@ -149,6 +149,11 @@ public class IntelligenzaBianca implements IA {
 			value += 3000;
 		}
 		
+		//re adiacente al trono
+		if(!common.kingAdjacentToTheThrone(rigaRe, colonnaRe)) {
+			value += 4000;
+		}
+		
 		//valuto molto il fatto che il re, fuori dal trono, possa essere mangiato -- compensa quella di prima
 		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
 			value -= 3000;
@@ -157,6 +162,10 @@ public class IntelligenzaBianca implements IA {
 		//se il re può essere mangiato, allora ho un valore negativissimo
 		if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
 			value -= this.MAX_VALUE;
+		}
+		
+		if(common.checkBlackCanArriveAdjacent(rigaRe, colonnaRe, s)) {
+			value -= 4000;
 		}
 		
 		// cerco di creare uno stato in cui il re possa uscire dal trono
@@ -188,7 +197,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
-			value += 4000;
+			return this.MAX_VALUE-1;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
@@ -210,9 +219,10 @@ public class IntelligenzaBianca implements IA {
 				
 		return value;	
 	}
-	
+		
 	/**
 	 * Controlla se il re, che si trova sul trono, può fare un passo o due verso l'alto (o verso il basso, o verso sinistra, o verso destra)
+	 * 
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re può uscire dal trono, false in caso contrario
 	 */
