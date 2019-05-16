@@ -217,19 +217,9 @@ public class IntelligenzaNera implements IA {
 
 			value +=this.getValueOfBianchiScappano(bianchi, s);
 			
+			value += this.getValueOfBianco(bianchi, s);
+			
 			//cotrollo le mosse dei bianchi 
-			//controllo se mi viene mangiato il nero
-			for(String st : neri ) {
-				
-				int posizione= Integer.parseInt(st);
-				
-				//le unit� sono le colonne mentre le decine sono le righe
-				int riga = posizione/10;
-				int colonna= posizione%10;
-	
-				if(common.checkBlackCanBeCaptured(riga, colonna, s))
-				value -= 100;
-			}
 			/*
 			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
 			for(int i=0; i<neri.size(); i++ ) {
@@ -738,7 +728,14 @@ public class IntelligenzaNera implements IA {
 			int riga = posizione/10;
 			int colonna= posizione%10;
 			
-			//if(common.white)
+			if(common.checkNeighbourBottomRight(riga, colonna, s).equals("W"))
+				value -= 100;
+			if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("W"))
+				value -= 100;
+			if(common.checkNeighbourTopRight(riga, colonna, s).equals("W"))
+				value -=100;
+			if(common.checkNeighbourTopLeft(riga, colonna, s).equals("W"))
+				value -=100;
 		}
 		
 		return value;
