@@ -197,7 +197,7 @@ public class IntelligenzaBianca implements IA {
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("W"))
 		{
-			value += 4000;
+			return this.MAX_VALUE-1;
 		}
 		if(viedifuga==1 && s.getTurn().equalsTurn("B"))
 		{
@@ -219,33 +219,10 @@ public class IntelligenzaBianca implements IA {
 				
 		return value;	
 	}
-	
-	
-	private boolean checkKingCanWin(StateTablut s) {
 		
-		int rigaRe = -1;
-		int colonnaRe = -1;
-		
-		for(int i=0; i<9; i++)
-		{
-			for(int j=0; j<9; j++)
-			{
-				if(s.getBoard()[i][j].equalsPawn("K"))
-				{
-					rigaRe=i;
-					colonnaRe=j;
-				}
-			}
-		}
-		
-		//parte in cui il re ha una STELLA in cui vincere
-		
-		
-		return false;
-	}
-	
 	/**
 	 * Controlla se il re, che si trova sul trono, può fare un passo o due verso l'alto (o verso il basso, o verso sinistra, o verso destra)
+	 * 
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re può uscire dal trono, false in caso contrario
 	 */
