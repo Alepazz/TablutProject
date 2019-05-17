@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
 public class IntelligenzaNera implements IA {
 	
 	private static final int TIMETOSTOPTREEGENERATOR = 30000;
-	private static final int TIMETOSTOPHEURISTICVALUATOR = 30000;
 	private List<String> citadels;
 	private List<StateTablut> listState; 
 	private static Action a = null;
@@ -44,6 +44,7 @@ public class IntelligenzaNera implements IA {
 		this.common= new CommonHeuristicFunction();
 		this.citadels = this.common.getCitadels();
 		this.perfectPos= new ArrayList<String>();
+		this.listState = new ArrayList<StateTablut>();
 		this.perfectPos.add("13");
 		this.perfectPos.add("22");
 		this.perfectPos.add("31");
@@ -176,8 +177,8 @@ public class IntelligenzaNera implements IA {
 		int viedifuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 				
 		//controllo se nella mossa del nero mi mangia il re
-		if(viedifuga>=1)
-			return this.MIN_VALUE+1;
+		/*if(viedifuga>=1)
+			return this.MIN_VALUE+1;*/
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
@@ -366,7 +367,7 @@ public class IntelligenzaNera implements IA {
 			if( common.checkBlackCanArriveAdjacentInLeftPosition(7, 6, s) && !common.checkBlackCanBeCaptured(7, 5, s)) 
 				value+=20;
 		}
-		System.out.println("valorediagonale"+value);
+		//System.out.println("valorediagonale"+value);
 		return value;
 	}
 	
@@ -632,7 +633,7 @@ public class IntelligenzaNera implements IA {
 		}
 		
 			
-		System.out.println("valorespostamento"+value);
+		//System.out.println("valorespostamento"+value);
 		
 		return value;
 	}
@@ -719,7 +720,7 @@ public class IntelligenzaNera implements IA {
 		
 		if(value > this.MAX_VALUE)
 			return this.MAX_VALUE;
-		System.out.println("valoreaccerchiato"+value);
+		//System.out.println("valoreaccerchiato"+value);
 		return value;
 		
 	}
@@ -1831,16 +1832,11 @@ public class IntelligenzaNera implements IA {
 
 		try {
 			Nodo node = new Nodo(s);
-			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this.TIMETOSTOPTREEGENERATOR, this);
+			TreeGenerator3 treeGenerator2 = new TreeGenerator3(node, this.citadels, this);
 			Thread t = new Thread(treeGenerator2);
 			t.start();
-			//this.wait(30000);
 			Thread.sleep(TIMETOSTOPTREEGENERATOR);
-			//System.out.println("Lancio l'interruzione");
-			//treeGenerator.stopThread();
 			t.interrupt();
-			//t.stop();
-			//System.out.println("Finito sviluppo albero");
 			t3 = System.currentTimeMillis();
 			System.out.println("Tempo trascorso sviluppo albero: "+(t3-t1)+" millisecondi");
 			
@@ -1854,7 +1850,7 @@ public class IntelligenzaNera implements IA {
 				System.out.println("Nodo: " + x +" ha valore "+albero.get(1).getNodi().get(x).getValue());
 			}
 			System.out.println("Livello 2");
-			for(int x=0; x<albero.get(2).getNodi().size(); x++)
+			for(int x=0; x<100; x++)
 			{
 				System.out.println("Nodo: " + x +" ha valore "+albero.get(2).getNodi().get(x).getValue());
 			}
@@ -1864,10 +1860,9 @@ public class IntelligenzaNera implements IA {
 				System.out.println("Nodo: " + x +" ha valore "+albero.get(3).getNodi().get(x).getValue());
 			}
 			System.out.println("Livello 4");
-			for(int x=0; x<100; x++)
+			for(int x=0; x<50; x++)
 			{
-				System.out.println("Nodo: " + x +" ha valore "+albero.get(4).getNodi().get(x).getValue());
-				if(albero.get(4).getNodi().get(x).getValue()==-92)
+				if(albero.get(4).getNodi().get(x).getValue()==-10000)
 				{
 					System.out.println(albero.get(4).getNodi().get(x).getStato());
 				}
@@ -1876,28 +1871,12 @@ public class IntelligenzaNera implements IA {
 			System.out.println("Valore root: "+albero.get(0).getNodi().get(0).getValue());
 			albero.clear();
 			System.gc();
-			/*HeuristicValuator heuristicValuator = new HeuristicValuator(this, TIMETOSTOPHEURISTICVALUATOR);
-			t = new Thread(heuristicValuator);
-			t.start();
-			//this.wait(10000);
-			Thread.sleep(3000);
-			//System.out.println("Lancio l'interruzione");
-			t.interrupt();
-			//heuristicValuator.stopThread();
-			//System.out.println("Finito sviluppo euristica");
-			//t.stop();
-			*/
-
-			
-			//System.out.println("Livello 3 espanso");
-
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long t2 = System.currentTimeMillis();
-		//System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
+		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
 		return a;
@@ -1908,7 +1887,6 @@ public class IntelligenzaNera implements IA {
 		private Nodo nodoAttuale;
 		private Simulator simulatore;
 		private List<String> citadels;
-		private int timeToStopTreeGenerator;
 		private IntelligenzaNera ia;
 		private boolean taglioLivello1;
 		private boolean taglioLivello2;
@@ -1931,14 +1909,13 @@ public class IntelligenzaNera implements IA {
 		private Nodo nodoLiv4;
 		private Nodo nodoLiv6;
 		
-		public TreeGenerator3(Nodo n, List<String> cit, int timeToStopTreeGenerator, IntelligenzaNera i) {
+		public TreeGenerator3(Nodo n, List<String> cit, IntelligenzaNera i) {
 			this.nodoAttuale = n;
 			this.ia = i;
 			//this.simulatore = s;
 			//this.!Thread.currentThread().isInterrupted()=true;
 			//this.iaB = ia;
 			this.citadels = cit;
-			this.timeToStopTreeGenerator = timeToStopTreeGenerator;
 			this.simulatore = new Simulator();
 		}
 		
@@ -2012,20 +1989,20 @@ public class IntelligenzaNera implements IA {
 				this.sortLivGenC(daAggiungere);
 				this.liv2.add(daAggiungere);
 				
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv1.setValue(10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv1.setValue(-10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !taglioLivello2 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv2 = daAggiungere.get(i);
-						this.nodoLiv2.setValue(this.nodoLiv0.getValue());
+						this.nodoLiv2.setValue(Float.NaN);
 						this.getValueOfNodeLiv2();
 						if(Float.isNaN(this.nodoLiv1.getValue()) || this.nodoLiv2.getValue()<this.nodoLiv1.getValue())
 						{
@@ -2039,7 +2016,6 @@ public class IntelligenzaNera implements IA {
 				taglioLivello2 = false;			
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -2052,15 +2028,15 @@ public class IntelligenzaNera implements IA {
 				List<Nodo> daAggiungere = this.simulatore.mossePossibiliComplete(this.nodoLiv2);
 				this.sortLivGenD(daAggiungere);
 				this.liv3.add(daAggiungere);
-				if(daAggiungere.get(0).getTurn().equals("BW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
 					this.nodoLiv2.setValue(10000);
 				}
-				if(daAggiungere.get(0).getTurn().equals("WW"))
+				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					this.nodoLiv2.setValue(-10000);
 				}
-				if(!daAggiungere.get(0).getTurn().equals("BW") && !daAggiungere.get(0).getTurn().equals("WW"))
+				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
 					for(int i=0; i<daAggiungere.size() && !taglioLivello3 && !Thread.currentThread().isInterrupted(); i++)
 					{
@@ -2080,7 +2056,6 @@ public class IntelligenzaNera implements IA {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -2106,7 +2081,7 @@ public class IntelligenzaNera implements IA {
 					for(int i=0; i<daAggiungere.size() && !taglioLivello4 && !Thread.currentThread().isInterrupted(); i++)
 					{
 						this.nodoLiv4 = daAggiungere.get(i);
-						this.nodoLiv4.setValue(this.nodoLiv0.getValue());
+						this.nodoLiv4.setValue(Float.NaN);
 						if(albero.get(1).getNodi().size()<30)
 						{
 							this.getValueOfNodeLiv4();
@@ -2126,7 +2101,6 @@ public class IntelligenzaNera implements IA {
 				}
 				taglioLivello4 = false;				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -2172,7 +2146,6 @@ public class IntelligenzaNera implements IA {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -2218,7 +2191,6 @@ public class IntelligenzaNera implements IA {
 				
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}*/
