@@ -290,6 +290,7 @@ public class CommonHeuristicFunction {
 		}
 		return -1;
 	}
+
 	
 	/**
 	 * Controlla se dato un re con almeno una via di fuga, le vie di fuga non possono essere chiuse dalle pedine nere

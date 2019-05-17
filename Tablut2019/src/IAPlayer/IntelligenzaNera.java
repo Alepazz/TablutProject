@@ -60,18 +60,17 @@ public class IntelligenzaNera implements IA {
 		
 		/*altra possibile diagonale buona
 		 * basta solo scommentarla
-		 * 
+		 *
 		 this.perfectPos.add("23");
 		 this.perfectPos.add("32");
 		 this.perfectPos.add("25");
 		 this.perfectPos.add("36");
-		 this.perfectPos.add("62");
 		 this.perfectPos.add("56");
 		 this.perfectPos.add("65");
 		 this.perfectPos.add("52");
 		 this.perfectPos.add("63");
-		 *
 		 */
+
 		
 	}
 
@@ -184,7 +183,7 @@ public class IntelligenzaNera implements IA {
 		 */
 		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
 			
-			return this.MIN_VALUE;
+			return this.MIN_VALUE-1;
 		}
 		
 		/*
@@ -192,7 +191,7 @@ public class IntelligenzaNera implements IA {
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
 			
-			return this.MIN_VALUE;
+			return this.MIN_VALUE-1;
 		}
 			
 		else {
@@ -219,12 +218,12 @@ public class IntelligenzaNera implements IA {
 			
 			
 
-			value +=this.getValueOfBianchiScappano(bianchi, s);
+			value +=this.getValueOfBianchiScappano(bianchi,rigaRe, colonnaRe, s);
 			
-			value += this.getValueOfBianco(bianchi, s);
+//			value += this.getValueOfBianco(bianchi, s);
 			
 			//cotrollo le mosse dei bianchi 
-			/*
+			
 			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
 			for(int i=0; i<neri.size(); i++ ) {
 				
@@ -233,8 +232,16 @@ public class IntelligenzaNera implements IA {
 				//le unit� sono le colonne mentre le decine sono le righe
 				int riga = posizione/10;
 				int colonna= posizione%10;
-	
+				
+				//faccio uscire le nere dalle citadelle
+				if(common.isCitadel(riga, colonna, s))
+					value -=50;
+				
+				
 
+
+	
+/*
 				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
 					value += 200;
 				if(	common.checkNeighbourBottomRight(riga, colonna, s).equals("B"))
@@ -256,33 +263,17 @@ public class IntelligenzaNera implements IA {
 				
 				//controllo che ci siano pedine nere isolate (che non va bene)
 				if(common.blackIsIsolated(riga, colonna, s))
-					value -= 1000;
+					value -= 1000;*/
 				
-				
-				//controllo che ci siano bianchi mangiabili
-
-				if(common.checkNeighbourBottom(riga, colonna, s).equals("W") )
-					if( common.checkWhiteCanBeCaptured(riga+1, colonna, s))
-						value =+ 100;
-				if(common.checkNeighbourTop(riga, colonna, s).equals("W") )
-					if( common.checkWhiteCanBeCaptured(riga-1, colonna, s))
-						value =+ 100;
-				if(common.checkNeighbourLeft(riga, colonna, s).equals("W") )
-					if( common.checkWhiteCanBeCaptured(riga, colonna-1, s))
-						value =+ 100;
-				if(common.checkNeighbourRight(riga, colonna, s).equals("W") )
-					if( common.checkWhiteCanBeCaptured(riga, colonna+1, s))
-						value =+ 10;
-				
-				
-
+			
 
 				
-				}*/
+				}
 			}
 		//System.out.println("valore"+value);
 		return value;
 	}
+	
 	
 	/**
 	 * Controlla lo stato genera una situazione di pareggio
@@ -385,12 +376,17 @@ public class IntelligenzaNera implements IA {
 				int colonna = Integer.parseInt(st)%10;
 				//se si trova in basso a destra
 				if(riga> 4 && colonna >4){
-					if(posNeri.contains("13"))
+					if(posNeri.contains("13")&& !common.checkBlackCanBeCaptured(1, 3, s))
 						value+= 100;
-					if(posNeri.contains("22"))
+					if(posNeri.contains("22")&& !common.checkBlackCanBeCaptured(2, 2, s))
 						value+= 100;
-					if(posNeri.contains("31"))
-						value+= 100;
+					if(posNeri.contains("31")&& !common.checkBlackCanBeCaptured(3, 1, s))
+						value+=100;
+					
+					if(posNeri.contains("23") && !common.checkBlackCanBeCaptured(2, 3, s))
+						value+= 30;
+					if(posNeri.contains("32") && !common.checkBlackCanBeCaptured(3, 2, s))
+						value+= 30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -400,12 +396,16 @@ public class IntelligenzaNera implements IA {
 				}
 				//se si trova in basso a sinistra
 				if(riga>4 && colonna <4) {
-					if(posNeri.contains("15"))
+					if(posNeri.contains("15") && !common.checkBlackCanBeCaptured(1, 5, s))
 						value+= 100;
-					if(posNeri.contains("26"))
+					if(posNeri.contains("26") && !common.checkBlackCanBeCaptured(2, 6, s))
 						value+= 100;
-					if(posNeri.contains("37"))
-						value+= 100;
+					if(posNeri.contains("37") && !common.checkBlackCanBeCaptured(3, 7, s))
+					 	value+=100;
+					if(posNeri.contains("25") && !common.checkBlackCanBeCaptured(2, 5, s))
+						value+= 30;
+					if(posNeri.contains("36") && !common.checkBlackCanBeCaptured(3, 6, s))
+						value+= 30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -415,11 +415,11 @@ public class IntelligenzaNera implements IA {
 				}
 				//se si trova in alto a destra
 				if(riga < 4 && colonna > 4) {
-					if(posNeri.contains("51"))
+					if(posNeri.contains("51") && !common.checkBlackCanBeCaptured(5, 1, s))
 						value+= 100;
-					if(posNeri.contains("62"))
+					if(posNeri.contains("62") && !common.checkBlackCanBeCaptured(6, 2, s))
 						value+= 100;
-					if(posNeri.contains("73"))
+					if(posNeri.contains("73") && !common.checkBlackCanBeCaptured(7, 3, s))
 						value+= 100;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 						value +=30;
@@ -427,14 +427,25 @@ public class IntelligenzaNera implements IA {
 						value +=30;
 					if(common.checkBlackCanArriveAdjacentInRightPosition(7, 2, s) && !common.checkBlackCanBeCaptured(7, 3, s)) 
 						value += 30;
+					
+					if(posNeri.contains("52") && !common.checkBlackCanBeCaptured(5, 2, s))
+						value+= 30;
+					if(posNeri.contains("63") && !common.checkBlackCanBeCaptured(6, 3, s))
+							value+= 30;
+						
+					
 				}
 				if(riga < 4 && colonna < 4) {
-					if(posNeri.contains("75"))
+					if(posNeri.contains("75") && !common.checkBlackCanBeCaptured(7, 5, s))
 						value+= 100;
-					if(posNeri.contains("66"))
+					if(posNeri.contains("66") && !common.checkBlackCanBeCaptured(6, 6, s))
 						value+= 100;
-					if(posNeri.contains("57"))
+					if(posNeri.contains("57") && !common.checkBlackCanBeCaptured(5, 7, s))
 						value+= 100;
+					if(posNeri.contains("56") && !common.checkBlackCanBeCaptured(5, 6, s))
+						value+= 30;
+					if(posNeri.contains("65") && !common.checkBlackCanBeCaptured(6, 5, s))
+						value+= 30;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
 						value+=30;
 					if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
@@ -464,11 +475,11 @@ public class IntelligenzaNera implements IA {
 			if(rigaRe> 4 && colonnaRe >4){
 			//pedina gi� nella diagonale valore molto alto, se ci pu� arrivare valore minore
 				if(posNeri.contains("75"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("66"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("57"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -479,11 +490,11 @@ public class IntelligenzaNera implements IA {
 			//se si trova in basso a sinistra
 			if(rigaRe>4 && colonnaRe <4) {
 				if(posNeri.contains("51"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("62"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("73"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -494,11 +505,11 @@ public class IntelligenzaNera implements IA {
 			//se si trova in alto a destra
 			if(rigaRe < 4 && colonnaRe > 4) {
 				if(posNeri.contains("15"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("26"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("37"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 					value +=60;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
@@ -508,11 +519,11 @@ public class IntelligenzaNera implements IA {
 			}
 			if(rigaRe < 4 && colonnaRe < 4) {
 				if(posNeri.contains("13"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("22"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(posNeri.contains("31"))
-					value+= this.MAX_VALUE/6;
+					value+= this.MAX_VALUE-1/6;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 7, s) && !common.checkBlackCanBeCaptured(5, 7, s)) 
 					value+=60;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 6, s) && !common.checkBlackCanBeCaptured(6, 6, s)) 
@@ -526,17 +537,17 @@ public class IntelligenzaNera implements IA {
 		if(rigaRe != 4 && colonnaRe ==4) {
 			if(rigaRe <4){
 				if(posNeri.contains("13"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("22"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("31"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("15"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("26"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("37"))
-					value+=this.MAX_VALUE/12;
+					value+=this.MAX_VALUE-1/12;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -552,17 +563,17 @@ public class IntelligenzaNera implements IA {
 			}
 			if(rigaRe > 4) {
 				if(posNeri.contains("51"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("62"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("73"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("75"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("66"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("57"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(6, 1, s) && !common.checkBlackCanBeCaptured(5, 1, s))
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInTopPosition(7, 2, s) && !common.checkBlackCanBeCaptured(6, 2, s))
@@ -580,17 +591,17 @@ public class IntelligenzaNera implements IA {
 		if(rigaRe == 4 && colonnaRe !=4) {
 			if( colonnaRe <4){
 				if(posNeri.contains("13"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("22"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("31"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("51"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("62"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("73"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
@@ -606,17 +617,17 @@ public class IntelligenzaNera implements IA {
 			}
 			if(colonnaRe >4) {
 				if(posNeri.contains("15"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("26"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("37"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("75"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("66"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(posNeri.contains("57"))
-					value+= this.MAX_VALUE/12;
+					value+= this.MAX_VALUE-1/12;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 7, s) && !common.checkBlackCanBeCaptured(3, 7, s)) 
 					value +=50;
 				if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 6, s) && !common.checkBlackCanBeCaptured(2, 6, s)) 
@@ -693,6 +704,18 @@ public class IntelligenzaNera implements IA {
 				value+= 46;
 				
 		}
+		//se si trova  vicino ad una cittadella
+		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("C") || common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("C") || 
+				common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("C") || common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("C")) {
+			if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe-1, colonnaRe, s))
+				value+= this.MAX_VALUE-1;
+			if(common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe+1, colonnaRe, s))
+				value+=this.MAX_VALUE-1;
+			if(common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe-1, s))
+				value+=this.MAX_VALUE-1;
+			if(common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") && !common.checkBlackCanBeCaptured(rigaRe, colonnaRe+1, s))
+				value+=this.MAX_VALUE-1;
+		}
 		
 		//se il re si trova in qualsiasi altro punto del piano (servono 2 neri per catturarlo)
 		else {
@@ -729,7 +752,7 @@ public class IntelligenzaNera implements IA {
 	*se ci si trova ma non pu� essere mangiato devo restituire un valore molto negativo(ovvero evito di finire in questo stato)
 	*
 	**/
-	private int getValueOfBianchiScappano(List<String> posBianchi, StateTablut s) {
+	private int getValueOfBianchiScappano(List<String> posBianchi, int rigaRe, int colonnaRe, StateTablut s) {
 		int value=0;
 		for(String st : posBianchi){
 			int riga= Integer.parseInt(st)/10;
@@ -741,7 +764,25 @@ public class IntelligenzaNera implements IA {
 					//non so se inserire anche il rischio che i neri vengano mangiati
 					value+=200; // molto importante
 				else value -= 200;
+		
+		
+		//controllo se ci sono dei bianchi vicino al re e se sono mangiabili lo faccio in modo da avere libera la strada
+			if(!common.kingOnTheThrone(rigaRe, colonnaRe)) {
+				if(common.checkNeighbourBottom(riga, colonna, s).equals("K") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna, s))		 
+						value =+ 250;
+				if(common.checkNeighbourTop(riga, colonna, s).equals("K") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna, s))
+						value =+ 250;
+				if(common.checkNeighbourLeft(riga, colonna, s).equals("K") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna, s))
+						value =+ 250;
+				if(common.checkNeighbourRight(riga, colonna, s).equals("K") )
+					if( common.checkWhiteCanBeCaptured(riga, colonna, s))
+						value =+ 250;
+			}
 		}
+		
 		
 		return value;
 	}
