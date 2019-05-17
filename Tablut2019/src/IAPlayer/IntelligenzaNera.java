@@ -271,6 +271,8 @@ public class IntelligenzaNera implements IA {
 				}
 			}
 		//System.out.println("valore"+value);
+		
+		//TODO: coprire la via di fuga del re con un nero che non possa essere mangiato. Se non ci sono neri che non possono essere mangiati, coprire la via di fuga del re con un nero che può essere mangiato
 		return value;
 	}
 	
