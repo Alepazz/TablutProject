@@ -253,7 +253,7 @@ public class IntelligenzaNera implements IA {
 			//maxvalue/10 � il massimo a cui si pu� arrivare
 			int valueDiagonali = this.getValueofDiagonali(neri, s);
 			//se gi� ci sono 5 pedine sulla diagonale posso tornare perch� ho un buon valore
-			if(valueDiagonali > this.MAX_VALUE/(2*5))
+			if(valueDiagonali > 2000)
 				return valueDiagonali;
 			if(valueDiagonali >= this.MAX_VALUE/4)
 			{
