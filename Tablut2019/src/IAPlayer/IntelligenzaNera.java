@@ -33,8 +33,9 @@ public class IntelligenzaNera implements IA {
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
-	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
-	private List<String> perfectPos;	
+	private final int VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN;
+	private List<String> perfectPos;
+	private int numeroMosse = 0;
 	//private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	
@@ -45,7 +46,7 @@ public class IntelligenzaNera implements IA {
 		this.citadels = this.common.getCitadels();
 		this.perfectPos= new ArrayList<String>();
 		this.listState = new ArrayList<StateTablut>();
-		this.perfectPos.add("13");
+		/*this.perfectPos.add("13");
 		this.perfectPos.add("22");
 		this.perfectPos.add("31");
 		this.perfectPos.add("51");
@@ -56,11 +57,11 @@ public class IntelligenzaNera implements IA {
 		this.perfectPos.add("57");
 		this.perfectPos.add("37");
 		this.perfectPos.add("26");
-		this.perfectPos.add("15");
+		this.perfectPos.add("15");*/
 		
 		/*altra possibile diagonale buona
 		 * basta solo scommentarla
-		 *
+		 */
 		 this.perfectPos.add("23");
 		 this.perfectPos.add("32");
 		 this.perfectPos.add("25");
@@ -69,7 +70,6 @@ public class IntelligenzaNera implements IA {
 		 this.perfectPos.add("65");
 		 this.perfectPos.add("52");
 		 this.perfectPos.add("63");
-		 */
 
 		
 	}
@@ -140,26 +140,21 @@ public class IntelligenzaNera implements IA {
 			{
 				if(s.getBoard()[i][j].equalsPawn("B"))
 				{
-					nNeri++;
-					value-= VALUE_BLACK_PAWN;
+					//nNeri++;
+					value+= VALUE_BLACK_PAWN;
 					if(common.checkBlackCanBeCaptured(i, j, s))
 					{
-						value+= VALUE_BLACK_PAWN/2;
+						value-= VALUE_BLACK_PAWN*3/4;
 					}
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
-					nBianchi++;
-					value+= VALUE_WHITE_PAWN;
+					//nBianchi++;
+					value-= VALUE_WHITE_PAWN;
 					if(common.checkWhiteCanBeCaptured(i, j, s))
 					{
-						value-= VALUE_WHITE_PAWN/2;
+						value+= VALUE_WHITE_PAWN/2;
 					}
-				}
-				if(s.getBoard()[i][j].equalsPawn("K"))
-				{
-					rigaRe=i;
-					colonnaRe=j;
 				}
 			}
 		}
@@ -173,17 +168,65 @@ public class IntelligenzaNera implements IA {
 		}*/
 		
 		//controllo vie di fuga re
-		int viedifuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
+		int vieDiFuga=this.common.checkVieDiFugaRe(rigaRe, colonnaRe, s);
 				
 		//controllo se nella mossa del nero mi mangia il re
-		/*if(viedifuga>=1)
-			return this.MIN_VALUE+1;*/
+		if((vieDiFuga==1 && s.getTurn().equalsTurn("W")) || (vieDiFuga > 1 && !common.kingCanBeCaptured(rigaRe, colonnaRe, s)))
+		{
+			return this.MIN_VALUE+1;
+		}
+		if(vieDiFuga==1 && s.getTurn().equalsTurn("B"))
+		{
+			if(common.blackCannotBlockEscape(rigaRe, colonnaRe, s) && !common.kingCanBeCaptured(rigaRe, colonnaRe, s))
+			{
+				return this.MIN_VALUE+1;
+			}
+			
+			if(common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
+				return this.MAX_VALUE-1;
+			}
+		}
+		
+		if(s.getTurn().equalsTurn("B") && common.kingCanBeCaptured(rigaRe, colonnaRe, s)) {
+			return this.MAX_VALUE-1;
+		}
+		
+		if(vieDiFuga == 0) {
+			int riga = this.checkOneBlackUp(rigaRe, colonnaRe, s);
+			if(riga != -1) {
+				if(common.checkBlackCanBeCaptured(riga, colonnaRe, s)) {
+					value -= 200;
+				}
+			}
+			
+			riga = this.checkOneBlackDown(rigaRe, colonnaRe, s);
+			if(riga != -1) {
+				if(common.checkBlackCanBeCaptured(riga, colonnaRe, s)) {
+					value -= 200;
+				}
+			}
+			
+			int colonna = this.checkOneBlackLeft(rigaRe, colonnaRe, s);
+			if(colonna != -1) {
+				if(common.checkBlackCanBeCaptured(rigaRe, colonna, s)) {
+					value -= 200;
+				}
+			}
+			
+			colonna = this.checkOneBlackRight(rigaRe, colonnaRe, s);
+			if(colonna != -1) {
+				if(common.checkBlackCanBeCaptured(rigaRe, colonna, s)) {
+					value -= 200;
+				}
+			}
+		}
+		
 		/*
 		 * Funzione che controlla se, eseguita una mossa del re in orizzontale, esso ha liberato un'intera colonna (2 oppure 6), in cui vincere (al 100%) il turno successivo
 		 */
 		if (this.common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s) || this.common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
 			
-			return this.MIN_VALUE-1;
+			return this.MIN_VALUE+1;
 		}
 		
 		/*
@@ -191,56 +234,57 @@ public class IntelligenzaNera implements IA {
 		 */
 		if (this.common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s) || this.common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s)){
 			
-			return this.MIN_VALUE-1;
+			return this.MIN_VALUE+1;
 		}
-			
-		else {
-			
-			//dalla funzione pi� importante allameno importante
-			value +=this.getValueOfReAccerchiato(neri, rigaRe, colonnaRe, s);
-			if(value > this.MAX_VALUE/2)
-				return value;
-			
-			//maxvalue/4 � il massimo a cui si pu� arrivare
-			int valueSpostamentoRe = this.getValueOfSpostamentoDelRe(neri, rigaRe, colonnaRe, s);
-			if(valueSpostamentoRe > this.MAX_VALUE/12)
-				return valueSpostamentoRe;
-			value += valueSpostamentoRe;
-			
+						
+		//dalla funzione pi� importante alla meno importante
+		value +=this.getValueOfReAccerchiato(neri, rigaRe, colonnaRe, s);
+		if(value >= this.MAX_VALUE/2)
+			return value;
+		
+		//maxvalue/4 � il massimo a cui si pu� arrivare
+		int valueSpostamentoRe = this.getValueOfSpostamentoDelRe(neri, rigaRe, colonnaRe, s);
+		if(valueSpostamentoRe > this.MAX_VALUE/12)
+			return valueSpostamentoRe;
+		value += valueSpostamentoRe;
+		
+		
+		if((16 -nNeri) < (8 - nBianchi) +2) {
 			//maxvalue/10 � il massimo a cui si pu� arrivare
 			int valueDiagonali = this.getValueofDiagonali(neri, s);
 			//se gi� ci sono 5 pedine sulla diagonale posso tornare perch� ho un buon valore
 			if(valueDiagonali > this.MAX_VALUE/(2*5))
 				return valueDiagonali;
 			value += valueDiagonali;
-			
-			value += this.getValueOfPosizioneDelleNere(neri, s);
-			
-			
+		}
+		
+		value += this.getValueOfPosizioneDelleNere(neri, s);
+		
+		
 
-			value +=this.getValueOfBianchiScappano(bianchi,rigaRe, colonnaRe, s);
-			
+		value +=this.getValueOfBianchiScappano(bianchi,rigaRe, colonnaRe, s);
+		
 //			value += this.getValueOfBianco(bianchi, s);
+		
+		//cotrollo le mosse dei bianchi 
+		
+		//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
+		for(int i=0; i<neri.size(); i++ ) {
 			
-			//cotrollo le mosse dei bianchi 
+			int posizione= Integer.parseInt(neri.get(i));
 			
-			//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
-			for(int i=0; i<neri.size(); i++ ) {
-				
-				int posizione= Integer.parseInt(neri.get(i));
-				
-				//le unit� sono le colonne mentre le decine sono le righe
-				int riga = posizione/10;
-				int colonna= posizione%10;
-				
-				//faccio uscire le nere dalle citadelle
-				if(common.isCitadel(riga, colonna, s))
-					value -=50;
-				
-				
+			//le unit� sono le colonne mentre le decine sono le righe
+			int riga = posizione/10;
+			int colonna= posizione%10;
+			
+			//faccio uscire le nere dalle citadelle
+			if(common.isCitadel(riga, colonna, s))
+				value -=50;
+			
+			
 
 
-	
+
 /*
 				if(common.checkNeighbourBottomLeft(riga, colonna, s).equals("B"))
 					value += 200;
@@ -264,16 +308,145 @@ public class IntelligenzaNera implements IA {
 				//controllo che ci siano pedine nere isolate (che non va bene)
 				if(common.blackIsIsolated(riga, colonna, s))
 					value -= 1000;*/
-				
 			
+		
 
-				
-				}
+			
 			}
 		//System.out.println("valore"+value);
 		
 		//TODO: coprire la via di fuga del re con un nero che non possa essere mangiato. Se non ci sono neri che non possono essere mangiati, coprire la via di fuga del re con un nero che può essere mangiato
 		return value;
+	}
+	
+	/**
+	 * Controlla se c'è solo una pedina nera nella direzione specificata che può ostacolare il re nel muoversi fino al bordo
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return riga in cui si trova la pedina, -1 altrimenti
+	 */
+	private int checkOneBlackUp(int rigaRe, int colonnaRe, StateTablut s) {
+		
+		if(colonnaRe == 3 || colonnaRe == 4 || colonnaRe == 5) {
+			return -1;
+		}
+		
+		int pedineNereTrovate = 0;
+		int riga = -1;
+		
+		for(int i=rigaRe-1; i>=0; i--) {
+			if(s.getPawn(i, colonnaRe).equalsPawn("B")) {
+				pedineNereTrovate++;
+				riga = i;
+			}
+			if(s.getPawn(i, colonnaRe).equalsPawn("W") || s.getPawn(i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonnaRe))) {
+				return -1;
+			}
+		}
+		if(pedineNereTrovate == 1) {
+			return riga;
+		}
+		
+		return -1;
+		
+	}
+	
+	/**
+	 * Controlla se c'è solo una pedina nera nella direzione specificata che può ostacolare il re nel muoversi fino al bordo
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return riga in cui si trova la pedina, -1 altrimenti
+	 */
+	private int checkOneBlackDown(int rigaRe, int colonnaRe, StateTablut s) {
+		
+		if(colonnaRe == 3 || colonnaRe == 4 || colonnaRe == 5) {
+			return -1;
+		}
+		
+		int pedineNereTrovate = 0;
+		int riga = -1;
+		
+		for(int i=rigaRe+1; i<9; i++) {
+			if(s.getPawn(i, colonnaRe).equalsPawn("B")) {
+				pedineNereTrovate++;
+				riga = i;
+			}
+			if(s.getPawn(i, colonnaRe).equalsPawn("W") || s.getPawn(i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonnaRe))) {
+				return -1;
+			}
+		}
+		if(pedineNereTrovate == 1) {
+			return riga;
+		}
+		
+		return -1;
+		
+	}
+	
+	/**
+	 * Controlla se c'è solo una pedina nera nella direzione specificata che può ostacolare il re nel muoversi fino al bordo
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return colonna in cui si trova la pedina, -1 altrimenti
+	 */
+	private int checkOneBlackLeft(int rigaRe, int colonnaRe, StateTablut s) {
+		
+		if(rigaRe == 3 || rigaRe == 4 || rigaRe == 5) {
+			return -1;
+		}
+		
+		int pedineNereTrovate = 0;
+		int colonna = -1;
+		
+		for(int i=colonnaRe-1; i>=0; i--) {
+			if(s.getPawn(rigaRe, i).equalsPawn("B")) {
+				pedineNereTrovate++;
+				colonna = i;
+			}
+			if(s.getPawn(rigaRe, i).equalsPawn("W") || s.getPawn(rigaRe, i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe, i))) {
+				return -1;
+			}
+		}
+		if(pedineNereTrovate == 1) {
+			return colonna;
+		}
+		
+		return -1;	
+	}
+	
+	/**
+	 * Controlla se c'è solo una pedina nera nella direzione specificata che può ostacolare il re nel muoversi fino al bordo
+	 * @param rigaRe
+	 * @param colonnaRe
+	 * @param s
+	 * @return colonna in cui si trova la pedina, -1 altrimenti
+	 */
+	private int checkOneBlackRight(int rigaRe, int colonnaRe, StateTablut s) {
+		
+		if(colonnaRe == 3 || colonnaRe == 4 || colonnaRe == 5) {
+			return -1;
+		}
+		
+		int pedineNereTrovate = 0;
+		int colonna = -1;
+		
+		for(int i=colonnaRe+1; i<9; i++) {
+			if(s.getPawn(rigaRe, i).equalsPawn("B")) {
+				pedineNereTrovate++;
+				colonna = i;
+			}
+			if(s.getPawn(rigaRe, i).equalsPawn("W") || s.getPawn(rigaRe, i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe, i))) {
+				return -1;
+			}
+		}
+		if(pedineNereTrovate == 1) {
+			return colonna;
+		}
+		
+		return -1;	
 	}
 	
 	
@@ -335,7 +508,7 @@ public class IntelligenzaNera implements IA {
 			if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
 				value += 20;
 			if(common.checkBlackCanArriveAdjacentInBottomPosition(1, 2, s) && !common.checkBlackCanBeCaptured(2, 2, s)) 
-				value +=200;
+				value +=20;
 			if(common.checkBlackCanArriveAdjacentInRightPosition(1, 2, s) && !common.checkBlackCanBeCaptured(3, 1, s)) 
 				value += 20;
 			
@@ -377,7 +550,7 @@ public class IntelligenzaNera implements IA {
 				int riga= Integer.parseInt(st)/10;
 				int colonna = Integer.parseInt(st)%10;
 				//se si trova in basso a destra
-				if(riga> 4 && colonna >4){
+				if(riga> 4 && colonna>4){
 					if(posNeri.contains("13")&& !common.checkBlackCanBeCaptured(1, 3, s))
 						value+= 100;
 					if(posNeri.contains("22")&& !common.checkBlackCanBeCaptured(2, 2, s))
@@ -652,7 +825,7 @@ public class IntelligenzaNera implements IA {
 	}
 	
 	/***
-	 * dalla posizione del re vedo sedelle pedine possono mangiarlo
+	 * dalla posizione del re vedo se delle pedine possono mangiarlo
 	 * @param posNeri
 	 * @param rigaRe
 	 * @param colonnaRe
@@ -1920,6 +2093,7 @@ public class IntelligenzaNera implements IA {
 		}
 		long t2 = System.currentTimeMillis();
 		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
+		numeroMosse += 1;
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
 		return a;
@@ -2250,11 +2424,11 @@ public class IntelligenzaNera implements IA {
 				Nodo nodo = liv1.getNodi().get(x);
 				if(nodo.getStato().getTurn().equalsTurn("WW"))
 				{
-					nodo.setValue(100000);
+					nodo.setValue(-100000);
 				}
 				if(nodo.getStato().getTurn().equalsTurn("BW"))
 				{
-					nodo.setValue(-100000);
+					nodo.setValue(100000);
 				}
 				if(this.ia.checkDraw(nodo.getStato()))
 				{
