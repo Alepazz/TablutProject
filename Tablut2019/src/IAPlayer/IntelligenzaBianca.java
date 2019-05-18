@@ -248,8 +248,6 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		//TODO: disposizione pedine bianche in diagonale potrebbe essere una buona idea
-		
-		//TODO: usare getPositionValue()
 				
 		return value;	
 	}
