@@ -319,7 +319,7 @@ public class IntelligenzaNera implements IA {
 
 		
 		//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
-	/*	for(int i=0; i<neri.size(); i++ ) {
+	/*	 for(int i=0; i<neri.size(); i++ ) {
 			
 			int posizione= Integer.parseInt(neri.get(i));
 			
