@@ -492,7 +492,7 @@ public class IntelligenzaBianca implements IA {
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
-			System.out.println("Livello 1");
+			/*System.out.println("Livello 1");
 			for(int x=0; x<albero.get(1).getNodi().size(); x++)
 			{
 				System.out.println("Nodo: " + x +" ha valore "+albero.get(1).getNodi().get(x).getValue());
