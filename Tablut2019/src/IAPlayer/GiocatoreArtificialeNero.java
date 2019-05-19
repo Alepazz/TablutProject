@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 public class GiocatoreArtificialeNero {
 	
 	public static void main(String[] args) throws UnknownHostException, ClassNotFoundException, IOException {
-		String[] array = new String[]{"black", "40"};
+		String[] array = new String[]{"black", "25"};
 		GiocatoreArtificiale.main(array);
 	}
 

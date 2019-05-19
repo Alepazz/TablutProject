@@ -449,15 +449,13 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean isColumnFree(int numberCol, StateTablut s) {
 		
-		boolean result = true;
-		
 		for(int i=0; i<9; i++) {
-			if((s.getPawn(i, numberCol).equalsPawn("O") || s.getPawn(i, numberCol).equalsPawn("W")) && !this.citadels.contains(s.getBox(i, numberCol)) || s.getPawn(i, numberCol).equalsPawn("W")) {
-				result = result && true;
-			} else result = false;
+			if(s.getPawn(i, numberCol).equalsPawn("B") || this.isTheThrone(i, numberCol) || this.citadels.contains(s.getBox(i, numberCol))) {
+				return false;
+			}
 		}
 		
-		return result;
+		return true;
 	}
 	
 	/**
@@ -468,16 +466,14 @@ public class CommonHeuristicFunction {
 	 * @return true se la riga, dalla cella 0 alla 8 è libera, false se invece è presente almeno una pedina nera, c'è il castello, oppure una o più cittadelle
 	 */
 	public boolean isRowFree(int numberRow, StateTablut s) {
-		
-		boolean result = true;
-		
+				
 		for(int i=0; i<9; i++) {
-			if((s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) && !this.citadels.contains(s.getBox(numberRow, i))) {
-				result = result && true;
-			} else result = false;
+			if(s.getPawn(numberRow, i).equalsPawn("B") || this.isTheThrone(numberRow, i) || this.citadels.contains(s.getBox(numberRow, i))) {
+				return false;
+			}
 		}
 		
-		return result;
+		return true;
 	}
 	
 	/**
@@ -489,25 +485,19 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean isSemirowFree(int numberRow, StateTablut s) {
 		
-		boolean result = true;
-		
 		for(int i=0; i<4; i++) {
-			if(s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) {
-				result = result && true;
-			} else result = false;
+			if(s.getPawn(numberRow, i).equalsPawn("B") || this.isTheThrone(numberRow, i) || this.citadels.contains(s.getBox(numberRow, i))) {
+				return false;
+			}
 		} //controlla dalla colonna 0 alla 3
+
+		for(int i=5; i<9; i++) {
+			if(s.getPawn(numberRow, i).equalsPawn("B") || this.isTheThrone(numberRow, i) || this.citadels.contains(s.getBox(numberRow, i))) {
+				return false;
+			}
+		} //controlla dalla colonna 5 (quella dopo la cittadella) alla colonna 8
 		
-		if(!result) {
-			return result;
-		} else {
-			for(int i=5; i<9; i++) {
-				if(s.getPawn(numberRow, i).equalsPawn("O") || s.getPawn(numberRow, i).equalsPawn("W")) {
-					result = result && true;
-				} else result = false;
-			} //controlla dalla colonna 5 (quella dopo la cittadella) alla colonna 8
-		} 
-		
-		return result;
+		return true;
 	}
 	
 	/**
@@ -519,25 +509,19 @@ public class CommonHeuristicFunction {
 	 */
 	public boolean isSemicolumnFree(int numberColumn, StateTablut s) {
 		
-		boolean result = true;
-		
 		for(int i=0; i<4; i++) {
-			if(s.getPawn(i, numberColumn).equalsPawn("O") || s.getPawn(i, numberColumn).equalsPawn("W")) {
-				result = result && true;
-			} else result = false;
+			if(s.getPawn(i, numberColumn).equalsPawn("B") || this.isTheThrone(i, numberColumn) || this.citadels.contains(s.getBox(i, numberColumn))) {
+				return false;
+			}
 		} //controlla dalla riga 0 alla 3
 		
-		if(!result) {
-			return result;
-		} else {
-			for(int i=5; i<9; i++) {
-				if(s.getPawn(i, numberColumn).equalsPawn("O") || s.getPawn(i, numberColumn).equalsPawn("W")) {
-					result = result && true;
-				} else result = false;
-			} //controlla dalla riga 5 (quella dopo la cittadella) alla riga 8
-		} 
+		for(int i=5; i<9; i++) {
+			if(s.getPawn(i, numberColumn).equalsPawn("B") || this.isTheThrone(i, numberColumn) || this.citadels.contains(s.getBox(i, numberColumn))) {
+				return false;
+			}
+		} //controlla dalla riga 5 (quella dopo la cittadella) alla riga 8
 		
-		return result;
+		return true;
 	}
 	
 	/**
@@ -1846,7 +1830,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return true se il re, spostandosi orizzontalmente da sinistra a destra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
 	public boolean checkFreeColComingFromLeft(int rigaRe, int colonnaRe, StateTablut s) {
-		for(int i=colonnaRe+1; i==6;i++)
+		for(int i=colonnaRe+1; i<=6;i++)
 		{
 			if(s.getPawn(rigaRe, i).equalsPawn("B") || s.getPawn(rigaRe, i).equalsPawn("W") || s.getPawn(rigaRe, i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe,  i))){
 				return false; //c'e' una pedina nera/bianca che intralcia la mossa o c'e' il trono
@@ -1864,9 +1848,10 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessuno ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
-				!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
+				!checkBlackCanArriveAdjacentInLeftPosition(rigaRe, colonnaRe, s);
+				//!checkBlackCanArriveFromTop(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sopra, alla sinistra del re, per chiuderlo
+				//!checkBlackCanArriveFromBottom(rigaRe, colonnaRe-1, s) && //nessun nero puo' arrivare  da sotto, alla sinistra del re, per chiuderlo
+				//!checkBlackCanArriveFromLeft(rigaRe, colonnaRe, s); //nessun nero puo' arrivare dalla stessa riga in cui e' il re
 		//checkBlack deve essere falso per far ritornare true il return
 	}
 	
@@ -1879,7 +1864,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return true se il re, spostandosi orizzontalmente da destra a sinistra, si porta in una situazione in cui non ha nessun ostacolo sopra e sotto di lui
 	 */
 	public boolean checkFreeColComingFromRight(int rigaRe, int colonnaRe, StateTablut s) {
-		for(int i=colonnaRe-1; i==2;i--)
+		for(int i=colonnaRe-1; i>=2;i--)
 		{
 			if(s.getPawn(rigaRe, colonnaRe-i).equalsPawn("B") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("W") || s.getPawn(rigaRe, colonnaRe-i).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe, colonnaRe-i))){
 				return false; //c'e' una pedina nera/bianca che intralcia la mossa o c'e' il trono
@@ -1897,9 +1882,10 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		return checkFreeColTop(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
 				checkFreeColBottom(rigaRe, colonnaRe, s) && //nessun ostacolo nella colonna in cui il re si e' posizionato
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
-				!checkBlackCanArriveFromRight(rigaRe, colonnaRe, s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
+				!checkBlackCanArriveAdjacentInRightPosition(rigaRe, colonnaRe, s);
+				//!checkBlackCanArriveFromTop(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dall'alto
+				//!checkBlackCanArriveFromBottom(rigaRe, colonnaRe+1, s) && //nessun nero puo' arrivare alla destra del re, venendo dal basso
+				//!checkBlackCanArriveFromRight(rigaRe, colonnaRe, s); //nessun nero puo' arrivare alla destra del re, venendo dalla sua destra (stessa riga
 		//checkBlack deve essere falso per far ritornare true il return;
 	}
 	
@@ -1912,7 +1898,7 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @return true se il re, spostandosi verticalmente dall'alto al basso, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
 	 */
 	public boolean checkFreeRowComingFromTop(int rigaRe, int colonnaRe, StateTablut s){
-		for(int i=rigaRe+1; i==6;i++)
+		for(int i=rigaRe+1; i<=6;i++)
 		{
 			if(s.getPawn(i, colonnaRe).equalsPawn("B") || s.getPawn(i, colonnaRe).equalsPawn("W") || s.getPawn(i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(i, colonnaRe)))
 			{
@@ -1931,9 +1917,10 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 		
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) &&
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromTop(rigaRe, colonnaRe, s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
-				!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
-				!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
+				!checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s);
+				//!checkBlackCanArriveFromTop(rigaRe, colonnaRe, s) &&  //nessun nero puo' arrivare e chiudere da sopra il re
+				//!checkBlackCanArriveFromLeft(rigaRe-1, colonnaRe, s) && //nessun nero puo' arrivare a chiudere il re, provendendo da sinistra, nella riga precedente quella il posizionamento del re
+				//!checkBlackCanArriveFromRight(rigaRe-1, colonnaRe, s); //nessun nero puo' arrivare a chiudere il re, provendendo da destra, nella riga precedente quella il posizionamento del re
 	}
 	
 	/**
@@ -1944,9 +1931,8 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	 * @param s StateTablut ovvero lo stato da valutare
 	 * @return true se il re, spostandosi verticalmente dal basso all' alto, si porta in una situazione in cui non ha nessun ostacolo a sinistra e a destra di lui
 	 */
-	//TODO:controllare questa funzione
 	public boolean checkFreeRowComingFromBottom(int rigaRe, int colonnaRe, StateTablut s){
-		for(int i=rigaRe-1; i==2; i++){
+		for(int i=rigaRe-1; i>=2; i--){
 			if(s.getPawn(rigaRe-i, colonnaRe).equalsPawn("B") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("W") || s.getPawn(rigaRe-i, colonnaRe).equalsPawn("T") || this.citadels.contains(s.getBox(rigaRe-i, colonnaRe))) {
 				return false;
 			} // il caso in cui sia la cittadella ad intralciare la mossa del re, e' il caso in cui il re si muova lungo la colonna 1 o 7
@@ -1963,9 +1949,10 @@ public boolean checkWhiteCanBeCaptured(int riga, int colonna, StateTablut s) {
 	
 		return checkFreeRowLeft(rigaRe, colonnaRe, s) && 
 				checkFreeRowRight(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromBottom(rigaRe, colonnaRe, s) && 
-				!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, s) &&
-				!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, s);
+				!checkBlackCanArriveAdjacentInBottomPosition(rigaRe, colonnaRe, s);
+				//!checkBlackCanArriveFromBottom(rigaRe+1, colonnaRe, s) && 
+				//!checkBlackCanArriveFromLeft(rigaRe+1, colonnaRe, s) &&
+				//!checkBlackCanArriveFromRight(rigaRe+1, colonnaRe, s);
 	}
 	
 	/**
