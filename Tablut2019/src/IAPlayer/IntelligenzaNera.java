@@ -252,6 +252,7 @@ public class IntelligenzaNera implements IA {
 		if((16 -nNeri) < (8 - nBianchi) +2) {
 			//maxvalue/10 � il massimo a cui si pu� arrivare
 			int valueDiagonali = this.getValueofDiagonali(neri, s);
+			
 			//se gi� ci sono 5 pedine sulla diagonale posso tornare perch� ho un buon valore
 			if(valueDiagonali > 2000)
 				return valueDiagonali;
@@ -507,6 +508,7 @@ public class IntelligenzaNera implements IA {
 				value += (this.MAX_VALUE/36);
 				}
 			}
+		
 	/*	if(value >= MAX_VALUE/12) {
 		//caso in cui le pedine possano avvicinarsi alla diagonale
 			if(common.checkBlackCanArriveAdjacentInBottomPosition(2, 1, s) && !common.checkBlackCanBeCaptured(1, 3, s)) 
