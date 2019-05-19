@@ -259,7 +259,6 @@ public class IntelligenzaNera implements IA {
 				if(v> 0 )
 					return this.MAX_VALUE-v*2;
 			}
-			if(nBianchi <= 4) {
 				int val=0;
 				for(String st : bianchi) {
 					int posizione= Integer.parseInt(st);
@@ -287,7 +286,6 @@ public class IntelligenzaNera implements IA {
 					if(val > 0)
 						return this.MAX_VALUE-(2*val);
 				}
-			}
 		}
 		
 		//maxvalue/4 � il massimo a cui si pu� arrivare
