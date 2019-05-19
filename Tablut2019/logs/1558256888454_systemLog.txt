@@ -1,0 +1,36 @@
+mag 19, 2019 11:08:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accensione server
+mag 19, 2019 11:08:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Partita di Tablut
+mag 19, 2019 11:08:41 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Bianco
+mag 19, 2019 11:08:41 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player bianco in corso..
+mag 19, 2019 11:08:42 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: White player name:	Partecipar
+mag 19, 2019 11:09:45 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Accettata connessione con client giocatore Nero
+mag 19, 2019 11:09:45 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura nome player nero in corso..
+mag 19, 2019 11:09:46 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Black player name:	Partecipare_e_importante
+mag 19, 2019 11:09:50 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai giocatori
+mag 19, 2019 11:09:50 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 19, 2019 11:10:37 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: W Pawn from e4 to d4
+mag 19, 2019 11:10:37 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 19, 2019 11:10:37 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player B in corso..
+mag 19, 2019 11:11:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Move received.	Turn: B Pawn from a4 to c4
+mag 19, 2019 11:11:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Invio messaggio ai client
+mag 19, 2019 11:11:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+BUONO: Lettura mossa player W in corso..
+mag 19, 2019 11:12:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Timeout! Player W lose!
+mag 19, 2019 11:12:09 AM it.unibo.ai.didattica.competition.tablut.server.Server run
+AVVERTENZA: Chiusura sistema per timeout
