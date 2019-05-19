@@ -30,7 +30,7 @@ public class IntelligenzaNera implements IA {
 	private static Action a = null;
 	private static List<Livello> albero;
 	//private List<Nodo> nodiEsistenti;
-	private final int MAX_VALUE = 10000;
+	private final int MAX_VALUE = 100000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
 	private final int VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN;
