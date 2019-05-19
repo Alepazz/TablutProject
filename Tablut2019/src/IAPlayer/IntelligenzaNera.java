@@ -2510,11 +2510,11 @@ public class IntelligenzaNera implements IA {
 				Nodo nodo = lista.get(x);
 				if(nodo.getStato().getTurn().equalsTurn("WW"))
 				{
-					nodo.setValue(10000);
+					nodo.setValue(-10000);
 				}
 				if(nodo.getStato().getTurn().equalsTurn("BW"))
 				{
-					nodo.setValue(-10000);
+					nodo.setValue(+10000);
 				}
 				if(this.ia.checkDraw(nodo.getStato()))
 				{
@@ -2550,11 +2550,11 @@ public class IntelligenzaNera implements IA {
 				Nodo nodo = lista.get(x);
 				if(nodo.getStato().getTurn().equalsTurn("WW"))
 				{
-					nodo.setValue(10000);
+					nodo.setValue(-10000);
 				}
 				if(nodo.getStato().getTurn().equalsTurn("BW"))
 				{
-					nodo.setValue(-10000);
+					nodo.setValue(10000);
 				}
 				if(this.ia.checkDraw(nodo.getStato()))
 				{

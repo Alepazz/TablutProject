@@ -32,7 +32,7 @@ public class IntelligenzaBianca implements IA {
 	private final int MAX_VALUE = 100000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
-	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
+	private final float VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN / 4;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	private List<StateTablut> listState; 
@@ -273,58 +273,58 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		if(s.getPawn(1, 2).equalsPawn("B") && s.getPawn(2, 1).equalsPawn("B")) {
-			value -= 400;
+			value -= 1000;
 		}
 		
 		//top right
 		if(s.getPawn(1, 6).equalsPawn("B") && !s.getPawn(2, 7).equalsPawn("B")) {
-			if(s.getPawn(2, 7).equalsPawn("W")) {
+			if(s.getPawn(2, 7).equalsPawn("W") && !common.checkWhiteCanBeCaptured(2, 7, s)) {
 				value += 200;
 			}
 		}
 		
 		if(!s.getPawn(1, 6).equalsPawn("B") && s.getPawn(2, 7).equalsPawn("B")) {
-			if(s.getPawn(1, 6).equalsPawn("W")) {
+			if(s.getPawn(1, 6).equalsPawn("W") && !common.checkWhiteCanBeCaptured(1, 6, s)) {
 				value += 200;
 			}
 		}
 		
 		if(s.getPawn(1, 6).equalsPawn("B") && s.getPawn(2, 7).equalsPawn("B")) {
-			value -= 400;
+			value -= 1000;
 		}
 		
 		//bottom left
 		if(s.getPawn(6, 1).equalsPawn("B") && !s.getPawn(7, 2).equalsPawn("B")) {
-			if(s.getPawn(7, 2).equalsPawn("W")) {
+			if(s.getPawn(7, 2).equalsPawn("W") && !common.checkWhiteCanBeCaptured(7, 2, s)) {
 				value += 200;
 			}
 		}
 		
 		if(!s.getPawn(6, 1).equalsPawn("B") && s.getPawn(7, 2).equalsPawn("B")) {
-			if(s.getPawn(6, 1).equalsPawn("W")) {
+			if(s.getPawn(6, 1).equalsPawn("W") && !common.checkWhiteCanBeCaptured(6, 1, s)) {
 				value += 200;
 			}
 		}
 		
 		if(s.getPawn(6, 1).equalsPawn("B") && s.getPawn(7, 2).equalsPawn("B")) {
-			value -= 400;
+			value -= 1000;
 		}
 		
 		//bottom right
 		if(s.getPawn(6, 7).equalsPawn("B") && !s.getPawn(7, 6).equalsPawn("B")) {
-			if(s.getPawn(7, 6).equalsPawn("W")) {
+			if(s.getPawn(7, 6).equalsPawn("W") && !common.checkWhiteCanBeCaptured(7, 6, s)) {
 				value += 200;
 			}
 		}
 		
 		if(!s.getPawn(6, 7).equalsPawn("B") && s.getPawn(7, 6).equalsPawn("B")) {
-			if(s.getPawn(6, 7).equalsPawn("W")) {
+			if(s.getPawn(6, 7).equalsPawn("W") && !common.checkWhiteCanBeCaptured(6, 7, s)) {
 				value += 200;
 			}
 		}
 		
 		if(s.getPawn(6, 7).equalsPawn("B") && s.getPawn(7, 6).equalsPawn("B")) {
-			value -= 400;
+			value -= 1000;
 		}
 							
 		return value;	
