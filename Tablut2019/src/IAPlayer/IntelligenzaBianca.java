@@ -32,7 +32,7 @@ public class IntelligenzaBianca implements IA {
 	private final int MAX_VALUE = 10000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
-	private final int VALUE_WHITE_PAWN = 2 * VALUE_BLACK_PAWN;
+	private final int VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	private List<StateTablut> listState; 
@@ -96,7 +96,7 @@ public class IntelligenzaBianca implements IA {
 		 * Valori definiti per adesso: <--- SI POSSONO CAMBIARE
 		 * Pedina Nera: 100
 		 * Pedina Mangiabile: 50
-		 * Pedina Bianca: 200
+		 * Pedina Bianca: 300
 		 * Pedina Bianca Mangiabile: 100
 		 * 
 		 * Il peso della pedina bianca e' il doppio di quella nera 
