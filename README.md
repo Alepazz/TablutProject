@@ -1,5 +1,5 @@
-# TablutProject
+# TablutProject - Partecipare è importante
 Progetto di Intelligenza Artificiale (IA) - 1^ anno magistrale
-Questo progetto è ancora in fase di sviluppo
 
-La classe GiocatoreArtificiale contiene il main del nostro giocatore. Esso lancerà un'istanza della classe GiocatoreArtificiale (che estende la classe TablutClient) e inizierà a scambiare i messaggi con il server per giocare alla partita. Questa istanza contiene un'interfaccia IA che sarà implementata da classi che rappresentano la vera e propria logica della nostra IA. Il nostro compito sarà modellare queste classi in modo da ottenere il miglior risultato possibile. 
+La classe PartecipareEImportante contiene il main del nostro giocatore. Esso lancerà un'istanza della classe PartecipareEImportante (che estende la classe TablutClient) e inizierà a scambiare i messaggi con il server per giocare alla partita. Al lancio di questa classe vanno passati il parametro riguardante il giocatore (una stringa "white"/"black") e il numero di secondi concessi per la mossa (il progetto prevede già qualche secondo di "scarto" per evitare problemi di sincronizzazione). In più, per comodità, esistono le classi PartecipareEImportanteNero e PartecipareEImportanteBianco che permettono di lanciare il main con già i parametri definiti (al momento le classi contengono 40 secondi per mossa come parametro).
+L'unica libreria di cui si fa uso in questo progetto è la "gson-2.2.2.jar" la quale dovrebbe essere già disponibile nel progetto. Nel caso ci fossero problemi saremo reperibili per correggere il tutto al più presto.
