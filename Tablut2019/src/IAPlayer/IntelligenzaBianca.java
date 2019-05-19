@@ -29,10 +29,10 @@ public class IntelligenzaBianca implements IA {
 	private List<String> citadels;
 	private static List<Livello> albero;
 	private static Action a = null;
-	private final int MAX_VALUE = 10000;
+	private final int MAX_VALUE = 100000;
 	private final int MIN_VALUE = - MAX_VALUE;
 	private final int VALUE_BLACK_PAWN = 100;
-	private final int VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN;
+	private final float VALUE_WHITE_PAWN = 3 * VALUE_BLACK_PAWN / 4;
 	private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	private List<StateTablut> listState; 
@@ -96,8 +96,8 @@ public class IntelligenzaBianca implements IA {
 		 * Valori definiti per adesso: <--- SI POSSONO CAMBIARE
 		 * Pedina Nera: 100
 		 * Pedina Mangiabile: 50
-		 * Pedina Bianca: 300
-		 * Pedina Bianca Mangiabile: 100
+		 * Pedina Bianca: 200
+		 * Pedina Bianca Mangiabile: 150
 		 * 
 		 * Il peso della pedina bianca e' il doppio di quella nera 
 		 */		
@@ -113,9 +113,9 @@ public class IntelligenzaBianca implements IA {
 					{
 						value += VALUE_BLACK_PAWN/2;
 					}
-					if(common.checkPawnBlocked(i, j, s)) {
+					/*if(common.checkPawnBlocked(i, j, s)) {
 						value += VALUE_BLACK_PAWN/4;
-					}
+					}*/
 				}
 				if(s.getBoard()[i][j].equalsPawn("W"))
 				{
@@ -125,9 +125,9 @@ public class IntelligenzaBianca implements IA {
 					{
 						value -= VALUE_WHITE_PAWN/2;
 					}
-					if(common.checkPawnBlocked(i, j, s)) {
+					/*if(common.checkPawnBlocked(i, j, s)) {
 						value -= VALUE_WHITE_PAWN/4;
-					}
+					}*/
 				}
 				if(s.getBoard()[i][j].equalsPawn("K"))
 				{
@@ -153,20 +153,20 @@ public class IntelligenzaBianca implements IA {
 			}
 		}
 		
-		if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
+		/*if(common.checkFreeRowComingFromBottom(rigaRe, colonnaRe, s) 
 				|| common.checkFreeRowComingFromTop(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromLeft(rigaRe, colonnaRe, s)
 				|| common.checkFreeColComingFromRight(rigaRe, colonnaRe, s)) {
 			if(s.getTurn().equalsTurn("W")) {
-				value += 400;
+				value += 600;
 			} else { //turno nero
 				value += 100;
 			}
-		}
+		}*/
 		
 		//valuto molto il fatto che il re sia fuori dal trono
 		if(!common.kingOnTheThrone(rigaRe, colonnaRe)) {
-			value += 600;
+			value += 800;
 		}
 		
 		//valuto molto il fatto che il re, possa essere mangiato -- compensa quella di prima
@@ -180,7 +180,7 @@ public class IntelligenzaBianca implements IA {
 				
 		int numberOfStarFree = common.getNumberStarFree(s);
 		if(numberOfStarFree < 4) {		
-			value -= (8-numberOfStarFree) * 350; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (350 per ogni star non più libera)		
+			value -= (8-numberOfStarFree) * 350; // se le possibilità di vittoria diminuiscono, diminuisce anche il valore di value (350 per ogni star non più libera) -- max -2800		
 		}
 		
 		//cerchiamo di tenere il re con un po' di spazio
@@ -189,25 +189,26 @@ public class IntelligenzaBianca implements IA {
 		}
 		
 		//cerchiamo di tenere il re isolato, così da non essere schiacciato
-		if(common.checkPedinaIsolata(rigaRe, colonnaRe, s)) {
+		/*if(common.checkPedinaIsolata(rigaRe, colonnaRe, s)) {
 			value += 100;
-		}
+		}*/
 		
 		//controlla che il re non abbia più di una nera vicino
 		if((common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") ||
-				common.checkNeighbourBottomLeft(rigaRe, colonnaRe, s).contentEquals("B") ||
-				common.checkNeighbourBottomRight(rigaRe, colonnaRe, s).equals("B") ||
+				//common.checkNeighbourBottomLeft(rigaRe, colonnaRe, s).contentEquals("B") ||
+				//common.checkNeighbourBottomRight(rigaRe, colonnaRe, s).equals("B") ||
 				common.checkNeighbourLeft(rigaRe, colonnaRe, s).equals("B") ||
 				common.checkNeighbourRight(rigaRe, colonnaRe, s).equals("B") ||
-				common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B") ||
-				common.checkNeighbourTopLeft(rigaRe, colonnaRe, s).equals("B") ||
-				common.checkNeighbourTopRight(rigaRe, colonnaRe, s).equals("B")) && common.checkBlackCanArriveAdjacent(rigaRe, colonnaRe, s)) {
+				common.checkNeighbourTop(rigaRe, colonnaRe, s).equals("B")) //||
+				//common.checkNeighbourTopLeft(rigaRe, colonnaRe, s).equals("B") ||
+				//common.checkNeighbourTopRight(rigaRe, colonnaRe, s).equals("B")) 
+				&& common.checkBlackCanArriveAdjacent(rigaRe, colonnaRe, s)); {
 			value -= 200;
 			
 		}
 		
 		//evito situazioni di vittoria per il nero (nel turno del nero), o di possibile pericolo nel turno del bianco
-		if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("C")) {
+		/*if(common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("B") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("T") || common.checkNeighbourBottom(rigaRe, colonnaRe, s).equals("C")) {
 			if(common.checkBlackCanArriveAdjacentInTopPosition(rigaRe, colonnaRe, s)) {
 				if(s.getTurn().equalsTurn("B")) {
 					return this.MIN_VALUE-1;
@@ -245,12 +246,90 @@ public class IntelligenzaBianca implements IA {
 					value -= 200;
 				}		
 			}
+		}*/
+		
+		/*
+		 * this.perfectPosition.add("12");
+		 * this.perfectPosition.add("21");
+		 * this.perfectPosition.add("16");
+		 * this.perfectPosition.add("27");
+		 * this.perfectPosition.add("61");
+		 * this.perfectPosition.add("72");
+		 * this.perfectPosition.add("67");
+		 * this.perfectPosition.add("76");
+		 */
+		
+		//top left
+		if(s.getPawn(1, 2).equalsPawn("B") && !s.getPawn(2, 1).equalsPawn("B")) {
+			if(s.getPawn(2, 1).equalsPawn("W") && !common.checkWhiteCanBeCaptured(2, 1, s)) {
+				value += 200;
+			}
 		}
 		
-		//TODO: disposizione pedine bianche in diagonale potrebbe essere una buona idea
-				
+		if(!s.getPawn(1, 2).equalsPawn("B") && s.getPawn(2, 1).equalsPawn("B")) {
+			if(s.getPawn(1, 2).equalsPawn("W") && !common.checkWhiteCanBeCaptured(1, 2, s)) {
+				value += 200;
+			}
+		}
+		
+		if(s.getPawn(1, 2).equalsPawn("B") && s.getPawn(2, 1).equalsPawn("B")) {
+			value -= 1000;
+		}
+		
+		//top right
+		if(s.getPawn(1, 6).equalsPawn("B") && !s.getPawn(2, 7).equalsPawn("B")) {
+			if(s.getPawn(2, 7).equalsPawn("W") && !common.checkWhiteCanBeCaptured(2, 7, s)) {
+				value += 200;
+			}
+		}
+		
+		if(!s.getPawn(1, 6).equalsPawn("B") && s.getPawn(2, 7).equalsPawn("B")) {
+			if(s.getPawn(1, 6).equalsPawn("W") && !common.checkWhiteCanBeCaptured(1, 6, s)) {
+				value += 200;
+			}
+		}
+		
+		if(s.getPawn(1, 6).equalsPawn("B") && s.getPawn(2, 7).equalsPawn("B")) {
+			value -= 1000;
+		}
+		
+		//bottom left
+		if(s.getPawn(6, 1).equalsPawn("B") && !s.getPawn(7, 2).equalsPawn("B")) {
+			if(s.getPawn(7, 2).equalsPawn("W") && !common.checkWhiteCanBeCaptured(7, 2, s)) {
+				value += 200;
+			}
+		}
+		
+		if(!s.getPawn(6, 1).equalsPawn("B") && s.getPawn(7, 2).equalsPawn("B")) {
+			if(s.getPawn(6, 1).equalsPawn("W") && !common.checkWhiteCanBeCaptured(6, 1, s)) {
+				value += 200;
+			}
+		}
+		
+		if(s.getPawn(6, 1).equalsPawn("B") && s.getPawn(7, 2).equalsPawn("B")) {
+			value -= 1000;
+		}
+		
+		//bottom right
+		if(s.getPawn(6, 7).equalsPawn("B") && !s.getPawn(7, 6).equalsPawn("B")) {
+			if(s.getPawn(7, 6).equalsPawn("W") && !common.checkWhiteCanBeCaptured(7, 6, s)) {
+				value += 200;
+			}
+		}
+		
+		if(!s.getPawn(6, 7).equalsPawn("B") && s.getPawn(7, 6).equalsPawn("B")) {
+			if(s.getPawn(6, 7).equalsPawn("W") && !common.checkWhiteCanBeCaptured(6, 7, s)) {
+				value += 200;
+			}
+		}
+		
+		if(s.getPawn(6, 7).equalsPawn("B") && s.getPawn(7, 6).equalsPawn("B")) {
+			value -= 1000;
+		}
+							
 		return value;	
 	}
+	
 		
 	/**
 	 * Controlla se il re, che si trova sul trono, può fare un passo o due verso l'alto (o verso il basso, o verso sinistra, o verso destra)
