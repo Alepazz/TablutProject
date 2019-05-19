@@ -319,7 +319,7 @@ public class IntelligenzaNera implements IA {
 
 		
 		//itero su tutti i neri per vedere quali sono le mosse migliori per ogni pedina
-		for(int i=0; i<neri.size(); i++ ) {
+	/*	for(int i=0; i<neri.size(); i++ ) {
 			
 			int posizione= Integer.parseInt(neri.get(i));
 			
@@ -331,7 +331,7 @@ public class IntelligenzaNera implements IA {
 			if(common.isCitadel(riga, colonna, s))
 				value -=50;
 			
-			}
+			}*/
 		//System.out.println("valore"+value);
 		
 		return value;
