@@ -243,14 +243,31 @@ public class IntelligenzaNera implements IA {
 			return value;
 		
 		if(value >= this.MAX_VALUE/2) {
-			if(nBianchi < 4) {
+			if(nBianchi  < 3) {
+				int v=0;
 				for(String st : bianchi) {
 					int posizione= Integer.parseInt(st);
 					
 					//le unit� sono le colonne mentre le decine sono le righe
 					int riga = posizione/10;
 					int colonna= posizione%10;
-					int val=0;
+					
+					 if(common.checkWhiteCanBeCaptured(riga, colonna, s))
+						 v += 1;
+					 
+				}
+				if(v> 0 )
+					return this.MAX_VALUE-v*2;
+			}
+			if(nBianchi <= 4) {
+				int val=0;
+				for(String st : bianchi) {
+					int posizione= Integer.parseInt(st);
+					
+					//le unit� sono le colonne mentre le decine sono le righe
+					int riga = posizione/10;
+					int colonna= posizione%10;
+					
 					
 					if(common.checkNeighbourBottom(riga, colonna, s).equals("K"))
 						if(common.checkWhiteCanBeCaptured(riga, colonna, s))
