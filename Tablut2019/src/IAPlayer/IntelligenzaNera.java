@@ -1026,30 +1026,7 @@ public class IntelligenzaNera implements IA {
 			{
 				System.out.println("Nodi espansi livello " + x +": "+albero.get(x).getNodi().size());
 			}
-			System.out.println("Livello 1");
-			for(int x=0; x<albero.get(1).getNodi().size(); x++)
-			{
-				System.out.println("Nodo: " + x +" ha valore "+albero.get(1).getNodi().get(x).getValue());
-			}
-			System.out.println("Livello 2");
-			for(int x=0; x<100; x++)
-			{
-				System.out.println("Nodo: " + x +" ha valore "+albero.get(2).getNodi().get(x).getValue());
-			}
-			System.out.println("Livello 3");
-			for(int x=0; x<100; x++)
-			{
-				System.out.println("Nodo: " + x +" ha valore "+albero.get(3).getNodi().get(x).getValue());
-			}
-			System.out.println("Livello 4");
-			for(int x=0; x<50; x++)
-			{
-				if(albero.get(4).getNodi().get(x).getValue()==-10000)
-				{
-					System.out.println(albero.get(4).getNodi().get(x).getStato());
-				}
-			}
-			System.out.println(albero.get(4).getNodi().get(0).getStato());
+			
 			System.out.println("Valore root: "+albero.get(0).getNodi().get(0).getValue());
 			albero.clear();
 			System.gc();
@@ -1057,8 +1034,6 @@ public class IntelligenzaNera implements IA {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		long t2 = System.currentTimeMillis();
-		System.out.println("Tempo trascorso sviluppo euristica: "+(t2-t3)+" millisecondi");
 		numeroMosse += 1;
 		System.out.println("Mossa: "+a.toString());
 		System.out.println("");
