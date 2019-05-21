@@ -1278,11 +1278,11 @@ public class IntelligenzaNera implements IA {
 				this.liv5.add(daAggiungere);
 				if(daAggiungere.get(0).getTurn().equalsTurn("BW"))
 				{
-					this.nodoLiv4.setValue(10000);
+					this.nodoLiv4.setValue(100000);
 				}
 				if(daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
-					this.nodoLiv4.setValue(-10000);
+					this.nodoLiv4.setValue(-100000);
 				}
 				if(!daAggiungere.get(0).getTurn().equalsTurn("BW") && !daAggiungere.get(0).getTurn().equalsTurn("WW"))
 				{
