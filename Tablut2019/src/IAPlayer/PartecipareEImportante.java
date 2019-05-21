@@ -58,7 +58,6 @@ public class PartecipareEImportante extends TablutClient {
 		}
 	}
 	
-	//METODO CHE INIZIA A GIOCARE, CONNESSIONE GIA' EFFETTUATA E NOME GIA' DATO
 	@Override
 	public void run() {
 		
