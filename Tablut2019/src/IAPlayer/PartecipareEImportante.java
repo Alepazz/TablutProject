@@ -18,8 +18,11 @@ public class PartecipareEImportante extends TablutClient {
 			System.out.println("You must specify which player you are (WHITE or BLACK)!");
 			System.exit(-1);
 		}
+		if (args.length == 1) {
+			System.out.println("You must specify the time for the move!");
+			System.exit(-1);
+		}
 		System.out.println("Selected this: " + args[0]);
-		
 		System.out.println("secondi inseriti: " + args[1]);
 		secondi = Integer.parseInt(args[1]);
 		secondi = secondi - 5;
