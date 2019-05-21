@@ -44,7 +44,7 @@ public class PartecipareEImportante extends TablutClient {
 		}
 		else
 		{
-			this.intelligenza = new IntelligenzaNera();
+			this.intelligenza = new IntelligenzaNera(secondi);
 		}
 		
 		try 

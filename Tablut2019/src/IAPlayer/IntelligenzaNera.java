@@ -24,7 +24,7 @@ import java.util.List;
 
 public class IntelligenzaNera implements IA {
 	
-	private static final int TIMETOSTOPTREEGENERATOR = 30000;
+	private int TIMETOSTOPTREEGENERATOR;
 	private List<String> citadels;
 	private List<StateTablut> listState; 
 	private static Action a = null;
@@ -39,13 +39,14 @@ public class IntelligenzaNera implements IA {
 	//private Simulator simulatore;
 	private CommonHeuristicFunction common;
 	
-	public IntelligenzaNera() {
+	public IntelligenzaNera(int secondi) {
 		albero = new ArrayList<Livello>();
 		//this.simulatore = new Simulator();
 		this.common= new CommonHeuristicFunction();
 		this.citadels = this.common.getCitadels();
 		this.perfectPos= new ArrayList<String>();
 		this.listState = new ArrayList<StateTablut>();
+		this.TIMETOSTOPTREEGENERATOR = secondi * 1000;
 		/*this.perfectPos.add("13");
 		this.perfectPos.add("22");
 		this.perfectPos.add("31");
