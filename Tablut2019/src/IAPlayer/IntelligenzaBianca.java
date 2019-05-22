@@ -264,7 +264,7 @@ public class IntelligenzaBianca implements IA {
 			value-=100;
 		}
 		
-		if(!s.getPawn(2, 1).equalsPawn("B")) {
+		if(s.getPawn(2, 1).equalsPawn("B")) {
 			value-=100;
 		}
 				
@@ -273,7 +273,7 @@ public class IntelligenzaBianca implements IA {
 			value-=100;
 		}
 		
-		if(!s.getPawn(2, 7).equalsPawn("B")) {
+		if(s.getPawn(2, 7).equalsPawn("B")) {
 			value-=100;
 		}
 		
@@ -282,7 +282,7 @@ public class IntelligenzaBianca implements IA {
 			value-=100;
 		}
 		
-		if(!s.getPawn(7, 2).equalsPawn("B")) {
+		if(s.getPawn(7, 2).equalsPawn("B")) {
 			value-=100;
 		}
 		
@@ -291,7 +291,7 @@ public class IntelligenzaBianca implements IA {
 			value-=100;
 		}
 		
-		if(!s.getPawn(7, 6).equalsPawn("B")) {
+		if(s.getPawn(7, 6).equalsPawn("B")) {
 			value-=100;
 		}
 							
